@@ -175,18 +175,19 @@ class Leave:
 
 
 def upload_to_mega(data,category,index):
-	uploaded_data=request.files['file']
-	folder_path = "Employee_files"
-	ext = uploaded_data.filename[uploaded_data.filename.find('.',0) - len(uploaded_data.filename):]
-	filename = str(session['SN']) +"_"+ category + "_attachment_" +  str(index) + ext
-	m = mega.login("vinceagoyaoy11@gmail.com","bdcn@001")
-	folder = m.find(folder_path)
+    if request.files['file'].filename != "":
+        uploaded_data=request.files['file']
+        folder_path = "Employee_files"
+        ext = uploaded_data.filename[uploaded_data.filename.find('.',0) - len(uploaded_data.filename):]
+        filename = str(session['SN']) +"_"+ category + "_attachment_" +  str(index) + ext
+        m = mega.login("vinceagoyaoy11@gmail.com","bdcn@001")
+        folder = m.find(folder_path)
 
-	uploaded_data.save(os.path.join(FILES_DIR,filename))
+        uploaded_data.save(os.path.join(FILES_DIR,filename))
 
-	files = m.upload(os.path.join(FILES_DIR,filename),folder[0])
-	x = m.get_upload_link(files)
-	db['utilities_' + category + '_application'].update_one({"index":int(index)},{"$set":{'basic_info.attachment':x}})
+        files = m.upload(os.path.join(FILES_DIR,filename),folder[0])
+        x = m.get_upload_link(files)
+        db['utilities_' + category + '_application'].update_one({"index":int(index)},{"$set":{'basic_info.attachment':x}})
 
 
 
@@ -333,12 +334,12 @@ def leaves_module(data):
     update_one_module('utilities_leave_application',
                       update_criteria, update_query)  # update leave application
     ex.update_of_leave_credits()  # execute to update leave credits
+    upload_to_mega(data, 'leave', ex.index)
     return("Successfully Filed")
 
 
 def utilities_module(data, ref_index, collection):
     if collection == "utilities_leave_application":
         result = leaves_module(data)
-        print(result,1.2)
     return(result)
 
