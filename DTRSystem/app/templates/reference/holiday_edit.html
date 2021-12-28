@@ -1,0 +1,98 @@
+{% extends 'base/base.html' %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+    <div class="breadcrumbs-inner">
+        <div class="page-header">
+            <div class="page-title">
+                <ol class="breadcrumb">
+                    <li><a href="{{url_for('index')}}">Home</a></li>
+                    <li><a href="{{url_for('reference',content='holiday')}}">Holiday List</a></li>
+                    <li class="active">Edit Holiday</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock breadcrumbs %}
+
+{% block content %}
+
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <strong class="card-title">Holiday Details:</strong>
+
+            </div>
+            <div class="card-body">
+                <!-- Credit Card -->
+                <div id="pay-invoice">
+                    <div class="card-body">
+                        <form action="/app/reference/holiday/{{form['index']}}/edit" method="post" enctype="multipart/form-data">
+                            <div class="row">
+                                <div class="col-3">
+                                    <div class="form-group">
+                                        <label for="date" class="control-label">Date</label>
+                                        <input type="date" name="date" class="form-control" id="date" data-val="true"
+                                            data-val-required="Please enter name" required value="{{form['date']}}">
+                                    </div>
+                                </div>
+
+                                <div class="col-3">
+                                    <div class="form-group">
+                                        <label for="description" class="control-label">Holiday Type</label>
+                                        <select class="form-control" id="type" name="type" required>
+                                            {% if form['type'] == "RH" %}
+                                                <option value="RH" selected>Regular Holiday</option>
+                                                <option value="SH">Special Holiday</option>
+                                            {% else %}
+                                                <option value="RH">Regular Holiday</option>
+                                                <option value="SH" selected>Special Holiday</option>
+                                            {% endif %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <div class="form-group">
+                                        <label for="description" class="control-label">Description</label>
+                                        <input type="text" name="description" class="form-control" id="description"
+                                            data-val="true" data-val-required="Please enter name" required value="{{form['description']}}">
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <div class="form-group">
+                                        <label for="description" class="control-label">Area Coverage</label>
+                                        <select class="form-control" id="area" name="area" required>
+                                            
+                                            <option value="ALL" selected>ALL</option>
+                                            {% for item in context['area'] %}
+                                                {% if item['code'] == form['area']%}
+                                                    <option value="{{item['code']}}" selected>{{item['description']}}</option>
+                                                {% else %}
+                                                    <option value="{{item['code']}}">{{item['description']}}</option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>      
+                            <div class="form-group">
+                                <label for="reason_edit" class="control-label">Reason For Editing</label>
+                                <input type="text" name="reason_edit" class="form-control" id="reason_edit"
+                                    data-val="true" data-val-required="Please enter name" required>                                
+                              
+                            </div>
+                            <div>
+                                <input class="btn btn-lg btn-success btn-block" type="submit" name="action"
+                                    value="SAVE">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,242 @@
+{% extends 'base/base.html' %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+    <div class="breadcrumbs-inner">
+        <div class="page-header">
+            <div class="page-title">
+                <ol class="breadcrumb">
+                    <li><a href="">Home</a></li>
+                    <li><a href="ntent='location')}}">Location List</a></li>
+                    <li class="active">Delete Details</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock breadcrumbs %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+
+                        <strong class="card-title">Update Leave Credits: {{context[0]['last_name']}},
+                            {{context[0]['first_name']}}
+                            {{context[0]['middle_name']}}. {{context[0]['suffix']}}:</strong>
+
+            </div>
+            <div class="card-body">
+                <!-- Credit Card -->
+
+                {% for item in context %}
+                <form  action="/app/reference/employee/{{item['index']}}/leave_credit/delete" method="post" enctype="multipart/form-data">
+                    <input type="number" name="ref_index" class="form-control" id="ref_index" data-val="true"
+                        data-val-required="Please enter name" required value="{{item['ref_index']}}" hidden>
+                             
+                    <div class="row">
+                        <div class="col-lg-3">
+                            &nbsp;
+                        </div>
+                        <div class="col-lg-3">
+                            &nbsp;
+                        </div>
+                        <div class="col-lg-3">
+                            &nbsp;
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label for="applied" class="control-label">Applied Changes On</label>
+                                <input type="date" name="applied" class="form-control" id="applied" data-val="true"
+                                    data-val-required="Please enter name" required value="{{item['applied']}}" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="div_id_SN" class="form-group" >
+                        <div class="row">
+                            <div class="col-lg">
+                                Leave Type
+                            </div>
+
+                            <div class="col-lg-3">
+                                Total(Hrs)
+                            </div>
+                            <div class="col-lg-3">
+                                Remaining(Hrs)
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="div_id_SN" class="form-group">
+                        <div class="row">
+                            <div class="col-lg">
+                                SICK LEAVE (SL)
+                            </div>
+                            <div class="col-lg-3">
+                                <input type="number" name="SL" maxlength="100" class="textinput textInput form-control"
+                                    required id="update_SL" value="{{item['SL']}}" readonly>
+                            </div>
+                            <div class="col-lg-3">
+                                <input type="number" name="SL_r" maxlength="100" class="textinput textInput form-control"
+                                    required id="update_SL_r" value="{{item['SL_r']}}" readonly>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="div_id_SN" class="form-group">
+                        <div class="row">
+                            <div class="col-lg">
+                                VACATION LEAVEL (VL)
+                            </div>
+                            <div class="col-lg-3">
+                                <input type="number" name="VL" maxlength="100" class="textinput textInput form-control"
+                                    required id="update_SL" value="{{item['VL']}}" readonly>
+                            </div>
+                            <div class="col-lg-3">
+                                <input type="number" name="VL_r" maxlength="100" class="textinput textInput form-control"
+                                    required id="update_SL_r" value="{{item['VL_r']}}" readonly>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div id="div_id_SN" class="form-group">
+                        <div class="row">
+                            <div class="col-lg">
+                                BIRTHDAY LEAVE (BL)
+                            </div>
+                            <div class="col-lg-3">
+                                <input type="number" name="BL" maxlength="100" class="textinput textInput form-control"
+                                    required id="update_BL" value="{{item['BL']}}" readonly>
+                            </div>
+                            <div class="col-lg-3">
+                                <input type="number" name="BL_r" maxlength="100" class="textinput textInput form-control"
+                                    required id="update_BL_r" value="{{item['BL_r']}}" readonly>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div id="div_id_SN" class="form-group">
+                        <div class="row">
+                            <div class="col-lg">
+                                SINGLE PARENT (SP)
+                            </div>
+                            <div class="col-lg-3">
+                                <input type="number" name="SP" maxlength="100" class="textinput textInput form-control"
+                                    required id="update_SL" value="{{item['SP']}}" readonly>
+                            </div>
+                            <div class="col-lg-3">
+                                <input type="number" name="SP_r" maxlength="100" class="textinput textInput form-control"
+                                    required id="update_SL_r" value="{{item['SP_r']}}" readonly>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="div_id_SN" class="form-group">
+                        <div class="row">
+                            <div class="col-lg">
+                                BEREAVEMENT LEAVE (BRL)
+                            </div>
+                            <div class="col-lg-3">
+                                <input type="number" name="BRL" maxlength="100" class="textinput textInput form-control"
+                                    required id="update_SL" value="{{item['BRL']}}" readonly>
+                            </div>
+                            <div class="col-lg-3">
+                                <input type="number" name="BRL_r" maxlength="100" class="textinput textInput form-control"
+                                    required id="update_BRL_r" value="{{item['BRL_r']}}" readonly>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="div_id_SN" class="form-group">
+                        <div class="row">
+                            <div class="col-lg">
+                                MATERNITY LEAVE (ML)
+                            </div>
+                            <div class="col-lg-3">
+                                <input type="number" name="ML" maxlength="100" class="textinput textInput form-control"
+                                    required id="update_SL" value="{{item['ML']}}" readonly>
+                            </div>
+                            <div class="col-lg-3">
+                                <input type="number" name="ML_r" maxlength="100" class="textinput textInput form-control"
+                                    required id="update_SL_r" value="{{item['ML_r']}}" readonly>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="div_id_SN" class="form-group">
+                        <div class="row">
+                            <div class="col-lg">
+                                PATERNITY LEAVE (PL)
+                            </div>
+                            <div class="col-lg-3">
+                                <input type="number" name="PL" maxlength="100" class="textinput textInput form-control"
+                                    required id="update_SL" value="{{item['PL']}}" readonly>
+                            </div>
+                            <div class="col-lg-3">
+                                <input type="number" name="PL_r" maxlength="100" class="textinput textInput form-control"
+                                    required id="update_SL_r" value="{{item['PL_r']}}" readonly>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="div_id_SN" class="form-group">
+                        <div class="row">
+                            <div class="col-lg">
+                                MAGNA CARTA (MC)
+                            </div>
+                            <div class="col-lg-3">
+                                <input type="number" name="MC" maxlength="100" class="textinput textInput form-control"
+                                    required id="update_SL" value="{{item['MC']}}" readonly>
+                            </div>
+                            <div class="col-lg-3">
+                                <input type="number" name="MC_r" maxlength="100" class="textinput textInput form-control"
+                                    required id="update_SL_r" value="{{item['MC_r']}}" readonly>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="div_id_SN" class="form-group">
+                        <div class="row">
+                            <div class="col-lg">
+                                VACINATION LEAVE (VS)
+                            </div>
+                            <div class="col-lg-3">
+                                <input type="number" name="VS" maxlength="100" class="textinput textInput form-control"
+                                    required id="update_SL" value="{{item['VS']}}" readonly>
+                            </div>
+                            <div class="col-lg-3">
+                                <input type="number" name="VS_r" maxlength="100" class="textinput textInput form-control"
+                                    required id="update_SL_r" value="{{item['VS_r']}}" readonly>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                    <div id="div_id_reason" class="form-group">
+                        <label for="id_reason" class=" requiredField">
+                            Reason For Deleting</label>
+                        <div class="">
+                            <input type="reason" name="reason_delete" maxlength="100"
+                                class="textinput textInput form-control" required id="reason" value="">
+                        </div>
+                    </div>
+
+
+                    <div>
+                        <input class="btn btn-lg btn-success btn-block" type="submit" name="action" value="SAVE">
+                    </div>
+                </form>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+{% endblock %}

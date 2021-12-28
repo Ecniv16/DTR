@@ -1,0 +1,658 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+    <h2>EMPLOYEE RECORD</h2>
+
+
+
+<div class="tab">
+    <button class="tablinks" onclick="openCity(event, 'profile')">Employee List</button>
+    <button class="tablinks" onclick="openCity(event, 'leaves')">Pending Leave<span class="badge badge-danger">{{ref['leave_form_count']}}</span></button>
+    <button class="tablinks" onclick="openCity(event, 'ot')">Pending OT</button>
+
+
+
+</div>
+
+<div id="profile" class="tabcontent">
+    <div class="container">
+        <div class="form-row mt-2">
+            <div class="col-sm-2">
+                Employee ID/SN:
+            </div>
+            <div class="col">
+                <input type="text" value="{{session['employee_id']}}/{{session['SN']}}" readonly style="width: 96%;border-width: 0.5px;margin-left: 5px; text-align: center;">
+            </div>
+        </div>
+        <div class="form-row mt-2">
+            <div class="col-sm-2">
+                Name:
+            </div>
+            <div class="col">
+                <input type="text" value="{{session['user']}}" readonly style="width: 96%;border-width: 0.5px;margin-left : 5px; text-align: center;">
+            </div>
+        </div>
+        <div class="form-row mt-2">
+            <div class="col-sm-2">
+                Company:
+            </div>
+            <div class="col">
+                <input type="text" value="{{session['company']}}" readonly style="width: 96%;border-width: 0.5px;margin-left : 5px;text-align: center;">
+            </div>
+        </div> 
+        <div class="form-row mt-2">
+            <div class="col-sm-2">
+                Location:
+            </div>
+            <div class="col">
+                <input type="text" value="{{session['location']}}" readonly style="width: 96%;border-width: 0.5px;margin-left : 5px;text-align: center;">
+            </div>
+        </div>                  
+        <div class="form-row mt-2">
+            <div class="col-sm-2">
+                Department:
+            </div>
+            <div class="col">
+                <input type="text" value="{{session['department']}}" readonly style="width: 96%;border-width: 0.5px;margin-left : 5px;text-align: center;">
+            </div>
+        </div>
+        <div class="form-row mt-2">
+            <div class="col-sm-2">
+                Section:
+            </div>
+            <div class="col">
+                <input type="text" value="{{session['section']}}" readonly style="width: 96%;border-width: 0.5px;margin-left : 5px;text-align: center;">
+            </div>
+        </div>
+        <div class="form-row mt-2">
+            <div class="col-sm-2">
+                Date Hired:
+            </div>
+            <div class="col">
+                <input type="text" value="{{session['date_hired']}}" readonly style="width: 96%;border-width: 0.5px;margin-left : 5px;text-align: center;">
+            </div>
+        </div>       
+    </div>
+</div>
+
+<div id="leaves" class="tabcontent">
+
+   <div class="col table-responsive" style="margin:0px;padding: 0px;">
+
+      <table id ="myTable_leave"  class="table table-bordered table-hover">
+         <thead class="thead-dark" style="text-transform: uppercase; ">
+            <tr style="font-size: 13px;">
+               <th>Action</th>
+               <th>Status</th>
+               <th>Date Field</th>
+               <th>Name</th>
+               <th>Dept. & Sec</th>
+               <th>Type</th>
+               <th>From</th>
+               <th>To</th>
+               <th>Resume</th>
+               <th>Reason</th>
+
+
+               
+            </tr>
+         </thead>
+         <tbody>
+            {% for item in ref['leave_form'] %}
+            
+            <tr style="font-size: 15px;">
+               <td style="margin:0px;padding:0px;padding-left:10px;width: 200px;" nowrap>
+                  
+                   <a class="btn btn-secondary btn-sm" href="/app/employee_files/leave/{{item['index']}}">Form</a>
+                   <a class="btn btn-secondary btn-sm" href="/app/utilities/leave/{{item['index']}}">Detail</a>
+                  <button class="btn btn-danger btn-sm" type="button" data-toggle="modal" data-target="#delete{{item['index']}}">Cancel</button>
+               </td>
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['status']}}</td>
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['date_filed']}}</td>
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['name']}} </td>
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['dept_sec']}} </td> 
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['leave_type']}} </td> 
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['date_from']}} </td>
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['date_to']}} </td> 
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['resume']}} </td> 
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['reason']}} </td>
+                 
+            </tr>
+                        <div id="delete{{item['index']}}" role="dialog" tabindex="-1" class="modal fade">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Reason for Deleting Record of : {{item["reference_name"]}}</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                        </div>
+                        <form method="POST"  action="/app/utilities/leave">
+                            <input class="form-control" type="text" name="index" value = "{{item['index']}}" hidden>
+                            <input class="form-control" type="text" name="leave_type" value = "{{item['leave_type']}}" hidden>
+                            <input class="form-control" type="text" name="from_vl" value = "{{item['from_vl']}}" hidden>
+                            <input class="form-control" type="text" name="ref_index" value = "{{item['ref_index']}}" hidden>
+                            <div class="modal-body">
+                                <div class="form-row">
+                                    <div class="col">
+                                        <input class="form-control" type="text" style="width: 100%;"  name="reason_delete" placeholder= "Reason For Deleting" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer"><button class="btn btn-light" type="button" data-dismiss="modal">Close</button><input class="btn btn-primary" type="submit" name ="action" value="Cancel"> </div>
+                        </form>
+                        
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+         </tbody>
+      </table>
+   </div>
+</div>
+
+<!-- Approved -->
+<div id="attendance" class="tabcontent" style="min-height: 600px;">
+    <form method="POST"  action="/app/index">
+        <div class="form-row">
+            <div class="col-sm-1">
+                Cutoff Date
+            </div>
+            <div class="col-sm-1">
+                <input type="date" name="date_from">
+            </div>
+            <div class="col-sm-1">
+                to
+            </div>
+            <div class="col-sm-1">
+                <input type="date" name="date_to">
+            </div> 
+            <div class="col" align="right">
+                <input type="submit" name="action" value="Generate">
+            </div>        
+        </div>
+    </form>
+     <div class="col table-responsive table table-bordered" style="width: 100%; margin:0px;">
+            <table id ="activity_page" style="width: 100%;">
+
+              <thead class="thead-dark" style="text-transform: uppercase;">
+                
+                <tr>
+                  <th style="font-size: 10px; ">Date</th>
+
+                  <th style="font-size: 10px; ">Day Remarks</th>
+
+
+                  <th style="font-size: 10px; ">Sched</th>
+                  <th style="font-size: 10px; ">Sched Time</th>
+
+                  <th style="font-size: 10px; ">Late (no. of minutes)</th>
+                  <th style="font-size: 10px; ">Undertime (no. of minutes)</th>
+
+                  <th style="font-size: 10px; ">In</th>
+                  <th style="font-size: 10px; ">Out</th>
+                  <th style="font-size: 10px; ">OT AM</th>
+                  <th style="font-size: 10px; ">OT PM</th>
+
+
+                </tr>
+              </thead>
+              <tbody>
+
+                  {% for x in data['dtr']%}
+                  
+                  <tr>
+                    <td style="font-size: 12px; line-height: 0px;min-width: 100px;">{{x['date_now']}} 
+                      {% if x[sched_time] =="00:00-00:00" %}
+                      <span style="color:red;">{{x['day_name']}}</span>
+                      {% else %}
+                      <span>{{x['day_name']}}</span>
+                      {% endif %}
+                      </td>
+
+                    <td style="font-size: 12px; line-height: 0px;min-width: 20px;">
+                        {% if x['holiday'] == "UL" %}
+                          <span style="color:red;"><strong>{{x['holiday']}}</strong></span>
+                        {% else %}
+                          {{x['holiday']}}
+                        {% endif %}
+                    </td>
+
+                    <td style="font-size: 12px; line-height: 0px;min-width: 20px;">{{x['schedule_type']}}</td>
+                    <td style="font-size: 12px; line-height: 0px;min-width: 150px;">{{x['sched_time']}} ({{x['working_hour']}})</td>
+
+                    <td style=" font-size: 12px;line-height: 0px;min-width: 50px;max-width: 60px;">
+                      {% if x['no_of_lates'] != "" and x['no_of_lates'] != 0 %}
+
+                        <span style="color:red;"><strong>{{x['no_of_lates']}}</strong></span>
+                      {% endif %}
+                    </td>
+                    <td style=" font-size: 12px;line-height: 0px;min-width: 50px;max-width: 60px;">
+                      {% if x['early_out'] != "" and x['early_out'] != 0 %}
+                        <span style="color:red;"><strong>{{x['early_out']}}</strong></span>
+                      {% endif %}
+                    </td>
+
+                    <td style="font-size: 12px; line-height: 0px;min-width: 50px;max-width: 60px;">{{x['first_in']}}</td>
+                    <td style="font-size: 12px; line-height: 0px;min-width: 50px;max-width: 60px;">{{x['last_out']}}</td>
+                    <td style="font-size: 12px; line-height: 0px;min-width: 50px;max-width: 60px;">                      
+                      {% if x['ot_am'] != "" and x['ot_am'] != 0 %}
+                        {{x['ot_am']}}
+                      {% endif %}
+                    </td>
+                    <td style="font-size: 12px; line-height: 0px;min-width: 50px;max-width: 60px;">
+                      {% if x['ot_pm'] != "" and x['ot_pm'] != 0 %}
+                        {{x['ot_pm']}}
+                      {% endif %}</td>
+                  </tr>
+                  
+                  {% endfor %}
+              </tbody>
+            </table>
+
+        </div>
+
+</div>
+
+
+
+
+
+<div id="ot" class="tabcontent">
+  
+   <div class="col table-responsive" style="margin:0px;padding: 0px;">
+
+      <table id ="myTable_ot"  class="table table-bordered table-hover">
+         <thead class="thead-dark" style="text-transform: uppercase; ">
+            <tr style="font-size: 13px;">
+               <th>Action</th>
+               <th>Status</th>
+               <th>Date</th>
+               <th>Day Remarks</th>
+               <th>Name</th>
+               <th>Dept. & Sec</th>
+               <th>Schedule</th>
+               <th>Travel In</th>
+               <th>Travel Out</th>
+               <th>OT AM</th>
+               <th>OT PM</th>
+               <th>Total OT</th>
+               <th>Purpose/Destination</th>
+
+
+               
+            </tr>
+         </thead>
+         <tbody>
+            {% for item in ref['ot_form'] %}
+            
+            <tr style="font-size: 15px;">
+               <td style="margin:0px;padding:0px;padding-left:10px;width: 200px;" nowrap>
+                  
+                  <!-- <button class="btn btn-secondary btn-sm mb" type="button" data-toggle="modal" data-target="#upload"  onclick="clickMe(this)">Upload Attachment<i class="fa fa-plus-square"></i></button> -->
+
+                   {% if (session['user_type'] == "Supervisor" or session['user_type'] =="Senior Supervisor") and session['index'] != item['ref_index'] %}
+                  <button class="btn btn-secondary btn-sm mb" type="button" data-toggle="modal" data-target="#action_1{{item['index']}}"  onclick="clickMe(this)">Action SV<i class="fa fa-plus-square"></i></button>
+                  {% endif %}
+                  {% if (session['user_type'] == "Department Head" or session['user_type'] =="Administrator") %}
+                  <button class="btn btn-secondary btn-sm mb" type="button" data-toggle="modal" data-target="#action_2{{item['index']}}"  onclick="clickMe(this)">Action DM<i class="fa fa-plus-square"></i></button>
+                  {% endif %}
+
+                  <button class="btn btn-danger btn-sm" type="button" data-toggle="modal" data-target="#delete{{item['index']}}">Cancel</button>
+               </td>
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['status']}}</td>
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['date']}}</td>
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['day_remarks']}}</td>
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['name']}} </td>
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['dept_sec']}} </td>
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['sched']}} </td>  
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['travel_in']}} </td> 
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['travel_out']}} </td>
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['ot_am']}} </td> 
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['ot_pm']}} </td> 
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['total_ot']}} </td> 
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['reason']}} </td>
+                 
+            </tr>
+            <div id="delete{{item['index']}}" role="dialog" tabindex="-1" class="modal fade">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Reason for Deleting Record of : {{item["reference_name"]}}</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                        </div>
+                        <form method="POST"  action="/app/utilities/ot">
+                            <input class="form-control" type="text" name="index" value = "{{item['index']}}" hidden>
+                            <input class="form-control" type="text" name="ref_index" value = "{{item['ref_index']}}" hidden>
+                            <div class="modal-body">
+                                <div class="form-row">
+                                    <div class="col">
+                                        <input class="form-control" type="text" style="width: 100%;"  name="reason_delete" placeholder= "Reason For Deleting" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer"><button class="btn btn-light" type="button" data-dismiss="modal">Close</button><input class="btn btn-primary" type="submit" name ="action" value="Cancel"> </div>
+                        </form>
+                        
+                    </div>
+                </div>
+            </div>
+            <div id="action_1{{item['index']}}" role="dialog" tabindex="-1" class="modal fade">
+               <div class="modal-dialog modal-m" role="document">
+                  <div class="modal-content">
+                     <div class="modal-header">
+                        <h3>Supervisor Remarks</h3>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                     </div>
+                     <form method="POST" action="/app/utilities/ot">
+                        <div class="content-section p-4">
+                           <input type="hidden" name="csrfmiddlewaretoken" value="3aSrxKhSSJTcZeDTzLtYwNrWoFJPHzcWv8UucW72EBmE1RxqL6yK4aHkobaiaopj">
+                           <input type="text" name="type" value="1" hidden>
+                           <fieldset class = "form-group">
+
+                              <input class="form-control" type="text" style="width: 100%;min-width: 200px;"  name="ref_index" id="index" value ="{{item['index']}}" hidden>
+
+
+
+
+                              <div id="div_id_is_supervisor_remarks_1" class="form-group">
+                                 <label for="id_supervisor_remarks_1" class=" requiredField">
+                                ACTION<span class="asteriskField">*</span> </label>
+                                 <div class="">
+                                    <select name="supervisor_remarks_1" required style="width: 100%;height: 34px;">
+                                      <option selected value="" hidden>Choose Here</option>
+                                      <option value="Approved">Approved</option>
+                                      <option value="Disapproved">Disapproved</option>
+                                    </select>
+                                 </div>
+                              </div>
+                            
+                                                         
+                           </fieldset>
+                        </div>
+                        <div class="modal-footer"><button class="btn btn-light" type="button" data-dismiss="modal">Close</button><input class="btn btn-primary" type="submit" name ="action" value="Save SV Remarks"> </div>
+                     </form>
+                  </div>
+               </div>
+            </div>
+            <div id="action_2{{item['index']}}" role="dialog" tabindex="-1" class="modal fade">
+               <div class="modal-dialog modal-m" role="document">
+                  <div class="modal-content">
+                     <div class="modal-header">
+                        <h3>Department Head Remarks</h3>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                     </div>
+                     <form method="POST" action="/app/utilities/ot">
+                        <div class="content-section p-4">
+                           <input type="hidden" name="csrfmiddlewaretoken" value="3aSrxKhSSJTcZeDTzLtYwNrWoFJPHzcWv8UucW72EBmE1RxqL6yK4aHkobaiaopj">
+                           <input type="text" name="type" value="1" hidden>
+                           <fieldset class = "form-group">
+
+                              <input class="form-control" type="text" style="width: 100%;min-width: 200px;"  name="ref_index" id="index" value ="{{item['index']}}" >
+                              
+
+
+
+                              <div id="div_id_is_dm_remarks_1" class="form-group">
+                                 <label for="id_dm_remarks_1" class=" requiredField">
+                                ACTION<span class="asteriskField">*</span> </label>
+                                 <div class="">
+                                    <select name="dm_remarks_1" required style="width: 100%;height: 34px;">
+                                      <option selected value="" hidden>Choose Here</option>
+                                      <option value="Approved">Approved</option>
+                                      <option value="Disapproved">Disapproved</option>
+                                    </select>
+                                 </div>
+                              </div>
+                                                                                          
+                           </fieldset>
+                        </div>
+                        <div class="modal-footer"><button class="btn btn-light" type="button" data-dismiss="modal">Close</button><input class="btn btn-primary" type="submit" name ="action" value="Save DM Remarks"> </div>
+                     </form>
+                  </div>
+               </div>
+            </div>
+
+            {% endfor %}
+         </tbody>
+      </table>
+   </div>
+</div>
+<!-- Add -->
+<div id="add" role="dialog" tabindex="-1" class="modal fade">
+   <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h3>Apply Leave</h3>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+         </div>
+         <form method="POST" action="/app/utilities/leave">
+            <div class="content-section p-4">
+               <input type="hidden" name="csrfmiddlewaretoken" value="3aSrxKhSSJTcZeDTzLtYwNrWoFJPHzcWv8UucW72EBmE1RxqL6yK4aHkobaiaopj">
+               <input type="text" name="type" value="1" hidden>
+               <fieldset class = "form-group">
+
+                  <input class="form-control" type="text" style="width: 100%;min-width: 200px;"  name="ref_index" id="index" value ="{{session['index']}}" hidden>
+                  <input class="form-control" type="text" style="width: 100%;min-width: 200px;"  name="SN" id="SN" value ="{{session['SN']}}" hidden>
+                  <input class="form-control" type="text" style="width: 100%;min-width: 200px;"  name="employee_id" id="index" value ="{{session['employee_id']}}" hidden>
+
+                  <div id="div_id_date_filed" class="form-group">
+                     <label for="id_date_filed" class=" requiredField">
+                     Date Filed<span class="asteriskField">*</span> </label>
+                     <div class="">
+                        <input class="form-control" type="date" style="width: 100%;min-width: 200px;"  name="date_filed" required>
+                     </div>
+                  </div>
+                
+                  <div id="div_id_transmitted_by" class="form-group">
+                     <label for="id_transmitted_by" class=" requiredField">
+                     Name<span class="asteriskField">*</span> </label>
+                     <div class="">
+                        <input class="form-control" type="text" style="width: 100%;"  name="name" id= "dept_sec" value="{{session['last_name'] +', '+ session['first_name'] + ' ' + session['middle_name'] +'.' + session['suffix']}}" required readonly>
+                     </div>
+                  </div>
+                  
+                  <div id="div_id_department" class="form-group">
+                     <label for="id_department" class=" requiredField">
+                     Department & Section<span class="asteriskField">*</span> </label>
+                     <div class="">
+                        <input class="form-control" type="text" style="width: 100%;min-width: 200px;"  name="dept_sec" id= "dept_sec" value="{{session['department'] +'/'+session['section']}}" required readonly>
+                     </div>
+                  </div>
+
+                  <div id="div_id_designation" class="form-group">
+                     <label for="id_designation" class=" requiredField">
+                     Designation<span class="asteriskField">*</span> </label>
+                     <div class="">
+                        <input class="form-control" type="text" style="width: 100%;min-width: 200px;"  name="designation"  required>
+                     </div>
+                  </div> 
+
+                  <div id="div_id_leave_type" class="form-group">
+                     <label for="id_leave_type" class=" requiredField">
+                     Leave Type<span class="asteriskField">*</span> </label>
+                     <div class="">
+                        <select name="leave_type" style="width: 100%;" onchange="depChange(this);">
+                           <option value="" disabled selected>Choose Here</option>
+                           {% for x in ref['reference_leave'] %}
+                              {% if x['no_hours'] != 0 or(x['reference_code']=="SL" or x['reference_code']=="VL")  %}
+                              <option value="{{x['reference_code']}}">{{x['reference_name']}}</option>
+                              {% endif %}
+
+                           {% endfor %}
+
+                        </select>
+                     </div>
+                  </div> 
+ 
+                  <div id="div_id_date_from" class="form-group">
+                     <label for="id_date_from" class=" requiredField">
+                     Date From:<span class="asteriskField">*</span> </label>
+                     <div class="">
+                  <input class="form-control" type="date" style="width: 100%;min-width: 200px;"  name="date_from"  required>
+                     </div>
+                  </div>
+
+                  <div id="div_id_date_to" class="form-group">
+                     <label for="id_date_to" class=" requiredField">
+                     Date To:<span class="asteriskField">*</span> </label>
+                     <div class="">
+                  <input class="form-control" type="date" style="width: 100%;min-width: 200px;"  name="date_to"  required>
+                     </div>
+                  </div>
+
+                  <div id="div_id_resume" class="form-group">
+                     <label for="id_resume" class=" requiredField">
+                     Date Resume:<span class="asteriskField">*</span> </label>
+                     <div class="">
+                  <input class="form-control" type="date" style="width: 100%;min-width: 200px;"  name="resume"  required>
+                     </div>
+                  </div>
+
+                  <div id="div_id_no_hours" class="form-group">
+                     <label for="id_no_hours" class=" requiredField">
+                     # of Hours Remaining:<span class="asteriskField">*</span> </label>
+                     <div class="">
+                  <input class="form-control" type="text" style="width: 100%;min-width: 200px;"  name="no_hours_available" id="no_hours_available" required readonly>
+                  
+                     </div>
+                  </div>
+
+
+
+                  <div id="div_id_no_hours" class="form-group">
+                     <label for="id_no_hours" class=" requiredField">
+                     # of Hours:<span class="asteriskField">*</span> </label>
+                     <div class="">
+                  <input class="form-control" type="number" style="width: 100%;min-width: 200px;"id="no_hours"  name="no_hours" min="0" step ="0.5" required
+                  onchange="myChangeFunction(this)">
+                     </div>
+                  </div>
+
+                  <div id="div_id_is_with_pay" class="form-group">
+                     <label for="id_is_with_pay" class=" requiredField">
+                     With Pay<span class="asteriskField">*</span> </label>
+                     <div class="">
+                        <select name="is_with_pay" style="width: 100%;" id="is_with_pay">
+                           <option value="" disabled selected>Choose Here</option>
+                           <option value="Yes">Yes</option>
+                           <option value="No">No</option>
+                        </select>
+                     </div>
+                  </div> 
+
+                  <div id="div_id_reason" class="form-group">
+                     <label for="id_reason" class=" requiredField">
+                     Reason<span class="asteriskField"></span> </label>
+                     <div class="">
+                              <textarea name="reason" style="height:60px;width: 100%;"></textarea>
+                     </div>
+                  </div>                    
+                                             
+               </fieldset>
+            </div>
+            <div class="modal-footer"><button class="btn btn-light" type="button" data-dismiss="modal">Close</button><input class="btn btn-primary" type="submit" name ="action" value="Save"> </div>
+         </form>
+      </div>
+   </div>
+</div>
+<script type="text/javascript">
+    var credit = [];
+
+    {% for cred in ref['reference_leave'] %}
+        credit["{{cred['reference_code']}}"] = "{{cred['remaining_hours']}}";
+    {% endfor %}
+
+    var credit = [];
+
+    {% for cred in ref['reference_leave'] %}
+        credit["{{cred['reference_code']}}"] = "{{cred['remaining_hours']}}";
+    {% endfor %}
+
+
+    function myChangeFunction(selectObj) {
+
+      var no_hours = document.getElementById("no_hours_available");
+      try{
+      if (parseInt(selectObj.value) > parseInt(no_hours.value)) {
+         alert("Input must not be greater than the hours remaining!");
+         selectObj.value = 0;
+
+      }
+      }
+      catch (err) {
+         alert(err.message);
+      }
+    }
+
+    function depChange(selectObj) {
+        try{
+        var idx = selectObj.selectedIndex;        
+        var which = selectObj.options[idx].value;
+
+        var id = selectObj.id
+
+        var no_of_hour = document.getElementById("no_hours_available");
+        var no_hours = document.getElementById("no_hours");
+        var is_with_pay = document.getElementById("is_with_pay");
+
+
+        no_of_hour.value = credit[which];
+        no_hours.setAttribute("max",credit[which]);
+     }
+     catch (err) {
+      alert(err.message);
+     }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+function openCity(evt, cityName) {
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+  document.getElementById(cityName).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+
+// For Display
+    $(document).ready(function() {
+  document.getElementById("main").style.display = "inline-block";
+  {% if data['dtr'] %}
+    document.getElementById('attendance').style.display = "block";
+  {% else %}
+    document.getElementById('profile').style.display = "block";
+  {% endif %}
+
+
+});
+
+
+ $(document).ready(function(){
+        $('#myTable_leave').DataTable({
+        "aLengthMenu": [[15, 30, 45, -1], [15, 30, 45, "All"]],
+        "iDisplayLength": 15,
+        "order": [[ 2, "desc" ]]
+    });
+        $('#myTable_ot').DataTable({
+        "aLengthMenu": [[15, 30, 45, -1], [15, 30, 45, "All"]],
+        "iDisplayLength": 15,
+        "order": [[ 1, "asc" ]]
+    });
+
+     });    
+</script>
+{% endblock %}

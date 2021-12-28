@@ -1,0 +1,383 @@
+{% extends 'base.html' %}
+{% block content %}
+{% for item in data['transactions_rr'] %}
+<div class="container-fluid noprint" style="width: 100%;">
+   <article class="add" >
+      <button class="btn btn-secondary btn-sm mb-5" type="button" data-toggle="modal" data-target="#edit"  onclick="clickMe(this)">Edit Master<i class="fa fa-plus-square"></i></button>
+      <button class="btn btn-secondary btn-sm mb-5" type="button" data-toggle="modal" data-target="#add">Add Detail<i class="fa fa-plus-square"></i></button>      
+      <button class="btn btn-secondary btn-sm mb-5" type="button" data-toggle="modal" data-target="#manage_detail">Manage Detail<i class="fa fa-plus-square"></i></button>
+      <button id="hide_1" class="btn btn-secondary btn-sm mb-5" type="button">For IT<i class="fa fa-plus-square"></i></button>
+      <button id="hide_2" class="btn btn-secondary btn-sm mb-5" type="button" >For Purch<i class="fa fa-plus-square"></i></button>
+   </article>
+</div>
+<!-- //ORIGINAL COPY-->
+<div  id="print_one" class="container-fluid" style="width: 100%;">
+   <div class="form-row mb-1">
+      <div class="col-sm-4">&nbsp;</div>
+      <div class="col-sm-4">
+         <div class="form-row">
+            <div class="col" style="font-size:18px;">&nbsp;</div>
+         </div>
+         <div class="form-row">
+            <div class="col" style="font-size:18px;text-align: center;">&nbsp;</div>
+         </div>
+      </div>
+      <div class="col-sm-4">
+         <div class="form-row">
+            <div class="col" style="font-size:14px;color:red;text-align: right;">&nbsp;</div>
+         </div>
+         <div class="form-row">
+            <div class="col" style="font-size:14px;color:red;text-align: right;">No.{{item['trans_no']}} </div>
+         </div>
+      </div>
+   </div>
+   <div class="form-row" style="border-style: solid;border-width: 1px;">
+      <div class="col-sm-3"></div>
+      <div class="col-sm-6" style="text-align:center ;"><u><strong>RECEIVING REPORT</strong></u></div>
+      <div class="col-sm-3" style="font-size:14px;text-align: right;"><strong>&nbsp;</strong></div>
+   </div>
+   <div class="form-row" style="border-style: solid; border-top-style: none; border-bottom-style: none; border-width: 1px;">
+      <div class="col-sm-1" style="font-size:14px;">&nbsp;</div>
+      <div class="col-sm-7" style="text-align: center;font-size:14px;">
+         <input type="text"  style="border-style: none;border-width: 1px; width: 90%;" readonly>
+      </div>
+      <div class="col-sm-2" style="font-size:14px;">Date</div>
+      <div class="col-sm-2" style="text-align: center;font-size:14px;">
+         <input type="text" value="{{item['rr_date']}}" style="border-style: none;border-bottom-style: solid;border-width: 1px;width: 90%;" readonly>
+      </div>
+   </div>
+   <div class="form-row" style="border-style: solid; border-top-style: none; border-bottom-style: none; border-width: 1px;padding-bottom: 2px;">
+      <div class="col-sm-2" style="font-size:14px;">
+         Name of Supplier:
+      </div>
+      <div class="col-sm-6" style="text-align: center;font-size:14px;">
+         <input type="text" value="{{item['supplier']}}" style="border-style: none;border-bottom-style: solid;border-width: 1px; width: 90%;" readonly>
+      </div>
+      <div class="col-sm-2" style="font-size:14px;">
+         P.O. No
+      </div>
+      <div class="col-sm-2" style="text-align: center;font-size:14px;">
+         <input type="text" value="{{item['po_no']}}" style="border-style: none;border-bottom-style: solid;border-width: 1px;width: 90%;" readonly>
+      </div>
+   </div>
+   <div class="form-row" style="border-style: solid; border-width: 1px;">
+      <div class="col-sm-1" style="font-size:14px;text-align: center;">INVOICE No.</div>
+      <div class="col-sm-2" style="text-align: center;font-size:14px;border-left-style: solid;border-width: 1px;">Date</div>
+      <div class="col-sm-1" style="text-align: center;font-size:14px;border-left-style: solid;border-width: 1px;">Quantity</div>
+      <div class="col-sm-7" style="text-align: center;font-size:14px;border-left-style: solid;border-width: 1px;">Particulars</div>
+      <div class="col-sm-1" style="text-align: center;font-size:14px;border-left-style: solid;border-width: 1px;">UNIT PRICE</div>
+   </div>
+   {% for i in data['transactions_rr_detail'] %}
+   <div class="form-row" style="border-style: solid; border-width: 1px;">
+      <div class="col-sm-1" style="font-size:14px;text-align: center;">{{i['invoice_no']}}</div>
+      <div class="col-sm-2" style="text-align: center;font-size:14px;border-left-style: solid;border-width: 1px;">{{i['invoice_date']}}</div>
+      <div class="col-sm-1" style="text-align: center;font-size:14px;border-left-style: solid;border-width: 1px;">{{i['item_qty']}}</div>
+      {% if i['item_serial'] != '' %}
+      <div class="col-sm-7" style="text-align: left;font-size:14px;border-left-style: solid;border-width: 1px;">{{i['item_model']}} - {{i['item_serial']}}</div>
+      {% else %}
+      <div class="col-sm-7" style="text-align: left;font-size:14px;border-left-style: solid;border-width: 1px;">{{i['item_model']}}</div>
+      {% endif %}
+      <div class="col-sm-1" style="text-align: right;font-size:14px;border-left-style: solid;border-width: 1px;">{{i['unit_price']}}</div>
+   </div>
+   {% endfor %}
+</div>
+<!-- //ORIGINAL COPY END -->
+<div id="print_two" class="container-fluid" style="width: 100%;">
+   <div class="form-row mb-1">
+
+      <div class="col-sm-4">&nbsp;</div>
+      <div class="col-sm-4">
+         <div class="form-row">
+            <div class="col" style="font-size:18px;">&nbsp;</div>
+         </div>
+         <div class="form-row">
+            <div class="col" style="font-size:18px;text-align: center;">&nbsp;</div>
+         </div>
+      </div>
+
+      <div class="col-sm-4">
+         <div class="form-row">
+            <div class="col" style="font-size:14px;color:red;text-align: right;">&nbsp;</div>
+         </div>
+         <div class="form-row">
+            <div class="col" style="font-size:14px;color:red;text-align: right;">No.{{item['trans_no']}} </div>
+         </div>         
+      </div>
+   </div>
+   <div class="form-row" style="border-style: solid;border-width: 1px;">
+      <div class="col-sm-3"></div>
+      <div class="col-sm-6" style="text-align:center ;"><u><strong>RECEIVING REPORT</strong></u></div>
+      <div class="col-sm-3" style="font-size:14px;text-align: right;"><strong>&nbsp;</strong></div>
+   </div>
+
+   <div class="form-row" style="border-style: solid; border-top-style: none; border-bottom-style: none; border-width: 1px;">
+      <div class="col-sm-1" style="font-size:14px;">&nbsp;</div>
+
+      <div class="col-sm-7" style="text-align: center;font-size:14px;">
+         <input type="text"  style="border-style: none;border-width: 1px; width: 90%;" readonly>
+      </div>
+
+      <div class="col-sm-2" style="font-size:14px;">Date</div>
+
+      <div class="col-sm-2" style="text-align: center;font-size:14px;">
+         <input type="text" value="{{item['rr_date']}}" style="border-style: none;border-bottom-style: solid;border-width: 1px;width: 90%;" readonly>
+      </div>
+
+   </div>   
+
+   <div class="form-row" style="border-style: solid; border-top-style: none; border-bottom-style: none; border-width: 1px;padding-bottom: 2px;">
+
+      <div class="col-sm-2" style="font-size:14px;">
+         Name of Supplier:
+      </div>
+
+      <div class="col-sm-6" style="text-align: center;font-size:14px;">
+         <input type="text" value="{{item['supplier']}}" style="border-style: none;border-bottom-style: solid;border-width: 1px; width: 90%;" readonly>
+      </div>
+
+      
+      <div class="col-sm-2" style="font-size:14px;">
+         P.O. No
+      </div>
+
+      <div class="col-sm-2" style="text-align: center;font-size:14px;">
+         <input type="text" value="{{item['po_no']}}" style="border-style: none;border-bottom-style: solid;border-width: 1px;width: 90%;" readonly>
+      </div>
+
+   </div>
+    
+
+
+
+   <div class="form-row" style="border-style: solid; border-width: 1px;">
+
+      <div class="col-sm-1" style="font-size:14px;text-align: center;">INVOICE No.</div>
+      <div class="col-sm-2" style="text-align: center;font-size:14px;border-left-style: solid;border-width: 1px;">Date</div>
+
+      <div class="col-sm-1" style="text-align: center;font-size:14px;border-left-style: solid;border-width: 1px;">Quantity</div>
+
+      <div class="col-sm-6" style="text-align: center;font-size:14px;border-left-style: solid;border-width: 1px;">Particulars</div>
+      <div class="col-sm-1" style="text-align: center;font-size:14px;border-left-style: solid;border-width: 1px;">UNIT PRICE</div>
+      <div class="col-sm-1" style="text-align: center;font-size:14px;border-left-style: solid;border-width: 1px;">AMOUNT</div>
+   </div>
+         
+         {% for row in view_rr %}
+
+            {% if row['_id']['trans_no'] == item['index'] %}
+
+            <div class="form-row" style="border-style: none; border-width: 1px;">
+
+               <div class="col-sm-1" style="font-size:14px;text-align: center;">{{row['_id']['invoice_no']}}</div>
+
+               <div class="col-sm-2" style="text-align: center;font-size:14px;border-left-style: none;border-width: 1px;">{{row['_id']['invoice_date']}}</div>
+               <div class="col-sm-1" style="text-align: center;font-size:14px;border-left-style: none;border-width: 1px;">{{row['item_qty']}}</div>
+
+                  <div class="col-sm-6" style="text-align: left;font-size:14px;border-left-style: none;border-width: 1px;">{{row['_id']['item_model']}}</div>
+               
+               <div class="col-sm-1" style="text-align: right;font-size:14px;border-left-style: none;border-width: 1px;">{{'%0.2f'|format(row['_id']['unit_price']|float)}}</div>
+               <div class="col-sm-1" style="text-align: right;font-size:14px;border-left-style: none;border-width: 1px;">{{'%0.2f'|format(row['_id']['unit_price'] * row['item_qty']|float)}}  </div>
+               
+            </div>
+            {% endif %}
+
+         {% endfor %}
+           <div class="form-row" style="border-style: none; border-width: 1px;">
+
+               <div class="col-sm-1" style="font-size:14px;text-align: center;">&nbsp;</div>
+
+               <div class="col-sm-2" style="text-align: center;font-size:14px;border-left-style: none;border-width: 1px;">&nbsp;</div>
+               <div class="col-sm-1" style="text-align: center;font-size:14px;border-left-style: none;border-width: 1px;">&nbsp;</div>
+
+                  <div class="col-sm-6" style="text-align: left;font-size:14px;border-left-style: none;border-width: 1px;">&nbsp;</div>
+               
+               <div class="col-sm-1" style="text-align: right;font-size:14px;border-left-style: none;border-width: 1px;">&nbsp;</div>
+               <div class="col-sm-1" style="text-align: right;font-size:14px;border-top-style: solid;border-width: 1px;">{{'%0.2f'|format(total|float)}}  </div>
+         <p></p>
+
+</div>
+<!-- For Purchasing -->
+{% include 'transactions/rr_form_actions.html' %}
+<!-- For Purchasing End -->
+
+
+<script type="text/javascript">
+   function pad (str, max) {
+      str = str.toString();
+      return str.length < max ? pad("0" + str, max) : str;
+   }
+   var machine_id = new Array(4);
+   var num = 0;
+   var with_serial = new Array(4);
+   var model = new Array(4);
+   var serial = [];
+     {% for x in ref['item'] %}
+   
+         num = pad(parseInt("{{x['machine_id']}}") + 1,3);
+   
+         machine_id["{{x['item_index']}}"] = "{{x['item_code']}}-" + num;
+   
+         with_serial["{{x['item_index']}}"] = "{{x['with_serial']}}";
+         model["{{x['item_index']}}"] = "{{x['item_description']}}";
+   
+   
+     {% endfor %}
+   
+     {% for y in ref['item_details'] %}
+   
+         serial.push("{{y['item_serial']}}");
+   
+   
+     {% endfor %}      
+      
+   function myChangeFunction(input1) {
+    var valId = input1.id;
+    if (serial.includes(input1.value)) {
+      alert("Serial Number "+ input1.value + " Already Exist"  );
+       var Serial_num = document.getElementById("item_serial");
+       Serial_num.value = ""
+    }
+   
+   }
+   
+   
+   
+   
+   
+   
+   
+   
+     function ItemDescChange(selectObj) {
+        var idx = selectObj.selectedIndex;
+        // get the value of the selected option
+        var which = selectObj.options[idx].value;
+        var machine_code = ''
+        // use the selected option value to retrieve the list of items from the countryLists array
+        machine_code = machine_id[which];
+        // get the country select element via its known id
+        var Machine_IDs = document.getElementById("machine_id");
+        
+        Machine_IDs.value = machine_code;
+        if (with_serial[which] == "True") {
+        $("#item_serial").prop("readonly", false);
+        $("#item_serial").prop("required", true);
+        $("#item_model").prop("readonly", false);
+        $("#item_model").prop("required", true);   
+        $("#item_model").val('');       
+        $("#item_qty").prop("readonly", true);
+        $("#item_qty").val(1);
+   
+   
+        }
+        else {
+        $("#item_serial").attr("readonly", true); 
+        $("#item_serial").prop("required", false);
+        $("#item_model").prop("readonly", true);
+        $("#item_model").prop("required", false);
+        $("#item_model").val(model[which]);            
+        $("#item_qty").prop("readonly", false);
+        $("#item_qty").val(0);
+        $("#machine_id").val(" ");
+   
+        }
+   
+   
+   
+     }
+   
+   $(document).ready(function(){
+        $('#myTable').DataTable({
+        "aLengthMenu": [[5, 30, 45, -1], [5, 30, 45, "All"]],
+        "iDisplayLength": 5,
+        "pagingType": "simple"
+    });
+     });
+   
+   $("#hide_1").click(function () {
+   $("#print_one").css("display", "inline-block");
+   $("#print_two").css("display", "none");
+   window.print();
+   $("#print_two").css("display", "inline-block");
+   });
+   $("#hide_2").click(function () {
+   $("#print_one").css("display", "none");
+   $("#print_two").css("display", "inline-block");
+   window.print();
+   $("#print_one").css("display", "inline-block");   
+   });
+   
+   
+</script>
+<script type="text/javascript">
+   var uref_index = new Array(4);
+   var uitem_model = new Array(4);
+   var uitem_machine_id = new Array(4);
+   var uitem_qty = new Array(4);
+   var uitem_serial = new Array(4);
+   var uitem_remarks = new Array(4);
+   var uindex = new Array(4);
+   var utrans_no = new Array(4);
+   var udetail_index = new Array(4);
+   var uinvoice_no = new Array(4);
+   var uinvoice_date = new Array(4);
+   var uunit_price = new Array(4);
+
+   {% for z in data['transactions_rr_detail']%} 
+      uref_index["{{z['index']}}"] = "{{z['ref_index']}}";
+      uitem_model["{{z['index']}}"] = "{{z['item_model']}}";
+      uitem_machine_id["{{z['index']}}"] = "{{z['item_machine_id']}}";
+      uitem_qty["{{z['index']}}"] = "{{z['item_qty']}}";
+      uitem_serial["{{z['index']}}"] = "{{z['item_serial']}}";
+      uitem_remarks["{{z['index']}}"] = "{{z['item_remarks']}}";
+      uindex["{{z['index']}}"] = "{{z['index']}}";
+      utrans_no["{{z['index']}}"] = "{{z['trans_no']}}";
+      udetail_index["{{z['index']}}"] = "{{z['detail_index']}}";
+      uinvoice_no["{{z['index']}}"] = "{{z['invoice_no']}}";
+      uinvoice_date["{{z['index']}}"] = "{{z['invoice_date']}}";
+      uunit_price["{{z['index']}}"] = "{{z['unit_price']}}";
+   {% endfor %} 
+
+
+   function clickMe(input1)  {
+      try{
+
+      
+      document.getElementById("update_ref_index").value = uref_index[parseInt(input1.id)];
+      document.getElementById("update_item_model").value = uitem_model[parseInt(input1.id)];
+      document.getElementById("update_machine_id").value = uitem_machine_id[parseInt(input1.id)];
+      document.getElementById("update_item_qty").value = uitem_qty[parseInt(input1.id)];
+      document.getElementById("update_item_serial").value = uitem_serial[parseInt(input1.id)];
+      document.getElementById("update_item_remarks").value = uitem_remarks[parseInt(input1.id)];
+      document.getElementById("update_index").value = uindex[parseInt(input1.id)];
+      document.getElementById("update_trans_no").value = utrans_no[parseInt(input1.id)];
+      document.getElementById("update_detail_index").value = udetail_index[parseInt(input1.id)];
+      document.getElementById("update_invoice_no").value = uinvoice_no[parseInt(input1.id)];
+      document.getElementById("update_invoice_date").value = uinvoice_date[parseInt(input1.id)];
+      document.getElementById("update_unit_price").value = uunit_price[parseInt(input1.id)];
+
+
+
+
+
+
+
+
+
+
+
+      }
+      catch (err) {
+         alert(err.message);
+      }
+   }
+
+
+
+
+
+
+
+</script>
+{% endfor %}
+{% endblock %}
+{% block scripts %}
+{% endblock %}

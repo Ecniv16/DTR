@@ -1,0 +1,154 @@
+{% extends 'base/base.html' %}
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+   <div class="breadcrumbs-inner">
+       <div class="page-header">
+           <div class="page-title">
+               <ol class="breadcrumb">
+                   <li><a href="{{url_for('index')}}">Home</a></li>
+                   <li class="active">Employee List</li>
+               </ol>
+           </div>
+       </div>
+   </div>
+</div>
+{% endblock breadcrumbs %}
+
+{% block content %}
+<div class="row">
+   <div class="col-lg-12">
+      <div class="card">
+         <div class="card-header">
+            <div class="row">
+               <div class="col-lg-6">
+                  <strong class="card-title">Employee List:</strong>
+               </div>
+               <div class="col-lg-6" style="text-align: right;">
+                  <a href="#upload" title="Upload" data-toggle="modal" data-target="#upload"><i
+                        class="fa fa-upload fa-2x" style="color: blue;"></i></a>
+                  <a href="{{url_for('reference_create', content='employee')}}" title="Add Reference"><i
+                        class="fa fa-plus-circle fa-2x" style="color: blue;"></i></a>
+               </div>
+            </div>
+         </div>
+         <div class="card-body">
+            <!-- Credit Card -->
+            <div id="pay-invoice">
+               <div class="card-body">
+                  <div id="main" class="col table-responsive main" style="margin:0px;padding: 0px;">
+
+                     <table class="table table-bordered table-hover" id="myTable">
+                        <thead style="text-transform: uppercase; ">
+                           <tr style="font-size: 12px;">
+                              <th>ID</th>
+                              <th>SN</th>
+                              <th>NAME</th>
+                              <th>COMPANY</th>
+                              <th>DEPT-SECTION</th>
+                              <th>POSITION</th>
+                              <th>AREA-SITE/OFFICE</th>
+
+                              <th></th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           {% for item in context['employee']%}
+                           <tr style="font-size: 11px;">
+
+                              <td>
+                                 {{item['employee_id']}}</td>
+                              <td> {{item['SN']}}</td>
+                              <td nowrap>
+                                 {{item['last_name']}},
+                                 {{item['first_name']}} {{item['middle_name']}} {{item['suffix']}}</td>
+
+                              <td> {{item['company']}}
+                              </td>
+                              <td> {{item['section']}}
+                              </td>
+                              <td> {{item['position']}}
+                              </td>
+                              <td> {{item['location']}}
+                              </td>
+
+                              <td align="center" style="width:70px;" nowrap>
+                                 <a href="/app/reference/employee/{{item['index']}}/leave_credit/view"
+                                    title="View Leave Credit">
+                                    <i class="fa fa-eye" style="color: blue"></i></a>
+                                 |
+                                 <a href="/app/reference/employee/{{item['index']}}/edit" title="Edit">
+                                    <i class="fa fa-pencil" style="color: blue"></i></a>
+                                 |
+                                 <a href="/app/reference/employee/{{item['index']}}/delete" title="Delete">
+                                    <i class="fa fa-trash" style="color: red"></i></a>
+                              </td>
+                           </tr>
+                           {% endfor %}
+                        </tbody>
+                     </table>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+
+
+<div id="upload" role="dialog" tabindex="-1" class="modal fade">
+   <div class="modal-dialog" role="document">
+      <div class="modal-content">
+
+         <form method="POST" action="{{url_for('reference_upload',content='employee')}}" enctype="multipart/form-data">
+
+            <div class="modal-body">
+               <div class="form-row">
+                  <div class="col">
+                     <h3>Upload Employee Details</h3>
+                  </div>
+               </div>
+               <div class="form-row">
+                  <div class="col">
+                     <input type="file" id="file" name="file">
+                  </div>
+               </div>
+            </div>
+            <div class="modal-footer"><button class="btn btn-light" type="button"
+                  data-dismiss="modal">Close</button><input class="btn btn-primary" type="submit" name="action"
+                  value="Upload Data"> </div>
+         </form>
+
+      </div>
+   </div>
+</div>
+
+
+      
+
+<script>
+   $(document).ready(function () {
+
+      $.fn.dataTable.moment('MMM D, YYYY');
+      $.fn.dataTable.moment('D-MMM-YY');
+      $('#myTable').DataTable({
+
+         dom: 'B<"clear">lfrtip',
+         buttons: {
+            name: 'primary',
+            buttons: ['copy', 'csv', 'excel', 'pdf']
+
+         },
+         "order": [
+            [2, "asc"]
+         ]
+      });
+      
+   });
+
+   $(document).ready(function () {
+      document.getElementById("main").style.visibility = "visible";
+   });
+
+</script>
+{% endblock %}
+{% include 'base/js.html' %}

@@ -1,0 +1,317 @@
+{% extends 'base/base.html' %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+    <div class="breadcrumbs-inner">
+        <div class="page-header">
+            <div class="page-title">
+                <ol class="breadcrumb">
+                    <li><a href="{{url_for('index')}}">Home</a></li>
+                    <li><a href="{{url_for('reference',content='employee')}}">Employee List</a></li>
+                    <li class="active">Add Employee</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock breadcrumbs %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <strong class="card-title">Employee Details:</strong>
+
+            </div>
+            <div class="card-body">
+                <!-- Credit Card -->
+                <div id="pay-invoice">
+                    <div class="card-body">
+                        <form action="/app/reference/employee/create" method="post" enctype="multipart/form-data">
+                            <div class="row">
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="employee_id_1" class="control-label">Employee No</label>
+                                        <input type="text" name="employee_id_1" class="form-control" id="employee_id_1" data-val="true"
+                                            data-val-required="Please enter name" required>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="SN_1" class="control-label">Employee SN</label>
+                                        <input type="text" name="SN_1" class="form-control" id="SN_1"
+                                            data-val="true" data-val-required="Please enter name" required>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="date_hired_1" class="control-label">Date Hired</label>
+                                        <input type="date" name="date_hired_1" class="form-control" id="date_hired_1"
+                                            data-val="true" data-val-required="Please enter name" min="1900-01-01" max="2099-12-31" required>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="date_separated_1" class="control-label">Date Separated</label>
+                                        <input type="date" name="date_separated_1" class="form-control" id="date_separated_1"
+                                            data-val="true" data-val-required="Please enter name" min="1900-01-01" max="2099-12-31" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Employee Info   -->
+                            <div class="row">
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="last_name_1" class="control-label">Last Name</label>
+                                        <input type="text" name="last_name_1" class="form-control" id="last_name_1"
+                                            data-val="true" data-val-required="Please enter name" required>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="first_name_1" class="control-label">First Name</label>
+                                        <input type="text" name="first_name_1" class="form-control" id="first_name_1"
+                                            data-val="true" data-val-required="Please enter name" required>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="middle_name_1" class="control-label">Middle Initial</label>
+                                        <input type="text" name="middle_name_1" class="form-control" id="middle_name_1"
+                                            data-val="true" data-val-required="Please enter name">
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="suffix_1" class="control-label">Suffix</label>
+                                        <input type="text" name="suffix_1" class="form-control" id="suffix_1"
+                                            data-val="true" data-val-required="Please enter name">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Employment Detail -->
+                            <div class="row">
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="company_2" class="control-label">Company</label>
+                                        <select class="form-control" id="company_2" name="company_2" required>
+                                            <option value="" selected disabled>Please Choose Here</option>
+                                            {% for item in context['company'] %}
+                                            <option value="{{item['code']}}">{{item['description']}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="department_2" class="control-label">Department</label>
+                                        <select class="form-control" id="department_2" name="department_2" required>
+                                            <option value="" selected disabled>Please Choose Here</option>
+                                            {% for item in context['department'] %}
+                                            <option value="{{item['code']}}">{{item['description']}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="section_2" class="control-label">Section</label>
+                                        <select class="form-control" id="section_2" name="section_2" required>
+                                            <option value="" selected disabled>Please Choose Here</option>
+                                            {% for item in context['section'] %}
+                                            <option value="{{item['department']}}-{{item['code']}}">
+                                                {{item['description']}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="position_2" class="control-label">Position</label>
+                                        <input type="text" name="position_2" class="form-control" id="position_2"
+                                            data-val="true" data-val-required="Please enter name" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Employment location -->
+                            <div class="row">
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="area_3" class="control-label">Area</label>
+                                        <select class="form-control" id="area_3" name="area_3" required>
+                                            <option value="" selected disabled>Please Choose Here</option>
+                                            {% for item in context['area'] %}
+                                            <option value="{{item['code']}}">{{item['description']}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="location_3" class="control-label">Location(Site/Office)</label>
+                                        <select class="form-control" id="location_3" name="location_3" required>
+                                            <option value="" selected disabled>Please Choose Here</option>
+                                            {% for item in context['location'] %}
+                                            <option value="{{item['area']}}-{{item['code']}}">{{item['description']}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="schedule_type_3" class="control-label">Schedule Type</label>
+                                        <select class="form-control" id="schedule_type_3" name="schedule_type_3" required>
+                                            <option value="" selected disabled>Please Choose Here</option>
+                                            {% for item in context['schedule_type'] %}
+                                            <option value="{{item['code']}}">
+                                                {{item['description']}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="flexi_type_3" class="control-label">Applicable Flexitime</label>
+                                        <select class="form-control" id="flexi_type_3" name="flexi_type_3" required>
+                                            <option value="" selected disabled>Please Choose Here</option>
+                                            {% for item in context['flexi'] %}
+                                            <option value="{{item['code']}}">
+                                                {{item['description']}}</option>
+                                            {% endfor %}
+                                        </select>
+                                            
+                                    </div>
+                                </div>
+                            </div> 
+                            <!-- Employee User Credential -->
+                            <div class="row">
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="user_4" class="control-label">User name</label>
+                                        <input type="text" name="user_4" class="form-control" id="user_4"
+                                            data-val="true" data-val-required="Please enter name" required>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="password_4" class="control-label">Password</label>
+                                        <input type="password" name="password_4" class="form-control" id="password_4"
+                                            data-val="true" data-val-required="Please enter name" required>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="user_type_4" class="control-label">Access Right</label>
+                                        <select class="form-control" id="user_type_4" name="user_type_4" required>
+                                            <option value="" selected disabled>Please Choose Here</option>
+                                            {% for item in context['user_type'] %}
+                                            <option value="{{item['reference_code']}}">
+                                                {{item['reference_code']}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="is_active_4" class="control-label">Is Active</label>
+                                        <select class="form-control" id="is_active_4" name="is_active_4" required>
+                                            <option value="" selected disabled>Please Choose Here</option>
+                                            <option value="Yes">Yes</option>
+                                            <option value="No">No</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label for="immediate_supervisor_5" class="control-label">Immediate Supervisor</label>
+                                        <select class="form-control" id="immediate_supervisor_5" name="immediate_supervisor_5" required>
+                                            <option value="" selected disabled>Please Choose Here</option>
+                                            <option value="N/A">N/A</option>
+                                            {% for item in context['employee'] %}
+                                            <option value="{{item['SN']}}">
+                                                {{item['last_name']+', '+ item['first_name'] + ' '+ item['middle_name'] + '. '+ item['suffix']}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label for="department_head_5" class="control-label">Department Head</label>
+                                        <select class="form-control" id="department_head_5" name="department_head_5" required>
+                                            <option value="" selected disabled>Please Choose Here</option>
+                                            <option value="N/A">N/A</option>
+                                            {% for item in context['employee'] %}
+                                            <option value="{{item['SN']}}">
+                                                {{item['last_name']+', '+ item['first_name'] + ' '+ item['middle_name'] + '. '+ item['suffix']}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>                                                                
+                            </div>                                                             
+                            <div>
+                                <input class="btn btn-lg btn-success btn-block" type="submit" name="action"
+                                    value="SAVE">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+$(function(){
+//department section start 
+ var showCity = function(selectedDepartment){
+  $('#section_2 option').hide();
+     $('#section_2').find('option').filter(function(){
+         var section_2 = $(this).val();
+         return section_2.indexOf(selectedDepartment)!=-1;
+     }).show();
+
+     var defaultCity = $('#section_2 option:visible:first').text();
+     $('#section_2').val(defaultCity);
+ };
+
+ var department_2 = $('#department_2').val();
+ showCity(department_2);
+ $('#department_2').change(function(){
+    showCity($(this).val());
+ });
+});
+//department section end
+
+//area location start
+$(function(){
+ 
+ var showCity = function(selectedArea){
+  $('#location_3 option').hide();
+     $('#location_3').find('option').filter(function(){
+         var location_3 = $(this).val();
+         return location_3.indexOf(selectedArea)!=-1;
+     }).show();
+     //set default value
+     var defaultCity = $('#location_3 option:visible:first').text();
+     $('#location_3').val(defaultCity);
+ };
+
+ //set default state
+ var area_3 = $('#area_3').val();
+ showCity(department_2);
+ $('#area_3').change(function(){
+    showCity($(this).val());
+ });
+});
+//area location end
+
+
+
+ </script>
+ {% endblock %}
+ {% include 'base/js.html' %}

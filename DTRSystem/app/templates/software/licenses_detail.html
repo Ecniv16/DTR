@@ -1,0 +1,383 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class=align-right>
+   <article class="add" >
+      <button class="btn btn-secondary btn-sm mb-5" type="button" data-toggle="modal" data-target="#add">Add Item<i class="fa fa-plus-square"></i></button>
+   </article>
+</div>
+<article class="media content-section">
+   <div class="col table-responsive" style="margin:0px;padding: 0px;">
+      <table id="myTable" class="table table-bordered table-hover">
+         <thead class="thead-dark" style="text-transform: uppercase; ">
+            <tr style="font-size: 13px;">
+               <th>Action</th>
+               <th>Category</th>
+               <th>Company</th>
+               <th>Version</th>
+               <th>Year of Procurement</th>
+               <th>SL Code</th>
+               <th>Version (Code)</th>
+               <th>Item Description</th>
+               <th>Media Kit/Installer</th>
+               <th>Product Key</th>
+               <th>Issued To</th>
+               <th>License</th>
+               <th>Remaining</th>
+
+            </tr>
+         </thead>
+         <tbody>
+            {% for item in data['software_licenses_detail']%}
+            <tr style="font-size: 15px;">
+               <td style="margin:0px;padding:0px;padding-left:10px;width: 145px;" nowrap>
+                  <button class="btn btn-secondary btn-sm" type="button" data-toggle="modal" data-target="#update{{item['item_index']}}">Update</button>
+                  <button class="btn btn-danger btn-sm" type="button" data-toggle="modal" data-target="#delete{{item['item_index']}}">Delete</button>
+               </td>
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['category']}} </td>
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['company']}} </td>
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['version']}} </td>
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['year_of_procurement']}} </td>
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['sl_code']}} </td>
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['version_code']}} </td>
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['item_description']}} </td>
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['media_kit']}} </td>
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['product_key']}} </td>
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['issued_to']}} </td>
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['total_lic']}} </td>
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['remaining_lic']}} </td>
+               
+            </tr>
+            <div id="delete{{item['item_index']}}" role="dialog" tabindex="-1" class="modal fade">
+               <div class="modal-dialog modal-lg" role="document">
+                  <div class="modal-content">
+                     <div class="modal-header">
+                        <h3>Delete Item: {{item['item_description']}} {{item['item_index']}}</h3>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                     </div>
+                     <form method="POST" action="/item">
+                        <div class="content-section p-4">
+                           <input type="hidden" name="item_index" value="{{item['item_index']}}">
+                           <input type="hidden" name="csrfmiddlewaretoken" value="3aSrxKhSSJTcZeDTzLtYwNrWoFJPHzcWv8UucW72EBmE1RxqL6yK4aHkobaiaopj">
+                           <div id="div_id_reason_delete" class="form-group">
+                              <label for="id_reason_delete" class=" requiredField">
+                              Reason For Deleting<span class="asteriskField">*</span> </label>
+                              <div class=""> <input type="text" name="reason_delete" class="numberinput form-control" required id="id_reason_delete"> </div>
+                           </div>
+                           </fieldset>
+                        </div>
+                        <div class="modal-footer"><button class="btn btn-light" type="button" data-dismiss="modal">Close</button><input class="btn btn-primary" type="submit" name ="submit" value="Delete"> </div>
+                     </form>
+                  </div>
+               </div>
+            </div>
+            <div id="update{{item['item_index']}}" role="dialog" tabindex="-1" class="modal fade">
+               <div class="modal-dialog modal-lg" role="document">
+                  <div class="modal-content">
+                     <div class="modal-header">
+                        <h3>Update Item:{{item['item_description']}} {{item['item_index']}}</h3>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                     </div>
+                     <form method="POST" action="/app/software/licenses_detail">
+                        <div class="content-section p-4">
+                           <input type="hidden" name="csrfmiddlewaretoken" value="3aSrxKhSSJTcZeDTzLtYwNrWoFJPHzcWv8UucW72EBmE1RxqL6yK4aHkobaiaopj">
+                           <input type="hidden" name="index" value="{{item['index']}}">
+               <fieldset class = "form-group">
+
+                  <div id="div_id_category" class="form-group">
+                     <label for="id_category" class=" requiredField">
+                     Category<span class="asteriskField">*</span> </label>
+                     <div class=""> 
+                        <input type="text" name="category" maxlength="100" class="textinput textInput form-control" required value="{{item['category']}}"> 
+                     </div>
+                  </div>
+                  <div id="div_id_company" class="form-group">
+                     <label for="id_company" class=" requiredField">
+                     Company<span class="asteriskField">*</span> </label>
+                     <div class=""> 
+                        <input type="text" name="company" maxlength="100" class="textinput textInput form-control" required value="{{item['company']}}"> 
+                     </div>
+                  </div>
+                  <div id="div_id_version" class="form-group">
+                     <label for="id_version" class=" requiredField">
+                     Version<span class="asteriskField">*</span> </label>
+                     <div class=""> 
+                        <input type="text" name="version" maxlength="100" class="textinput textInput form-control" required value="{{item['version']}}"> 
+                     </div>
+                  </div>
+                  <div id="div_id_year_of_procurement" class="form-group">
+                     <label for="id_year_of_procurement" class=" requiredField">
+                     Years of Procurement<span class="asteriskField">*</span> </label>
+                     <div class=""> 
+                        <input type="text" name="year_of_procurement" maxlength="100" class="textinput textInput form-control" required value="{{item['year_of_procurement']}}"> 
+                     </div>
+                  </div>
+
+                  <div id="div_id_version_code" class="form-group">
+                     <label for="id_version_code" class=" requiredField">
+                     Version (Code)<span class="asteriskField">*</span> </label>
+                     <div class=""> 
+                      <select name="version_code_id"  class="select form-control" required id="version_code_id" onchange = "ItemDescChange(this);">
+                           
+                           {% for x in data['reference_licenses'] %}
+                           {% if x['index'] == item['version_code_id']%}
+
+                              <option value="{{x['index']}}" selected>{{x['version_code']}}</option>
+
+                           {% else %}
+
+                              <option value="{{x['index']}}" disabled >{{x['version_code']}}</option>
+                           {% endif %}
+
+
+                           {% endfor %}
+
+                        </select>
+                     </div>
+                  </div>
+                     <input type="hidden" name="version_code" maxlength="100" class="textinput textInput form-control" required id="version_code"> 
+                  <div id="div_id_item_description" class="form-group">
+                     <label for="id_item_description" class=" requiredField">
+                     Item Description<span class="asteriskField">*</span> </label>
+                     <div class=""> 
+                        <input type="text" name="item_description" maxlength="100" class="textinput textInput form-control" required value="{{item['item_description']}}"> 
+                     </div>
+                  </div>
+
+                  <div id="div_id_media_kit" class="form-group">
+                     <label for="id_media_kit" class=" requiredField">
+                     Media Kit/Installer<span class="asteriskField">*</span> </label>
+                     <div class=""> 
+                        <input type="text" name="media_kit" maxlength="100" class="textinput textInput form-control" required value="{{item['media_kit']}}"> 
+                     </div>
+                  </div>
+
+                  <div id="div_id_sl_code" class="form-group">
+                     <label for="id_sl_code" class=" requiredField">
+                     SL Code<span class="asteriskField">*</span> </label>
+                     <div class=""> 
+                        <input type="text" name="sl_code" maxlength="100" class="textinput textInput form-control" required value="{{item['sl_code']}}" readonly> 
+                     </div>
+                  </div>
+
+                  <div id="div_id_product_key" class="form-group">
+                     <label for="id_product_key" class=" requiredField">
+                     Product Key<span class="asteriskField">*</span> </label>
+                     <div class=""> 
+                        <input type="text" name="product_key" maxlength="100" class="textinput textInput form-control" required value="{{item['product_key']}}"> 
+                     </div>
+                  </div>
+
+                  <div id="div_id_licenses" class="form-group">
+                     <label for="id_licenses" class=" requiredField">
+                     Licenses<span class="asteriskField">*</span> </label>
+                     <div class=""> 
+                        <input type="text" name="total_lic" maxlength="100" class="textinput textInput form-control" required value="{{item['total_lic']}}"> 
+                     </div>
+                  </div>
+
+                  <div id="div_id_reason_edit" class="form-group">
+                     <label for="id_reason_edit" class=" requiredField">
+                     Reason For Editing<span class="asteriskField">*</span> </label>
+                     <div class=""> 
+                        <input type="text" name="reason_edit" maxlength="100" class="textinput textInput form-control" required value="{{item['reason_edit']}}"> 
+                     </div>
+                  </div>
+               </fieldset>
+                        </div>
+                        <div class="modal-footer"><button class="btn btn-light" type="button" data-dismiss="modal">Close</button><input class="btn btn-primary" type="submit" name ="submit" value="Update"> </div>
+                     </form>
+                  </div>
+               </div>
+            </div>
+            {% endfor %}
+         </tbody>
+      </table>
+   </div>
+</article>
+<div id="add" role="dialog" tabindex="-1" class="modal fade">
+   <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h3>Add Item</h3>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+         </div>
+         <form method="POST" action="/app/software/licenses_detail">
+            <div class="content-section p-4">
+               <input type="hidden" name="csrfmiddlewaretoken" value="3aSrxKhSSJTcZeDTzLtYwNrWoFJPHzcWv8UucW72EBmE1RxqL6yK4aHkobaiaopj">
+               <fieldset class = "form-group">
+
+                  <div id="div_id_category" class="form-group">
+                     <label for="id_category" class=" requiredField">
+                     Category<span class="asteriskField">*</span> </label>
+                     <div class=""> 
+                        <input type="text" name="category" maxlength="100" class="textinput textInput form-control" required id="category"> 
+                     </div>
+                  </div>
+                  <div id="div_id_company" class="form-group">
+                     <label for="id_company" class=" requiredField">
+                     Company<span class="asteriskField">*</span> </label>
+                     <div class=""> 
+                        <input type="text" name="company" maxlength="100" class="textinput textInput form-control" required id="company"> 
+                     </div>
+                  </div>
+                  <div id="div_id_version" class="form-group">
+                     <label for="id_version" class=" requiredField">
+                     Version<span class="asteriskField">*</span> </label>
+                     <div class=""> 
+                        <input type="text" name="version" maxlength="100" class="textinput textInput form-control" required id="version"> 
+                     </div>
+                  </div>
+                  <div id="div_id_year_of_procurement" class="form-group">
+                     <label for="id_year_of_procurement" class=" requiredField">
+                     Years of Procurement<span class="asteriskField">*</span> </label>
+                     <div class=""> 
+                        <input type="text" name="year_of_procurement" maxlength="100" class="textinput textInput form-control" required id="year_of_procurement"> 
+                     </div>
+                  </div>
+
+                  <div id="div_id_version_code" class="form-group">
+                     <label for="id_version_code" class=" requiredField">
+                     Version (Code)<span class="asteriskField">*</span> </label>
+                     <div class=""> 
+                      <select name="version_code_id"  class="select form-control" required id="version_code_id" onchange = "ItemDescChange(this);">
+                           <option value="" selected hidden>---------</option>
+                           {% for x in data['reference_licenses'] %}
+
+                           <option value="{{x['index']}}">{{x['version_code']}}</option>
+
+                           {% endfor %}
+                        </select>
+                     </div>
+                  </div>
+                     <input type="hidden" name="version_code" maxlength="100" class="textinput textInput form-control" required id="version_code"> 
+                  <div id="div_id_item_description" class="form-group">
+                     <label for="id_item_description" class=" requiredField">
+                     Item Description<span class="asteriskField">*</span> </label>
+                     <div class=""> 
+                        <input type="text" name="item_description" maxlength="100" class="textinput textInput form-control" required id="item_description"> 
+                     </div>
+                  </div>
+
+                  <div id="div_id_media_kit" class="form-group">
+                     <label for="id_media_kit" class=" requiredField">
+                     Media Kit/Installer<span class="asteriskField">*</span> </label>
+                     <div class=""> 
+                        <input type="text" name="media_kit" maxlength="100" class="textinput textInput form-control" required id="media_kit"> 
+                     </div>
+                  </div>
+
+                  <div id="div_id_sl_code" class="form-group">
+                     <label for="id_sl_code" class=" requiredField">
+                     SL Code<span class="asteriskField">*</span> </label>
+                     <div class=""> 
+                        <input type="text" name="sl_code" maxlength="100" class="textinput textInput form-control" required id="sl_code"> 
+                     </div>
+                  </div>
+
+                  <div id="div_id_product_key" class="form-group">
+                     <label for="id_product_key" class=" requiredField">
+                     Product Key<span class="asteriskField">*</span> </label>
+                     <div class=""> 
+                        <input type="text" name="product_key" maxlength="100" class="textinput textInput form-control" required id="product_key"> 
+                     </div>
+                  </div>
+
+                  <div id="div_id_licenses" class="form-group">
+                     <label for="id_licenses" class=" requiredField">
+                     Licenses<span class="asteriskField">*</span> </label>
+                     <div class=""> 
+                        <input type="text" name="total_lic" maxlength="100" class="textinput textInput form-control" required id="total_lic"> 
+                     </div>
+                  </div>
+
+               </fieldset>
+            </div>
+            <div class="modal-footer"><button class="btn btn-light" type="button" data-dismiss="modal">Close</button><input class="btn btn-primary" type="submit" name ="submit" value="Save"> </div>
+         </form>
+      </div>
+   </div>
+</div>
+<script type="text/javascript">
+   function pad (str, max) {
+      str = str.toString();
+      return str.length < max ? pad("0" + str, max) : str;
+   }
+   var sl_code = new Array(4);
+   var vers = new Array(4);
+   var num = 0;
+   var with_serial = new Array(4);
+   var serial = [];
+   var machine = [];
+     {% for x in data['reference_licenses'] %}
+   
+         num = pad(parseInt("{{x['sl_code_no']}}") + 1,3);
+   
+         sl_code["{{x['index']}}"] = "{{x['sl_code']}}-" + num;
+         vers["{{x['index']}}"] = "{{x['version_code']}}";
+   
+     {% endfor %}
+   
+   
+      
+   function myChangeFunction(input1) {
+    var valId = input1.id;
+
+    if (valId =="item_serial") {
+       if (serial.includes(input1.value)) {
+         alert("Serial Number "+ input1.value + " Already Exist"  );
+          var Serial_num = document.getElementById("item_serial");
+          Serial_num.value = "";
+       }       
+    }
+
+    if (valId =="machine_id") {
+     
+       if (machine.includes(input1.value)) {
+         alert("Machine ID "+ input1.value + " Already Exist"  );
+          var Serial_num = document.getElementById("machine_id");
+          Serial_num.value = "";
+       }       
+    }
+
+
+
+
+
+ }   
+   
+   
+     function ItemDescChange(selectObj) {
+        var idx = selectObj.selectedIndex;
+        // get the value of the selected option
+        var which = selectObj.options[idx].value;
+        var sl_code_id = '';
+        var vers_code = '';
+        // use the selected option value to retrieve the list of items from the countryLists array
+        machine_code = sl_code[which];
+        vers_code = vers[which];
+        // get the country select element via its known id
+        var Machine_IDs = document.getElementById("sl_code");
+        var version_code = document.getElementById("version_code");
+        
+        Machine_IDs.value = machine_code;  
+        version_code.value = vers_code;   
+   
+     }
+   
+   
+</script>
+<script type="text/javascript"> 
+ $(document).ready(function(){
+        $('#myTable').DataTable({
+        "aLengthMenu": [[15, 30, 45, -1], [15, 30, 45, "All"]],
+        "iDisplayLength": 15,
+        "order": [[ 3, "asc" ]]
+    });
+     }); 
+
+
+
+</script>
+{% endblock %}
+{% block scripts %}
+{% endblock %}

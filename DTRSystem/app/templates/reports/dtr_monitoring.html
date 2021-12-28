@@ -1,0 +1,454 @@
+{% extends 'base/base.html' %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+  <div class="breadcrumbs-inner">
+    <div class="page-header">
+      <div class="page-title">
+        <ol class="breadcrumb">
+          <li><a href="{{url_for('index')}}">Home</a></li>
+          <li class="active">Daily Time Record</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock breadcrumbs %}
+
+{% block content %}
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-header">
+        <div class="row">
+          <div class="col-lg-12">
+            <strong class="card-title">Daily Time Record:</strong>
+          </div>
+        </div>
+
+      </div>
+      <div class="card-body">
+
+        <form method="POST" action="/app/reports/dtr_monitoring">
+
+          <div class="row">
+
+            <div class="col-lg-4">
+              <label for="department" class="control-label">Month</label>
+              <select class="form-control" id="cutoff_month" name="cutoff_month">
+
+                {% for x in ref['reference_month']%}
+                {% if x['ranking'] == selected_emp['cutoff_month'] %}
+                  <option value ="{{x['ranking']}}" selected>{{x['reference_name']}}</option>
+                {% else %}
+                  <option value ="{{x['ranking']}}">{{x['reference_name']}}</option>
+                {% endif %}
+    
+    
+              {% endfor%}
+
+              </select>
+
+            </div>
+            <div class="col-lg-4">
+              <label for="department" class="control-label">Period</label>
+              <select class="form-control" id="cutoff_day" name="cutoff_day">
+                {% for x in ref['reference_cutoff']%}
+                {% if x['reference_code'] == selected_emp['cutoff_day'] %}
+                  <option value ="{{x['reference_code']}}" selected>{{x['reference_name']}}</option>
+                {% else %}
+                  <option value ="{{x['reference_code']}}">{{x['reference_name']}}</option>
+                {% endif %}
+              {% endfor%}
+
+              </select>
+            </div>
+            <div class="col-lg-4">
+              <label for="department" class="control-label">Year</label>
+              <input class="form-control" type="number" name="cutoff_year" min="1900" max="2099"
+                value="{{session['year']}}">
+            </div>
+            <div class="col-lg-4">
+              <div class="form-group">
+                <label for="company" class="control-label">Company</label>
+                <select class="form-control" id="company" name="company" required>
+                  <option value="ALL" selected>ALL</option>
+                  {% for item in ref['company'] %}
+                    {% if selected_emp['company'] == item['code'] %}
+                      <option value="{{item['code']}}" selected>{{item['description']}}</option>
+                    {% else %}
+                      <option value="{{item['code']}}">{{item['description']}}</option>
+                    {% endif %}
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+
+            <div class="col-lg-4">
+              <div class="form-group">
+                <label for="department" class="control-label">Department</label>
+                <select class="form-control" id="department" name="department" required>
+                  <option value="ALL" selected>ALL</option>
+                  {% for item in ref['department'] %}
+                    {% if session['user_type'] =='Administrator' %}
+                      {% if selected_emp['code'] == item['code'] %}
+                        <option value="{{item['code']}}" selected>{{item['description']}}</option>
+                      {% else %}
+                        <option value="{{item['code']}}">{{item['description']}}</option>
+                      {% endif %}
+
+                    {% else %}
+                      {% if item['code'] == session['department'] %}
+                        <option value="{{item['code']}}" selected>{{item['description']}}</option>
+                      {% endif %}
+                    {% endif %}                    
+                    
+
+                    
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="form-group">
+                <label for="section" class="control-label">Section</label>
+                <select class="form-control" id="section" name="section" required>
+                  <option value="ALL" selected>ALL</option>
+
+                  {% for item in ref['section'] %}
+
+                      {% if item['department']+'-'+item['code'] == selected_emp['section'] %}
+                        <option value="{{item['department']}}-{{item['code']}}" selected>{{item['description']}}</option>
+                      {% else %}
+                        <option value="{{item['department']}}-{{item['code']}}">{{item['description']}}</option>
+                      {% endif %}
+
+
+
+
+
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-2">
+              <input type="submit" class="form-control btn-warning" name="action" value="Generate">        
+            </div>
+            <div class="col-lg-2">     
+                {% if data['link'] %}
+                  <a class="btn btn-primary" href="{{data['link']}}" target="_blank"><i class="fa fa fa-download"></i></a>
+                {% endif %}
+            </div>            
+          </div>
+
+            {% for item in selected_emp['selected_emp'] %}
+              {% if item['user_type'] != 'Administrator' %}
+                <div class="print mt-5">
+                  <div class="row">
+                    <div class="col-sm-2 table-bordered" style="font-size:12px;">
+                      Name:
+                    </div>
+                    <div class="col table-bordered" style="font-size:12px;">
+                      {{item['last_name'] + ', '+ item['first_name'] +' ' + item['middle_name'] + '. ' +item['suffix']}}
+                    </div>
+                    <div class="col-sm-2 table-bordered" style="font-size:12px;">
+                      ID/SN:
+                    </div>
+                    <div class="col table-bordered" style="font-size:12px;">
+                      {{item['employee_id'].zfill(6) + ' / '+ item['SN']}}
+                    </div>
+              
+                  </div>
+              
+              
+                  <div class="row">
+                    <div class="col-sm-2 table-bordered" style="font-size:12px;">
+                      Cut-Off:
+                    </div>
+                    <div class="col table-responsive table-bordered" style="font-size:12px;">
+                      {{selected_emp['cutoff']}}
+                    </div>
+                    <div class="col-sm-2 table-bordered" style="font-size:12px;">
+                      Dept/Sec.:
+                    </div>
+                    <div class="col table-responsive table-bordered" style="font-size:12px;">
+                      {{item['department']}}/{{item['section']}}
+                    </div>
+                  </div>
+                  {% for x in data['accu'] %}
+                  {% if item['index'] == x['index']%}
+                  <div class="row">
+                    <div class="col table-bordered" style="font-size:12px;">
+                      Total Lates(Minutes)
+                    </div>
+                    <div class="col table-bordered" style="font-size:12px;">
+                      Freq. of Lates
+                    </div>
+                    <div class="col table-bordered" style="font-size:12px;">
+                      TOtal Undertime(Minutes)
+                    </div>
+                    <div class="col table-bordered" style="font-size:12px;">
+                      Freq. of Undertime
+                    </div>
+                  </div>
+              
+              
+                  <div class="row">
+                    <div class="col table-bordered" style="font-size:12px;">
+                      {{x['total_lates']}}
+                    </div>
+                    <div class="col table-bordered" style="font-size:12px;">
+                      {{x['freq_lates']}}
+                    </div>
+                    <div class="col table-bordered" style="font-size:12px;">
+                      {{x['total_undertime']}}
+                    </div>
+                    <div class="col table-bordered" style="font-size:12px;">
+                      {{x['freq_undertime']}}
+                    </div>
+              
+              
+                  </div>
+                  {% endif %}
+                  {% endfor %}
+              
+              
+              
+                  <div class="row">
+                    <div class="col col-sm-12 table-responsive table table-bordered"
+                      style="width: 100%; margin:0px;height: 440px;">
+                      <table id="activity_page" style="width: 100%;">
+        
+                        <thead class="thead-dark" style="text-transform: uppercase;">
+        
+                      <tr>
+                        <th style="font-size: 10px; ">Date</th>
+                        <th style="font-size: 10px; ">Offset<br> To</th>
+                        <th style="font-size: 10px; ">Day <br>Remarks</th>
+                        <th style="font-size: 10px; ">Late <br>(no. of <br>mins.)</th>
+                        <th style="font-size: 10px; ">In</th>
+                        <th style="font-size: 10px; ">Out</th>
+                        <th style="font-size: 10px; ">Undertime <br>(no. of <br>mins.)</th>
+                        <th style="font-size: 10px; ">REG OT</th>
+                        <th style="font-size: 10px; ">RD/DO/SH/<br>RH BASIC</th>
+                        <th style="font-size: 10px; ">RD/DO/SH/<br>RH OT</th>
+
+                        <th style="font-size: 10px; ">Sched Time</th>
+                        <th style="font-size: 10px; ">Branch/Loc</th>
+                        <th style="font-size: 10px;width: 40px; ">LEAVE</th>
+                        <th style="font-size: 10px;width: 40px; ">MIL</th>
+                        <th style="font-size: 10px;width: 40px; ">OFB</th>
+                        <th style="font-size: 10px;width: 40px; ">OT</th>
+                        <th style="font-size: 10px;width: 40px; ">WFH</th>
+                        <th style="font-size: 10px;width: 40px; ">OFF</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+
+                      {% for x in data['dtr']%}
+                      {% if item['index'] == x['index'] %}
+                      <tr>
+                        <td style="font-size: 12px; line-height: 0px;" nowrap>{{x['date_now']}}
+                          {% if x[sched_time] =="00:00-00:00" %}
+                          <span style="color:red;">{{x['day_name']}}</span>
+                          {% else %}
+                          <span>{{x['day_name']}}</span>
+                          {% endif %}
+                        </td>
+
+                        <td style="font-size: 12px; line-height: 0px;">{{x['offset_to']}}
+                        </td>
+
+
+                        <td style="font-size: 12px; line-height: 0px;">
+                          {% if  ":L" in x['day_remarks']  %}
+                          {% if  ":W" in x['day_remarks']  %}
+                          {{x['day_remarks'][:4]}}<span style="color:red;"><strong>{{x['day_remarks'][4:]}}</strong></span>
+                          {% else %}
+                          <span style="color:red;"><strong>{{x['day_remarks']}}</strong></span>
+                          {% endif %}
+                          {% else %}
+                          {{x['day_remarks']}}
+                          {% endif %}
+                        </td>
+
+
+
+                        <td style=" font-size: 12px;line-height: 0px;">
+                          {% if x['no_of_lates'] != "" and x['no_of_lates'] != 0 %}
+                          <span style="color:red;"><strong>{{x['no_of_lates']}}</strong></span>
+                          {% endif %}
+                        </td>
+
+
+                        <td style="font-size: 12px; line-height: 0px;">{{x['first_in']}}
+                        </td>
+                        <td style="font-size: 12px; line-height: 0px;">{{x['last_out']}}
+                        </td>
+                        <td style=" font-size: 12px;line-height: 0px;">
+                          {% if x['under_time'] != "" and x['under_time'] != 0 %}
+                          <span style="color:red;"><strong>{{x['under_time']}}</strong></span>
+                          {% endif %}
+                        </td>
+                        <td style="font-size: 12px; line-height: 0px;">
+                          {% if x['regular_ot'] > 0%}
+                          {{x['regular_ot']}}
+                          {% endif %}
+                        </td>
+                        <td style="font-size: 12px; line-height: 0px;">
+                          {% if x['sp_basic'] > 0%}
+                          {{x['sp_basic']}}
+                          {% endif %}
+                        </td>
+                        <td style="font-size: 12px; line-height: 0px;">
+                          {% if x['sp_ot'] > 0%}
+                          {{x['sp_ot']}}
+                          {% endif %}
+                        </td>
+
+                        <td style="font-size: 12px; line-height: 0px;" nowrap>{{x['sched_time']}}
+                          ({{x['working_hour']}}) - {{x['schedule_type']}}</td>
+                        <td style="font-size: 12px; line-height: 0px;" nowrap>{{x['branch']}}
+                          ({{x['location']}})</td>
+
+                        <td style="font-size: 12px; line-height: 0px;"><a
+                            href="/app/archived/leave/{{x['leave_index']}}">{{x['leave_start']}}</a>
+                        </td>
+
+                        <td style="font-size: 12px; line-height: 0px;"><a
+                            href="/app/archived/missing_logs/{{x['logs_index']}}">{{x['logs_start']}}</a></td>
+                        <td style="font-size: 12px; line-height: 0px;"><a
+                            href="/app/archived/ob/{{x['ob_index']}}">{{x['ob_start']}}</a></td>
+                        <td style="font-size: 12px; line-height: 0px;"><a
+                            href="/app/archived/ot/{{x['ot_index']}}">{{x['ot_start']}}</a></td>
+                        <td style="font-size: 12px; line-height: 0px;"><a
+                            href="/app/archived/wfh/{{x['wfh_index']}}">{{x['wfh_start']}}</a></td>
+                        <td style="font-size: 12px; line-height: 0px;"><a
+                            href="/app/archived/wfh/{{x['wfh_index']}}">{{x['offset_start']}}</a></td>
+                      </tr>
+                            {% endif %}
+                          {% endfor %}
+                        </tbody>
+                      </table>
+        
+                    </div>
+                  </div>
+                  <!-- ------------------------------------------------------------------------------------------------- -->
+                  <div class="row mt-2">
+                    <div class="col table-responsive table table-bordered" style="width: 100%; margin:0px;">
+              
+              
+              
+              
+              
+                      <table id="activity_page" style="width: 100%;">
+              
+                        <thead class="thead-dark" style="text-transform: uppercase;">
+              
+                          <tr>
+                            <th style="font-size: 10px;" nowrap>Code</th>
+              
+                            <th style="font-size: 10px;" nowrap>Name</th>
+              
+              
+                            <th style="font-size: 10px;" nowrap>Department</th>
+                            <th style="font-size: 10px;" nowrap>Date Hired</th>
+              
+                            <th style="font-size: 10px;" nowrap>Basic</th>
+                            <th style="font-size: 10px;" nowrap>Reg OT</th>
+                            <th style="font-size: 10px;" nowrap>Absent</th>
+                            <th style="font-size: 10px;" nowrap>RD Basic(Hrs)</th>
+                            <th style="font-size: 10px;" nowrap>RD OT (>8Hrs)</th>
+                            <th style="font-size: 10px; min-width: 20px;">RH Basic(Hrs)</th>
+                            <th style="font-size: 10px; min-width: 20px;">RH OT (>8Hrs)</th>
+                            <th style="font-size: 10px; min-width: 20px;">RH/RD Basic</th>
+                            <th style="font-size: 10px; min-width: 20px;">RH/RD OT (>8Hrs)</th>
+                            <th style="font-size: 10px; min-width: 20px;">SH Basic(Hrs)</th>
+                            <th style="font-size: 10px; min-width: 20px;">SH OT (>8Hrs)</th>
+                            <th style="font-size: 10px; min-width: 20px;">SH/RD Basic</th>
+                            <th style="font-size: 10px; min-width: 20px;">SH/RD OT (>8Hrs)</th>
+              
+              
+              
+              
+              
+                          </tr>
+                        </thead>
+                        <tbody>
+              
+                          {% for x in data['payroll']%}
+                          {% if item['index'] == x['index'] %}
+                          <tr>
+                            <td style="font-size: 12px;">{{x['employee_id']}}
+                            </td>
+                            <td style="font-size: 12px;">{{x['name']}}
+                            </td>
+              
+              
+                            <td style="font-size: 12px;">{{x['department']}}</td>
+                            <td style="font-size: 12px;">{{x['date_hired']}}</td>
+                            <td style="font-size: 12px;">{{x['basic']}}</td>
+                            <td style="font-size: 12px;">{{x['reg_ot']}}</td>
+                            <td style="font-size: 12px;">{{'%0.2f'|format(x['absent']|float)}}</td>
+                            <td style="font-size: 12px;">{{x['rd_basic']}}</td>
+                            <td style="font-size: 12px;">{{x['rd_ot']}}</td>
+                            <td style="font-size: 12px;">{{x['rh_basic']}}</td>
+                            <td style="font-size: 12px;">{{x['rh_ot']}}</td>
+                            <td style="font-size: 12px;">{{x['rd_rh_basic']}}</td>
+                            <td style="font-size: 12px;">{{x['rd_rh_ot']}}</td>
+                            <td style="font-size: 12px;">{{x['sh_basic']}}</td>
+                            <td style="font-size: 12px;">{{x['sh_ot']}}</td>
+                            <td style="font-size: 12px;">{{x['sh_rd_basic']}}</td>
+                            <td style="font-size: 12px;">{{x['sh_rd_ot']}}</td>
+              
+              
+              
+              
+                          </tr>
+                          {% endif %}
+                          {% endfor %}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+              
+              
+              
+                </div>
+              {% endif %}
+            {% endfor %}
+
+          
+
+
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+</div>
+<script type="text/javascript">
+  $(function () {
+    //department section start 
+    var showCity = function (selectedDepartment) {
+      $('#section option').hide();
+      $('#section').find('option').filter(function () {
+        var section = $(this).val();
+        return section.indexOf(selectedDepartment) != -1;
+      }).show();
+
+      var defaultCity = $('#section option:visible:first').text();
+      $('#section').val();
+    };
+
+    var department = $('#department').val();
+    showCity(department);
+    $('#department').change(function () {
+      showCity($(this).val());
+    });
+  });
+</script>
+ {% endblock %}
+ {% include 'base/js.html' %}

@@ -1,0 +1,26 @@
+{% block nav %}
+<div class="breadcrumbs">
+    <div class="breadcrumbs-inner">
+        <div class="top-right">
+            <div class="header-menu">
+                <div class="user-area dropdown float-right">
+                    <a href="#" class="dropdown-toggle active" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false">
+                        <span style="color:white">{{session.user}}</span>
+                        <img class="user-avatar rounded-circle"
+                            src="{{ url_for('static', filename='images/icons/user.png' )}}" alt="User Avatar">
+                    </a>
+
+                    <div class="user-menu dropdown-menu" style="background: skyblue">
+
+                        <a class="nav-link" href="{{url_for('profile_leave_credit')}}"><i
+                                class="fa fa-power -off"></i>Leave Credit</a>
+                        <a class="nav-link" href="#"><i class="fa fa-power -off"></i>Logout</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock nav %}

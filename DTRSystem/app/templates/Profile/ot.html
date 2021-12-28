@@ -1,0 +1,139 @@
+{% extends 'base/base.html' %}
+{% block title %}
+OVER TIME
+{% endblock title %}
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+    <div class="breadcrumbs-inner">
+        <div class="page-header">
+            <div class="page-title">
+                <ol class="breadcrumb">
+                    <li><a href="{{url_for('index')}}">Home</a></li>
+                    <li class="active">Overtime Application List</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock breadcrumbs %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <strong class="card-title">Pending Overtime Application:</strong>
+                    </div>
+                    <div class="col-lg-6" style="text-align: right;">
+                        <a href="{{url_for('profile_sub', content='ot_create')}}" title="File Missing Logs"><i
+                                class="fa fa-plus-circle fa-2x" style="color: blue;"></i></a>
+                    </div>
+                </div>
+
+            </div>
+            <div class="card-body">
+                <!-- Credit Card -->
+                <div id="pay-invoice">
+                    <div class="card-body">
+
+                        <div class="col table-responsive" style="margin:0px;padding: 0px;">
+
+                            <table id="myTable" class="table table-bordered table-hover">
+                                <thead style="text-transform: uppercase; ">
+                                    <tr style="font-size: 12px;">
+                                        <th>Index</th>
+                                        <th>Day Remark</th>
+                                        <th>Date</th>
+                                        <th>No OF OT</th>
+                                        <th>Purpose/Destination</th>
+                                        <th>Status</th>
+                                        <th>Branch/Location</th>
+                                        <th>Dept. & Sec</th>
+                                        <th></th>
+
+
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in ref['ot'] %}
+
+                                    <tr style="font-size: 11px;">
+                                        <td>{{item['index']}}</td>
+                                        <td>{{item['day_remarks']}}</td>
+                                        <td>{{item['date']}}</td>
+                                        <td>{{item['ot_hrs']}} </td>
+                                        <td>{{item['reason']}} </td>
+                                        <td>{{item['basic_info']['status']}}</td>
+                                        <td>{{item['branch']}}/{{item['location']}}</td>
+                                        <td>{{item['basic_info']['dept_sec']}} </td>
+                                        <td><a href="#delete_logs{{item['index']}}" title="Delete" data-toggle="modal"
+                                            data-target="#delete_ot{{item['index']}}">
+                                            <i class="fa fa-trash" style="color: red"></i></a></td>
+
+                                    </tr>
+                                    <div id="delete_ot{{item['index']}}" role="dialog" tabindex="-1" class="modal fade">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                  Reason for Deleting of Record:
+                                                        <button type="button"
+                                                        class="close" data-dismiss="modal" aria-label="Close"><span
+                                                            aria-hidden="true">×</span></button>
+                                                </div>
+                                                <form method="POST" action="/app/utilities/ot">
+                                                    <input class="form-control" type="text" name="index"
+                                                        value="{{item['index']}}" hidden>
+                                                    <input class="form-control" type="text" name="ref_index"
+                                                        value="{{item['ref_index']}}" hidden>
+                                                    <div class="modal-body">
+                                                        <div class="form-row">
+                                                            <div class="col">
+                                                                <input class="form-control" type="text"
+                                                                    style="width: 100%;" name="reason_delete"
+                                                                    placeholder="Reason For Deleting" required>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer"><button class="btn btn-light"
+                                                            type="button" data-dismiss="modal">Close</button><input
+                                                            class="btn btn-primary" type="submit" name="action"
+                                                            value="Cancel"> </div>
+                                                </form>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        $.fn.dataTable.moment('MMM D, YYYY');
+        $.fn.dataTable.moment('D-MMM-YY');
+        $('#myTable').DataTable({
+
+            dom: 'B<"clear">lfrtip',
+            buttons: {
+                name: 'primary',
+                buttons: ['copy', 'csv', 'excel', 'pdf']
+
+            }
+        });
+    });
+</script>
+{% endblock %}
+{% include 'base/js.html' %}

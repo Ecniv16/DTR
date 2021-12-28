@@ -1,0 +1,47 @@
+{% for x in content['ref']['leave'] %}
+
+<div class="card">
+
+    <div class="card-body">
+        <!-- Credit Card -->
+        <div class="item-title">
+            <h3>Leave Credits Info</h3>
+        </div>
+
+                <div class="row">
+                    <div class="col">
+                        <div class="table-responsive info-table">
+                            <table class="table text-nowrap">
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Leave Type</strong></td>
+                                        <td><strong>Sick Leave</strong></td>
+                                        <td><strong>Vacation Leave</strong></td>
+                                        <td><strong>Birthday Leave</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Total Hours</strong></td>
+                                        <td>{{x['SL']}}</td>
+                                        <td>{{x['VL']}}</td>
+                                        <td>{{x['BL']}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Remaining Hours</strong></td>
+                                        <td>{{x['SL_r']}}</td>
+                                        <td>{{x['VL_r']}}</td>
+                                        <td>{{x['BL_r']}}</td>
+                                    </tr>
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+    </div>
+</div>
+
+
+
+
+{% endfor %}

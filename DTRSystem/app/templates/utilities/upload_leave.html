@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class=align-right>
+   <article class="add" >
+      {% if session['user_type'] =="Administrator" %}
+      <button class="btn btn-secondary btn-sm mb-5" type="button" data-toggle="modal" data-target="#add">Add Data<i class="fa fa-plus-square"></i></button>
+      <button class="btn btn-secondary btn-sm mb-5" type="button" data-toggle="modal" data-target="#upload">Upload Data<i class="fa fa-plus-square"></i></button>
+      {% else %}
+      <button class="btn btn-secondary btn-sm mb-5" type="button" data-toggle="modal" data-target="#add" disabled>Add Data<i class="fa fa-plus-square"></i></button>
+      <button class="btn btn-secondary btn-sm mb-5" type="button" data-toggle="modal" data-target="#upload" disabled>Upload Data<i class="fa fa-plus-square"></i></button>
+
+      {% endif %}
+   </article>
+</div>
+
+<article class="media content-section">
+   <div class="col table-responsive" style="margin:0px;padding: 0px;">
+      <table  id ="myTable_section" class="table table-bordered table-hover">
+         <thead class="thead-dark" style="text-transform: uppercase; ">
+            <tr style="font-size: 13px;">
+               
+               <th>Date</th>
+               <th>Day Remarks</th>
+               <th>SN</th>
+               <th>EN</th>
+               <th>Name</th>
+               <th>Department</th>
+               <th>Section</th>
+               <th>SL</th>
+               <th>VL</th>
+               <th>BL</th>
+               <th>SP</th>
+               <th>BRL</th>
+               <th>ML</th>
+               <th>PL</th>
+               <th>MC</th>
+               <th>VS</th>
+               <th>SL_r</th>
+               <th>VL_r</th>
+               <th>BL_r</th>
+               <th>SP_r</th>
+               <th>BRL_r</th>
+               <th>ML_r</th>
+               <th>PL_r</th>
+               <th>MC_r</th>
+               <th>VS_r</th>
+               
+
+
+
+
+            </tr>
+         </thead>
+         <tbody>
+            {% for item in data%}
+            <tr style="font-size: 15px;">
+
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['date']}}</td>
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['day_remarks']}}</td>
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['SN']}}</td>
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['employee_id']}}</td>
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['name']}}</td>   
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['department']}}</td>   
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['section']}}</td>
+
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['SL']}}</td>   
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['VL']}}</td>   
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['BL']}}</td>   
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['SP']}}</td>   
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['BRL']}}</td>   
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['ML']}}</td>   
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['PL']}}</td>   
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['MC']}}</td>   
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['VS']}}</td>   
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['SL_r']}}</td>   
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['VL_r']}}</td>   
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['BL_r']}}</td>   
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['SP_r']}}</td>   
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['BRL_r']}}</td>   
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['ML_r']}}</td>   
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['PL_r']}}</td>   
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['MC_r']}}</td>   
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['VS_r']}}</td>   
+
+
+          
+            </tr>
+            {% endfor %}
+         </tbody>
+      </table>
+   </div>
+</article>
+
+
+
+<div id="upload" role="dialog" tabindex="-1" class="modal fade">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+            <form method="POST"  action="/app/utilities/upload_dtr" enctype="multipart/form-data">
+                
+                <div class="modal-body">
+                    <div class="form-row">
+                        <div class="col">
+                            <h3>Upload Employee Details</h3>
+                        </div>
+                    </div>                    
+                    <div class="form-row">
+                        <div class="col">
+                            <input type="file" id="file" name="file">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer"><button class="btn btn-light" type="button" data-dismiss="modal">Close</button><input class="btn btn-primary" type="submit" name ="action" value="Upload Data"> </div>
+            </form>
+            
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+
+// For Display
+    $(document).ready(function() {
+  document.getElementById("main").style.display = "inline-block";
+
+});
+
+
+ $(document).ready(function(){
+        $('#myTable_section').DataTable({
+        "aLengthMenu": [[15, 30, 45, -1], [15, 30, 45, "All"]],
+        "iDisplayLength": 15,
+        "order": [[ 4, "asc" ]]
+    });
+     });    
+</script>
+{% endblock %}

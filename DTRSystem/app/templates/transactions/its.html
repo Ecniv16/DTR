@@ -1,0 +1,355 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class=align-right>
+   <article class="add" >
+
+      <button class="btn btn-secondary btn-sm mb-5" type="button" data-toggle="modal" data-target="#add">ITS from Employee<i class="fa fa-plus-square"></i></button>
+      <button class="btn btn-secondary btn-sm mb-5" type="button" data-toggle="modal" data-target="#add2">ITS from Supplier<i class="fa fa-plus-square"></i></button>
+   </article>
+</div>
+<article class="media content-section">
+   <div class="col table-responsive" style="margin:0px;padding: 0px;">
+
+      <table id ="myTable"  class="table table-bordered table-hover">
+         <thead class="thead-dark" style="text-transform: uppercase; ">
+            <tr style="font-size: 13px;">
+               <th>Action</th>
+               <th>ITS#</th>
+               <th>ITS Date</th>
+               <th>Transmitted By</th>
+               <th>Dept & Sec</th>
+               
+               <th>Ref. Site. Trans No.</th>
+               <th>Ref. SSR No.</th>
+               <th>Forwarded By</th>
+               <th>Received By</th>
+               <th>Remarks</th>
+               
+            </tr>
+         </thead>
+         <tbody>
+            {% for item in data['transactions_its']%}
+            <tr style="font-size: 15px;">
+               <td style="margin:0px;padding:0px;padding-left:10px;width: 145px;" nowrap>
+                  
+                   <a class="btn btn-secondary btn-sm" href="/app/transactions/its/{{item['index']}}">View</a>
+                  <button class="btn btn-danger btn-sm" type="button" data-toggle="modal" data-target="#delete{{item['index']}}">Delete</button>
+               </td>
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['trans_no']}}</td>
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['its_date']}} </td>
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['transmitted_by']}} </td>
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['dept_sect']}} </td> 
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['ref_trans']}} </td> 
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['ref_ssr']}} </td>
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['forwarded_by']}} </td> 
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['received_by']}} </td> 
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['remarks']}} </td>                 
+            </tr>
+            {% endfor %}
+         </tbody>
+      </table>
+   </div>
+</article>
+<div id="add" role="dialog" tabindex="-1" class="modal fade">
+   <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h3>Add Transaction</h3>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+         </div>
+         <form method="POST" action="/app/transactions/its">
+            <div class="content-section p-4">
+               <input type="hidden" name="csrfmiddlewaretoken" value="3aSrxKhSSJTcZeDTzLtYwNrWoFJPHzcWv8UucW72EBmE1RxqL6yK4aHkobaiaopj">
+               <input type="text" name="type" value="1" hidden>
+               <fieldset class = "form-group">
+                  <div id="div_id_trans_no" class="form-group">
+                     <label for="id_trans_no" class=" requiredField">
+                     ITS No.<span class="asteriskField">*</span> </label>
+                     <div class="">
+                        {% if trans_no['transaction_its_no'] == 0 %}
+                        <input class="form-control" type="number" style="width: 100%;min-width: 200px;"  name="trans_no" value="{{trans_no['transactions_its_no']}}" required>
+                        {% else %}
+                        <input class="form-control" type="number" style="width: 100%;min-width: 200px;"  name="trans_no" value="{{trans_no['transactions_its_no']}}" required readonly>
+                        {% endif %}
+                     </div>
+                  </div>                  
+                  <div id="div_id_transmitted_by" class="form-group">
+                     <label for="id_transmitted_by" class=" requiredField">
+                     Transmitted By<span class="asteriskField">*</span> </label>
+                     <div class="">
+                        <select name="employee_index"  class="select form-control" required id="employee_index" onchange = "SelectChange(this);">
+                           <option value="" selected>---------</option>
+                           {% for x in data['reference_employee'] %}
+
+                           <option value="{{x['index']}}">{{x['surname']}}, {{x['first_name']}} {{x['middle_name']}} {{x['suffix']}}</option>
+
+                           {% endfor %}
+                        </select>
+                     </div>
+                  </div>
+                  <input class="form-control" type="text" style="width: 100%;min-width: 200px;"  name="transmitted_by" id="transmitted_by" hidden>
+                  <div id="div_id_its_date" class="form-group">
+                     <label for="id_its_date" class=" requiredField">
+                     ITS Date<span class="asteriskField">*</span> </label>
+                     <div class="">
+						<input class="form-control" type="date" style="width: 100%;min-width: 200px;"  name="its_date"  required>
+                     </div>
+                  </div>
+                  <div id="div_id_department" class="form-group">
+                     <label for="id_department" class=" requiredField">
+                     Department & Section<span class="asteriskField">*</span> </label>
+                     <div class="">
+						<input class="form-control" type="text" style="width: 100%;min-width: 200px;"  name="dept_sect" id= "dept_sect" required>
+                     </div>
+                  </div>
+
+                  <div id="div_id_ref_trans" class="form-group">
+                     <label for="id_ref_trans" class=" requiredField">
+                     Ref. Site Trans. No.<span class="asteriskField">*</span> </label>
+                     <div class="">
+						<input class="form-control" type="text" style="width: 100%;min-width: 200px;"  name="ref_trans"  required>
+                     </div>
+                  </div> 
+                  <div id="div_id_transmitted_to" class="form-group">
+                     <label for="id_transmitted_to" class=" requiredField">
+                     Transmitted To<span class="asteriskField">*</span> </label>
+                     <div class="">
+						<input class="form-control" type="text" style="width: 100%;min-width: 200px;"  name="transmitted_to" value ="ICTD" required>
+                     </div>
+                  </div> 
+                  <div id="div_id_ref_ssr" class="form-group">
+                     <label for="id_ref_ssr" class=" requiredField">
+                     Ref. SSR. No.<span class="asteriskField">*</span> </label>
+                     <div class="">
+						<input class="form-control" type="text" style="width: 100%;min-width: 200px;"  name="ref_ssr"  required>
+                     </div>
+                  </div>
+                  <div id="div_id_remarks" class="form-group">
+                     <label for="id_remarks" class=" requiredField">
+                     Remarks<span class="asteriskField"></span> </label>
+                     <div class="">
+						<input class="form-control" type="text" style="width: 100%;min-width: 200px;"  name="remarks">
+                     </div>
+                  </div>                    
+                  <div id="div_id_forwarded_by" class="form-group">
+                     <label for="id_forwarded_by" class=" requiredField">
+                     Forwarded By<span class="asteriskField">*</span> </label>
+                     <div class="">
+                        <select name="forwarded_by" class="select form-control" id="forwarded_by" onchange = "ItemDescChange(this);">
+                           <option value="" selected>---------</option>
+                           {% for x in data['reference_employee'] %}
+
+                           <option value="{{x['surname']}}, {{x['first_name']}} {{x['middle_name']}} {{x['suffix']}}">{{x['surname']}}, {{x['first_name']}} {{x['middle_name']}} {{x['suffix']}}</option>
+
+                           {% endfor %}
+                        </select>
+                     </div>
+                  </div>
+                  <div id="div_id_received_by" class="form-group">
+                     <label for="id_received_by" class=" requiredField">
+                     Received By<span class="asteriskField">*</span> </label>
+                     <div class="">
+                        <select name="received_by" class="select form-control"  id="received_by" onchange = "ItemDescChange(this);">
+                           <option value="" selected>---------</option>
+                           {% for x in data['reference_employee'] %}
+
+                           <option value="{{x['surname']}}, {{x['first_name']}} {{x['middle_name']}} {{x['suffix']}}">{{x['surname']}}, {{x['first_name']}} {{x['middle_name']}} {{x['suffix']}}</option>
+
+                           {% endfor %}
+                        </select>
+                     </div>
+                  </div>                                                       
+               </fieldset>
+            </div>
+            <div class="modal-footer"><button class="btn btn-light" type="button" data-dismiss="modal">Close</button><input class="btn btn-primary" type="submit" name ="submit" value="Save"> </div>
+         </form>
+      </div>
+   </div>
+</div>
+
+<div id="add2" role="dialog" tabindex="-1" class="modal fade">
+   <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h3>Add Transaction</h3>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+         </div>
+         <form method="POST" action="/app/transactions/its">
+            <div class="content-section p-4">
+               <input type="hidden" name="csrfmiddlewaretoken" value="3aSrxKhSSJTcZeDTzLtYwNrWoFJPHzcWv8UucW72EBmE1RxqL6yK4aHkobaiaopj">
+               <input type="text" name="type" value="2" hidden>
+               <fieldset class = "form-group">
+                  <div id="div_id_trans_no" class="form-group">
+                     <label for="id_trans_no" class=" requiredField">
+                     ITS No.<span class="asteriskField">*</span> </label>
+                     <div class="">
+                        {% if trans_no['transaction_its_no'] == 0 %}
+                        <input class="form-control" type="number" style="width: 100%;min-width: 200px;"  name="trans_no" value="{{trans_no['transactions_its_no']}}" required>
+                        {% else %}
+                        <input class="form-control" type="number" style="width: 100%;min-width: 200px;"  name="trans_no" value="{{trans_no['transactions_its_no']}}" required readonly>
+                        {% endif %}
+                     </div>
+                  </div>                  
+                  <div id="div_id_transmitted_by" class="form-group">
+                     <label for="id_transmitted_by" class=" requiredField">
+                     Transmitted By<span class="asteriskField">*</span> </label>
+                     <div class="">
+                        <select name="employee_index"  class="select form-control" required id="employee_index1" onchange = "SelectChange1(this);">
+                           <option value="" selected>---------</option>
+                           {% for x in data['reference_supplier'] %}
+
+                           <option value="{{x['index']}}">{{x['supplier']}}</option>
+
+                           {% endfor %}
+                        </select>
+                     </div>
+                  </div>
+                  <input class="form-control" type="text" style="width: 100%;min-width: 200px;"  name="transmitted_by" id="transmitted_by1">
+                  <div id="div_id_its_date" class="form-group">
+                     <label for="id_its_date" class=" requiredField">
+                     ITS Date<span class="asteriskField">*</span> </label>
+                     <div class="">
+                  <input class="form-control" type="date" style="width: 100%;min-width: 200px;"  name="its_date"  required>
+                     </div>
+                  </div>
+                  <div id="div_id_department" class="form-group" hidden>
+                     <label for="id_department" class=" requiredField">
+                     Department & Section<span class="asteriskField">*</span> </label>
+                     <div class="">
+                  <input class="form-control" type="text" style="width: 100%;min-width: 200px;"  name="dept_sect" id= "dept_sect1" value=" " required>
+                     </div>
+                  </div>
+
+                  <div id="div_id_ref_trans" class="form-group" hidden>
+                     <label for="id_ref_trans" class=" requiredField">
+                     Ref. Site Trans. No.<span class="asteriskField">*</span> </label>
+                     <div class="">
+                  <input class="form-control" type="text" style="width: 100%;min-width: 200px;"  name="ref_trans" value=" " required>
+                     </div>
+                  </div> 
+                  <div id="div_id_transmitted_to" class="form-group">
+                     <label for="id_transmitted_to" class=" requiredField">
+                     Transmitted To<span class="asteriskField">*</span> </label>
+                     <div class="">
+                  <input class="form-control" type="text" style="width: 100%;min-width: 200px;"  name="transmitted_to" value ="ICTD" required>
+                     </div>
+                  </div> 
+                  <div id="div_id_ref_ssr" class="form-group">
+                     <label for="id_ref_ssr" class=" requiredField">
+                     Ref. SSR. No.<span class="asteriskField">*</span> </label>
+                     <div class="">
+                  <input class="form-control" type="text" style="width: 100%;min-width: 200px;"  name="ref_ssr"  required>
+                     </div>
+                  </div>
+                  <div id="div_id_remarks" class="form-group">
+                     <label for="id_remarks" class=" requiredField">
+                     Remarks<span class="asteriskField"></span> </label>
+                     <div class="">
+                  <input class="form-control" type="text" style="width: 100%;min-width: 200px;"  name="remarks">
+                     </div>
+                  </div>                    
+                  <div id="div_id_forwarded_by" class="form-group" hidden>
+                     <label for="id_forwarded_by" class=" requiredField">
+                     Forwarded By<span class="asteriskField">*</span> </label>
+                     <div class="">
+                        <select name="forwarded_by" class="select form-control"  id="forwarded_by" onchange = "ItemDescChange(this);">
+                           <option value="" selected>---------</option>
+                           {% for x in data['reference_employee'] %}
+
+                           <option value="{{x['surname']}}, {{x['first_name']}} {{x['middle_name']}} {{x['suffix']}}">{{x['surname']}}, {{x['first_name']}} {{x['middle_name']}} {{x['suffix']}}</option>
+
+                           {% endfor %}
+                        </select>
+                     </div>
+                  </div>
+                  <div id="div_id_received_by" class="form-group" hidden>
+                     <label for="id_received_by" class=" requiredField">
+                     Received By<span class="asteriskField">*</span> </label>
+                     <div class="">
+                        <select name="received_by" class="select form-control" id="received_by" onchange = "ItemDescChange(this);">
+                           <option value="" selected>---------</option>
+                           {% for x in data['reference_employee'] %}
+
+                           <option value="{{x['surname']}}, {{x['first_name']}} {{x['middle_name']}} {{x['suffix']}}">{{x['surname']}}, {{x['first_name']}} {{x['middle_name']}} {{x['suffix']}}</option>
+
+                           {% endfor %}
+                        </select>
+                     </div>
+                  </div>                                                       
+               </fieldset>
+            </div>
+            <div class="modal-footer"><button class="btn btn-light" type="button" data-dismiss="modal">Close</button><input class="btn btn-primary" type="submit" name ="submit" value="Save"> </div>
+         </form>
+      </div>
+   </div>
+</div>
+<script type="text/javascript">
+
+      var emp_dept = new Array(4);
+      var emp_name = new Array(4);
+      var supp_name = new Array(4);
+
+        {% for x in data['reference_employee'] %}
+            emp_dept["{{x['index']}}"] = "{{x['department']}}/{{x['section']}}({{x['company']}})";
+            emp_name["{{x['index']}}"] = "{{x['surname']}}, {{x['first_name']}} {{x['middle_name']}}";
+        {% endfor %}
+
+        {% for x in data['reference_supplier'] %}
+
+            supp_name["{{x['index']}}"] = "{{x['supplier']}}";
+        {% endfor %}
+
+
+
+
+        function SelectChange(selectObj) {
+        try {
+           var idx = selectObj.selectedIndex;
+           // get the value of the selected option
+           var which = selectObj.options[idx].value;
+           // use the selected option value to retrieve the list of items from the countryLists array
+           index_name = emp_dept[which];
+           emp_data = emp_name[which];
+           // get the country select element via its known id
+           var dept_sect = document.getElementById("dept_sect");
+           var namea = document.getElementById("transmitted_by");
+           
+           dept_sect.value = index_name;
+           namea.value = emp_data;
+        }
+        catch (err){
+         alert(err.message);
+        }
+     }
+
+      function SelectChange1(selectObj) {
+        try {
+           var idx = selectObj.selectedIndex;
+           // get the value of the selected option
+           var which = selectObj.options[idx].value;
+           // use the selected option value to retrieve the list of items from the countryLists array
+
+           emp_data = supp_name[which];
+           // get the country select element via its known id
+
+           var namea = document.getElementById("transmitted_by1");
+           
+
+           namea.value = emp_data;
+        }
+        catch (err){
+         alert(err.message);
+        }
+     }
+
+ $(document).ready(function(){
+        $('#myTable').DataTable({
+        "aLengthMenu": [[15, 30, 45, -1], [15, 30, 45, "All"]],
+        "iDisplayLength": 15,
+        "order": [[ 1, "asc" ]]
+    });
+     }); 
+</script>
+{% endblock %}
+{% block scripts %}
+{% endblock %}

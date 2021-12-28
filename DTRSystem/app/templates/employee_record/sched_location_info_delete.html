@@ -1,0 +1,156 @@
+{% extends 'base/base.html' %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+    <div class="breadcrumbs-inner">
+        <div class="page-header">
+            <div class="page-title">
+                <ol class="breadcrumb">
+                    <li><a href="{{url_for('index')}}">Home</a></li>
+                    <li><a href="{{url_for('employee_record',content='sched_location_info')}}">Archived Sched and Location List</a></li>
+                    <li class="active">Delete Sched and Location Record</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock breadcrumbs %}
+
+{% block content %}
+    
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <strong class="card-title">Employee Details: {{form['name']}}</strong>
+
+            </div>
+            <div class="card-body">
+                <!-- Credit Card -->
+                <div id="pay-invoice">
+                    <div class="card-body">
+                        <form action="/app/employee_record/sched_location_info/{{form['ref_index']}}/delete" method="post" enctype="multipart/form-data">
+
+                            <!-- Employment location -->
+                            <div class="row">
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="area_3" class="control-label">Area</label>
+                                        <select class="form-control" id="area_3" name="area_3" required>
+                                            <option value="" selected disabled>Please Choose Here</option>
+                                            {% for item in context['area'] %}
+                                                {% if item['code'] == form['area'] %}
+                                                    <option value="{{item['code']}}" selected disabled>{{item['description']}}</option>
+                                                {% else %}
+                                                    <option value="{{item['code']}}" disabled>{{item['description']}}</option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="location_3" class="control-label">Location(Site/Office)</label>
+                                        <select class="form-control" id="location_3" name="location_3" required>
+                                            <option value="" selected disabled>Please Choose Here</option>
+                                            {% for item in context['location'] %}
+                                                {% if item['area']+'-'+item['code'] == form['location'] %}
+                                                    <option value="{{item['area']}}-{{item['code']}}" selected disabled>{{item['description']}}</option>
+                                                {% else %}
+                                                    <option value="{{item['area']}}-{{item['code']}}" disabled>{{item['description']}}</option>
+                                                {% endif %}                                            
+                                                
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="schedule_type_3" class="control-label">Schedule Type</label>
+                                        <select class="form-control" id="schedule_type_3" name="schedule_type_3" required>
+                                            <option value="" selected disabled>Please Choose Here</option>
+                                            {% for item in context['schedule_type'] %}
+                                                {% if item['code'] == form['schedule_type'] %}
+                                                    <option value="{{item['code']}}" selected disabled>{{item['description']}}</option>
+                                                {% else %}
+                                                    <option value="{{item['code']}}" disabled>{{item['description']}}</option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="flexi_type_3" class="control-label">Applicable Flexitime</label>
+                                        <input type="text" name="flexi_type_3" class="form-control" id="flexi_type_3"
+                                            data-val="true" data-val-required="Please enter name" required value="{{form['flexi_type']}}" disabled>
+                                    </div>
+                                </div>
+                            </div> 
+
+                            <div class="form-group">
+                                <label for="reason_edit" class="control-label">Reason For Deleting</label>
+                                <input type="text" name="reason_delete" class="form-control" id="code" data-val="true"
+                                    data-val-required="Please enter name" required>
+                            </div>                                                             
+                            <div>
+                                <input class="btn btn-lg btn-success btn-block" type="submit" name="action"
+                                    value="SAVE">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+$(function(){
+//department section start 
+ var showCity = function(selectedDepartment){
+  $('#section_2 option').hide();
+     $('#section_2').find('option').filter(function(){
+         var section_2 = $(this).val();
+         return section_2.indexOf(selectedDepartment)!=-1;
+     }).show();
+
+     var defaultCity = $('#section_2 option:visible:first').text();
+     $('#section_2').val("{{form['section']}}");
+ };
+
+ var department_2 = $('#department_2').val();
+ showCity(department_2);
+ $('#department_2').change(function(){
+    showCity($(this).val());
+ });
+});
+//department section end
+
+//area location start
+$(function(){
+ 
+ var showCity = function(selectedArea){
+  $('#location_3 option').hide();
+     $('#location_3').find('option').filter(function(){
+         var location_3 = $(this).val();
+         return location_3.indexOf(selectedArea)!=-1;
+     }).show();
+     //set default value
+     var defaultCity = $('#location_3 option:visible:first').text();
+     $('#location_3').val("{{form['location']}}");
+ };
+
+ //set default state
+ var area_3 = $('#area_3').val();
+ showCity(department_2);
+ $('#area_3').change(function(){
+    showCity($(this).val());
+ });
+});
+//area location end
+
+
+
+ </script>
+ {% endblock %}
+ {% include 'base/js.html' %}

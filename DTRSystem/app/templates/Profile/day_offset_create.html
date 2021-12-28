@@ -1,0 +1,106 @@
+{% extends 'base/base.html' %}
+{% block title %}
+    OFFICIAL BUSINESS
+{% endblock title %}
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+    <div class="breadcrumbs-inner">
+        <div class="page-header">
+            <div class="page-title">
+                <ol class="breadcrumb">
+                    <li><a href="{{url_for('index')}}">Home</a></li>
+                    <li><a href="{{url_for('profile_sub',content='day_offset')}}">Restday/holiday offset Application List</a></li>
+                    <li class="active">File New Restday/holiday offset Application</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock breadcrumbs %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <strong class="card-title">Restday/holiday offset Application Details:</strong>
+
+            </div>
+            <div class="card-body">
+                <!-- Credit Card -->
+                <div id="pay-invoice">
+                    <div class="card-body">
+                        <form action="/app/profile/day_offset_create" method="post" enctype="multipart/form-data">
+
+                                                             
+
+                            <div class="row">
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="name" class="control-label">Date Filed</label>
+                                        <input type="date" name="date_filed" class="form-control" id="date_filed"
+                                            data-val="true" data-val-required="Please enter name" required>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="date" class="control-label">Date of Restday/Holiday</label>
+                                        <input type="date" name="date" class="form-control" id="date"
+                                            data-val="true" data-val-required="Please enter name" required>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="name" class="control-label">Date of Offsetting</label>
+                                        <input type="date" name="offset_day" class="form-control" id="offset_day"
+                                            data-val="true" data-val-required="Please enter name" required>
+                                    </div>
+                                </div>
+                           
+                            </div>                            
+                            <div class="form-group">
+                                <label for="name" class="control-label">Reason</label>
+                                <input type="text" name="reason" class="form-control" id="name" data-val="true"
+                                    data-val-required="Please enter name" required>
+                            </div>
+                            <!-- <div class="form-group">
+                                <i>Note:<label id="leave_notes_req">Please attached Travel Slip</label></i>
+                                <input type="file" class="form-control" id="file" name="file" accept="application/pdf ,image/png, image/jpeg" required>   
+                            </div> -->
+                            <div>
+                                <input class="btn btn-lg btn-success btn-block" type="submit" name="action"
+                                    value="File Restday/Holiday Offset" onclick="clickMe(this)">
+                                <input type="text" name="filename" class="form-control" id="filename"
+                                    data-val="true" data-val-required="Please enter name" hidden>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+   function clickMe(input1) {
+      var valId = input1.id;
+      var ob_am = document.getElementById("ob_am");
+      var ob_pm = document.getElementById("ob_pm");
+      var logs_am = document.getElementById("logs_am");
+      var logs_pm = document.getElementById("logs_pm");
+      if (ob_pm.value == "" && ob_am.value == ""){
+         alert("Please fill up Travel In or Travel Out!");
+         $('#ob_pm').prop('required',true);
+         $('#ob_am').prop('required',true);
+      }
+      else{
+         $('#ob_pm').prop('required',false);
+         $('#ob_am').prop('required',false);         
+      }
+    }
+
+</script>
+{% endblock %}

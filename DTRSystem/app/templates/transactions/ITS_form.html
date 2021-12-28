@@ -1,0 +1,387 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% for item in data['transactions_its'] %}
+
+
+<div class="container-fluid noprint" style="width: 100%;">
+   <article class="add" >
+      <button class="btn btn-secondary btn-sm mb-5" type="button" data-toggle="modal" data-target="#edit"  onclick="clickMe(this)">Edit Master<i class="fa fa-plus-square"></i></button>
+      <button class="btn btn-secondary btn-sm mb-5" type="button" data-toggle="modal" data-target="#manage_detail">Manage Detail<i class="fa fa-plus-square"></i></button>      
+   </article>
+</div>
+<div class="container-fluid" style="width: 100%;">
+	<div class="form-row mb-1">
+
+		<div class="col-sm-4"><img class="img-responsive" src="\static\img\BDC.png"></div>
+		<div class="col-sm-5">
+			<div class="form-row">
+				<div class="col" style="font-size:10px;">&nbsp;</div>
+			</div>
+			<div class="form-row">
+				<div class="col" style="font-size:14px;">BDC Corporate Center, Mindanao Ave.</div>
+			</div>
+			<div class="form-row">
+				<div class="col" style="font-size:14px;">Extension, Greater Lagro, Quezon City</div>
+			</div>
+		</div>
+		<div class="col-sm-2" style="font-size: 14px;">
+			<div class="form-row">
+				<div class="col" style="font-size:18px;">&nbsp;</div>
+			</div>
+			<div class="form-row">
+				<div class="col" style="font-size:10px;">ITS No <span style="font-size:14px;color:red;">IT12-</span></div>
+			</div>
+		</div>
+		<div class="col-sm-1">
+
+			<div class="form-row">
+				<div class="col" style="font-size:34px;color:red;">{{item['trans_no']}} </div>
+			</div>			
+		</div>
+	</div>
+	<div class="form-row" style="border-style: solid;border-width: 1px;">
+		<div class="col-sm-3"></div>
+		<div class="col-sm-6" style="text-align:center ;"><strong>INCOMING TRANSMITTAL SLIP</strong></div>
+		<div class="col-sm-3" style="font-size:14px;text-align: right;"><strong>ITB-002-006-002</strong></div>
+	</div>
+
+	<div class="form-row" style="border-style: solid; border-top-style: none; border-bottom-style: none; border-width: 1px;">
+		<div class="col-sm-2" style="font-size:14px;">Transmitted By</div>
+
+		<div class="col-sm-4" style="text-align: center;font-size:14px;">
+			<input type="text" value="{{item['transmitted_by']}}" style="border-style: none;border-bottom-style: solid;border-width: 1px; width: 90%;" readonly>
+		</div>
+
+		
+		<div class="col-sm-2" style="font-size:14px;">ITS Date</div>
+
+		<div class="col-sm-2" style="text-align: center;font-size:14px;">
+			<input type="text" value="{{item['its_date']}}" style="border-style: none;border-bottom-style: solid;border-width: 1px;width: 90%;" readonly>
+		</div>
+		<div class="col-sm-2" style="font-size:14px;border-left-style: solid;border-width: 1px;">{{item['its_no']}}</div>
+	</div>	
+
+	<div class="form-row" style="border-style: solid; border-top-style: none; border-bottom-style: none; border-width: 1px;">
+
+		<div class="col-sm-2" style="font-size:14px;">
+			Dept. & Sec
+		</div>
+
+		<div class="col-sm-4" style="text-align: center;font-size:14px;">
+			<input type="text" value="{{item['dept_sect']}}" style="border-style: none;border-bottom-style: solid;border-width: 1px; width: 90%;" readonly>
+		</div>
+
+		
+		<div class="col-sm-2" style="font-size:14px;">
+			Ref. Site Trans. No.
+		</div>
+
+		<div class="col-sm-2" style="text-align: center;font-size:14px;">
+			<input type="text" value="{{item['ref_trans']}}" style="border-style: none;border-bottom-style: solid;border-width: 1px;width: 90%;" readonly>
+		</div>
+		<div class="col-sm-2" style="font-size:10px;border-left-style: solid;border-width: 1px; text-align:center;">ORIGINAL COPY</div>
+	</div>
+    
+
+	<div class="form-row" style="border-style: solid; border-top-style: none; border-bottom-style: none; border-width: 1px;padding-bottom: 2px;">
+		<div class="col-sm-2" style="font-size:14px;">Transmitted To</div>
+
+		<div class="col-sm-4" style="text-align: center;font-size:14px;"><input type="text" value="ICTD" style="border-style: none;border-bottom-style: solid;border-width: 1px; width: 90%;" readonly></div>
+
+		
+		<div class="col-sm-2" style="font-size:14px;">Ref. SSR. No.</div>
+
+		<div class="col-sm-2" style="text-align: center;font-size:14px;"><input type="text" value="{{item['ref_ssr']}}" style="border-style: none;border-bottom-style: solid;border-width: 1px;width: 90%;" readonly></div>
+		<div class="col-sm-2" style="font-size:10px;border-left-style: solid;border-width: 1px; text-align:center;">&nbsp;</div>
+	</div>
+
+	<div class="form-row" style="border-style: solid; border-width: 1px;">
+
+		<div class="col-sm-3" style="font-size:14px;text-align: center;">MACHINE ID</div>
+
+		<div class="col-sm-3" style="text-align: center;font-size:14px;border-left-style: solid;border-width: 1px;">ITEM DESCRIPTION</div>
+
+		
+		<div class="col-sm-1" style="text-align: center;font-size:14px;border-left-style: solid;border-width: 1px;">QTY</div>
+
+		<div class="col-sm-2" style="text-align: center;font-size:14px;border-left-style: solid;border-width: 1px;">UNIT</div>
+		<div class="col-sm-3" style="text-align: center;font-size:14px;border-left-style: solid;border-width: 1px;">SERIAL NO.</div>
+	</div>
+			{% for i in range(0,10) %}
+			<div class="form-row" style="border-style: solid; border-width: 1px;">
+				{% if data['transactions_its_detail'][i]  %}
+				<div class="col-sm-3" style="font-size:14px;text-align: center;">{{data['transactions_its_detail'][i]['item_machine_id']}}</div>
+
+				<div class="col-sm-3" style="text-align: center;font-size:14px;border-left-style: solid;border-width: 1px;">{{data['transactions_its_detail'][i]['item_description']}}-({{data['transactions_its_detail'][i]['item_status']}})</div>
+
+				
+				<div class="col-sm-1" style="text-align: center;font-size:14px;border-left-style: solid;border-width: 1px;">{{data['transactions_its_detail'][i]['item_qty']}}</div>
+
+				<div class="col-sm-2" style="text-align: center;font-size:14px;border-left-style: solid;border-width: 1px;">{{data['transactions_its_detail'][i]['item_unit']}}</div>
+				<div class="col-sm-3" style="text-align: center;font-size:14px;border-left-style: solid;border-width: 1px;">{{data['transactions_its_detail'][i]['item_serial']}}</div>
+
+				{% else %}
+				<div class="col-sm-3" style="font-size:14px;text-align: center;">&nbsp;</div>
+
+				<div class="col-sm-3" style="text-align: center;font-size:14px;border-left-style: solid;border-width: 1px;">&nbsp;</div>
+
+				
+				<div class="col-sm-1" style="text-align: center;font-size:14px;border-left-style: solid;border-width: 1px;">&nbsp;</div>
+
+				<div class="col-sm-2" style="text-align: center;font-size:14px;border-left-style: solid;border-width: 1px;">&nbsp;</div>
+				<div class="col-sm-3" style="text-align: center;font-size:14px;border-left-style: solid;border-width: 1px;">&nbsp;</div>
+
+				{% endif %}
+
+			</div>
+
+			{% endfor %}
+	<div class="form-row" style="border-style: solid; border-width: 1px;">
+		<div class="col" style="font-size:14px;text-align: center;"><strong><em>REMARKS</em></strong></div>
+	</div>
+	<div class="form-row" style="border-style: solid; border-width: 1px;">
+		<div class="col" style="font-size:14px;text-align: center;height:40px; ">{{item['remarks']}}</div>
+	</div>
+
+
+	<div class="form-row" style="border-style: solid; border-width: 1px;">
+		<div class="col" style="font-size:14px;text-align: center;">(Signature Over Printed Name & Date)</div>
+	</div>
+	<div class="form-row" style="border-style: solid; border-width: 1px;">
+		<div class="col" style="font-size:14px;height:40px; ">Forwarded By</div>
+		<div class="col" style="font-size:14px;text-align: center;height:40px;">
+			<div class="form-row" style="border-style: none; border-width: 1px;">
+				<div class="col" style="font-size:14px;text-align: center;height:20px;">
+				&nbsp;</div>
+			</div>
+			<div class="form-row" style="border-style: none; border-width: 1px;">
+				<div class="col" style="font-size:14px;text-align: center;height:20px;">
+				{{item['forwarded_by']}}</div>
+			</div>
+		
+		</div>
+		<div class="col" style="font-size:14px;height:40px;border-left-style:solid;border-width:1px;  ">Received By</div>
+		<div class="col" style="font-size:14px;text-align: center;height:40px; ">			<div class="form-row" style="border-style: none; border-width: 1px;">
+				<div class="col" style="font-size:14px;text-align: center;height:20px;">
+				&nbsp;</div>
+			</div>
+			<div class="form-row" style="border-style: none; border-width: 1px;">
+				<div class="col" style="font-size:14px;text-align: center;height:20px;">
+				{{item['received_by']}}</div>
+		</div>
+	</div>
+
+</div>
+</div>
+
+<!-- ORIGINAL COPY END -->
+<!-- DUPLICATE COPY -->
+{% include 'transactions/ITS_form_duplicate.html' %}
+<!-- DUPLICATE COPY END -->
+
+
+<div class="col table-responsive noprint" style="margin:0px;padding: 0px;">
+	<table id="myTable" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+		<thead class="thead-dark" style="text-transform: uppercase; ">
+			<tr style="font-size: 13px;">
+				<th>Action</th>
+				<th>Machine ID</th>
+				<th>Item Description</th>
+				<th>Item Model</th>
+				<th>Qty</th>
+				<th>Unit</th>
+				<th>SN</th>
+				
+				
+			</tr>
+		</thead>
+		<tbody>
+			{% for detail in ref['item_details']%}
+				{% if detail["item_qty"] == 0 and detail["is_in"] == false %}
+					<tr style="font-size: 15px;">
+						<td style="margin:0px;padding:0px;padding-left:10px;width: 160px;" nowrap>
+							
+							{% if trans_no['transactions_its_detail_count'] < 10 %}
+								<button class="btn btn-secondary btn-sm" type="button" data-toggle="modal" data-target="#add_item{{detail['index']}}">Add<i class="fa fa-plus-square"></i></button>
+							{% else %}
+								Details Max
+							{% endif %}
+						</td>
+						<td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{detail['item_machine_id']}}</td>
+						<td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{detail['item_description']}} </td>
+						<td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{detail['item_model']}} - ({{detail['item_status']}}) </td>
+						<td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> 1 </td>
+						<td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{detail['item_unit']}} </td>
+						<td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{detail['item_serial']}} </td>
+						
+						
+						
+					</tr>
+					<div id="add_item{{detail['index']}}" role="dialog" tabindex="-1" class="modal fade">
+						<div class="modal-dialog modal-lg" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h3>Issue Item :{{detail['item_model']}} -
+									{{detail['item_serial']}}({{detail['item_machine_id']}}) </h3>
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+								</div>
+								<form method="POST" action="/app/transactions/its/{{item['index']}}/add/{{detail['index']}}">
+									<div class="content-section p-4">
+										<input type="hidden" name="csrfmiddlewaretoken" value="3aSrxKhSSJTcZeDTzLtYwNrWoFJPHzcWv8UucW72EBmE1RxqL6yK4aHkobaiaopj">
+										<fieldset class = "form-group">
+											<input type="text" name="index" maxlength="100" class="textinput textInput form-control" required id="index" value="{{detail['index']}}" hidden>
+											<input type="hidden" name="ref_index" value="{{detail['ref_index']}}">
+											
+											<div id="div_id_transmitted_by" class="form-group">
+												<label for="id_transmitted_by" class=" requiredField">
+													Item Status<span class="asteriskField">*</span> </label>
+													<div class="">
+														<select name="item_status"  class="select form-control" required id="item_status">
+															<option value="" selected hidden>---------</option>
+															<option value="Good">Good</option>
+															<option value="For Repair">For Repair</option>
+															<option value="For Warranty">For Warranty</option>
+															<option value="For Disposal">For Disposal</option>
+														</select>
+													</div>
+												</div>
+												<div id="div_id_its_date" class="form-group">
+													<label for="id_its_date" class=" requiredField">
+													Item Remarks</label>
+													<div class="">
+														<input class="form-control" type="text" style="width: 100%;min-width: 200px;"  name="item_remarks">
+													</div>
+												</div>
+											</fieldset>
+										</div>
+										<div class="modal-footer"><button class="btn btn-light" type="button" data-dismiss="modal">Close</button><input class="btn btn-primary" type="submit" name ="submit" value="Add"> </div>
+									</form>
+								</div>
+							</div>
+						</div>
+					{% endif %}
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+
+
+<div id="manage_detail" role="dialog" tabindex="-1" class="modal fade">
+   <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h3>Delete Item Detail</h3>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+         </div>
+
+
+      <table id="myTable" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+         <thead class="thead-dark" style="text-transform: uppercase; ">
+            <tr style="font-size: 13px;">
+               <th>Action</th>
+               <th>Machine ID</th>
+               <th>Item Description</th>
+               
+               <th>Qty</th>
+               <th>Unit</th>
+               <th>SN</th>               
+               <th>Remarks</th>
+               
+            </tr>
+         </thead>
+         <tbody>
+            {% for detail in data['transactions_its_detail']%}
+            
+            <tr style="font-size: 15px;">
+               <td style="margin:0px;padding:0px;padding-left:10px;width: 145px;" nowrap>
+                  
+                   <a class="btn btn-secondary btn-sm" href="/app/transactions/its/{{item['index']}}/delete/{{detail['index']}}">Delete</a>                  
+               </td>
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{detail['item_machine_id']}}</td>
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{detail['item_description']}} </td>
+               
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{detail['item_qty']}} </td>
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{detail['item_unit']}} </td>
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{detail['item_serial']}} </td> 
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{detail['item_remarks']}} </td> 
+               
+               
+            </tr>
+            {% endfor %}
+         </tbody>
+      </table>
+
+      </div>
+   </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+
+     function clickMe(selectObj){
+     	try {
+
+     	var index = document.getElementById("index");
+     	var dept_sect = document.getElementById("dept_sect");
+     	var transmitted_to = document.getElementById("transmitted_to");
+     	var its_date = document.getElementById("its_date");
+     	var transmitted_by = document.getElementById("transmitted_by");
+
+
+     	var received_by = document.getElementById("received_by");
+     	var forwarded_by = document.getElementById("forwarded_by");
+
+     	index.value = "{{item['index']}}";
+     	dept_sect.value = "{{item['dept_sect']}}";
+     	transmitted_to.value = "{{item['transmitted_to']}}";
+     	its_date.value = "{{item['its_date']}}";
+
+		transmitted_by.value = "{{item['transmitted_by']}}";
+     	received_by.value = "{{item['received_by']}}";
+     	forwarded_by.value = "{{item['forwarded_by']}}";     	
+     	}
+     	catch (err) {
+     		alert(err.message);
+     	}
+
+     	
+
+
+
+     }
+
+ $(document).ready(function(){
+        $('#myTable').DataTable({
+        "aLengthMenu": [[5, 30, 45, -1], [5, 30, 45, "All"]],
+        "iDisplayLength": 5
+    });
+     }); 
+
+</script>
+{% endfor %}
+
+
+{% endblock %}
+{% block scripts %}
+
+
+
+{% endblock %}

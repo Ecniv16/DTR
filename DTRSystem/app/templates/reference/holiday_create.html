@@ -1,0 +1,85 @@
+{% extends 'base/base.html' %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+    <div class="breadcrumbs-inner">
+        <div class="page-header">
+            <div class="page-title">
+                <ol class="breadcrumb">
+                    <li><a href="{{url_for('index')}}">Home</a></li>
+                    <li><a href="{{url_for('reference',content='holiday')}}">Holiday List</a></li>
+                    <li class="active">Add Holiday</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock breadcrumbs %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <strong class="card-title">Holiday Details:</strong>
+
+            </div>
+            <div class="card-body">
+                <!-- Credit Card -->
+                <div id="pay-invoice">
+                    <div class="card-body">
+                        <form action="/app/reference/holiday/create" method="post" enctype="multipart/form-data">
+                            <div class="row">
+                                <div class="col-3">
+                                    <div class="form-group">
+                                        <label for="date" class="control-label">Date</label>
+                                        <input type="date" name="date" class="form-control" id="date" data-val="true"
+                                            data-val-required="Please enter name" required>
+                                    </div>
+                                </div>
+
+                                <div class="col-3">
+                                    <div class="form-group">
+                                        <label for="description" class="control-label">Holiday Type</label>
+                                        <select class="form-control" id="type" name="type" required>
+                                            <option value="" selected disabled>Please Choose Here</option>
+                                            <option value="RH">Regular Holiday</option>
+                                            <option value="SH">Special Holiday</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <div class="form-group">
+                                        <label for="description" class="control-label">Description</label>
+                                        <input type="text" name="description" class="form-control" id="description"
+                                            data-val="true" data-val-required="Please enter name" required>
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <div class="form-group">
+                                        <label for="description" class="control-label">Area Coverage</label>
+                                        <select class="form-control" id="area" name="area" required>
+                                            <option value="" selected disabled>Please Choose Here</option>
+                                            <option value="ALL">ALL</option>
+                                            {% for item in context['area'] %}
+                                                <option value="{{item['code']}}">{{item['description']}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <input class="btn btn-lg btn-success btn-block" type="submit" name="action"
+                                    value="SAVE">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

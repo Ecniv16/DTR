@@ -1,0 +1,114 @@
+{% extends 'base/base.html' %}
+{% block title %}
+    LEAVES
+{% endblock title %}
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+    <div class="breadcrumbs-inner">
+        <div class="row m-0">
+            <div class="col-sm-4">
+                <div class="page-header float-left">
+                    <div class="page-title">
+                        <h1>Dashboard</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-8">
+                <div class="page-header float-right">
+                    <div class="page-title">
+                        <ol class="breadcrumb text-right">
+                            <li class="active">Profile</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock breadcrumbs %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <strong class="card-title">Pending filed list:</strong>
+                    </div>
+                    <div class="col-lg-6" style="text-align: right;">
+                        <a href="{{url_for('profile_sub', content='leave_create')}}" title="File Leave"><i
+                                class="fa fa-plus-circle  fa-2x" style="color: blue;"></i></a>
+                    </div>
+                </div>
+
+            </div>
+            <div class="card-body">
+                <!-- Credit Card -->
+                <div id="pay-invoice">
+                    <div class="card-body">
+
+
+
+                        <div class="col table-responsive" style="margin:0px;padding: 0px;">
+
+                            <table class="table table-bordered table-hover" id="myTable">
+                                <thead style="text-transform: uppercase; ">
+                                    <tr style="font-size: 13px;">
+                                        <th>Drop</th>
+                                        <th>Collection Name</th>
+                                        <th>Count</th>
+
+
+
+
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in collection_list %}
+
+                                    <tr style="font-size: 15px;">
+
+                                        <td><a href="{{url_for('drop_collection',content=item['collection'])}}" data-toggle="tooltip" title="View Form">Drop</a></td>
+                                        <td>{{item['collection']}}</td>
+                                        <td>{{item['count']}}</td>
+                                        
+                                    </tr>
+
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script>
+    $(document).ready(function () {
+
+        $.fn.dataTable.moment('MMM D, YYYY');
+        $.fn.dataTable.moment('D-MMM-YY');
+        $('#myTable').DataTable({
+
+            dom: 'B<"clear">lfrtip',
+            buttons: {
+                name: 'primary',
+                buttons: ['copy', 'csv', 'excel', 'pdf']
+
+            },
+            "order": [[ 1, "desc" ]],
+            "pageLength": 50,
+            "pagingType": "full_numbers"
+        });
+    });
+</script>
+{% endblock %}
+{% include 'base/js.html' %}

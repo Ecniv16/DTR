@@ -1,0 +1,2 @@
+﻿employee_id,SN,first_name,middle_name,last_name,suffix,company,department,section,user_type,schedule_type,branch,location,date_hired,is_flexi,user,password,SL,VL,BL,SP,BRL,ML,PL,MC,CS
+871,309,VINCENT BRYAN,A,AGOYAOY,,BDC,IT,System Dev,Administrator,RWS,BRO,QC Office,07/04/2015,FALSE,VINCE,vince,15,15,1,7,3,105,7,60,1

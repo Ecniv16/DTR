@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class=align-right>
+   <article class="add" >
+     <a class="btn btn-secondary btn-sm" href="/app/software/licenses_detail">Back <i class="fa fa-arrow-left"></i></a>
+   </article>
+</div>
+<article class="media content-section">
+   <div class="col table-responsive" style="margin:0px;padding: 0px;">
+      <table class="table table-bordered table-hover">
+         <thead class="thead-dark" style="text-transform: uppercase; ">
+            <tr style="font-size: 13px;">
+               <th>Category</th>
+               <th>Company</th>
+               <th>Version</th>
+               <th>Year of Procurement</th>
+               <th>SL Code</th>
+               <th>Version (Code)</th>
+               <th>Item Description</th>
+               <th>Media Kit/Installer</th>
+               <th>Product Key</th>
+               <th>Issued To</th>
+               <th>License</th>
+               <th>Remaining</th>
+               
+            </tr>
+         </thead>
+         <tbody>
+            {% for item in data['software_licenses_detail']%}
+            <tr style="font-size: 15px;">
+
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['category']}} </td>
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['company']}} </td>
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['version']}} </td>
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['year_of_procurement']}} </td>
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['sl_code']}} </td>
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['version_code']}} </td>
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['item_description']}} </td>
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['media_kit']}} </td>
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['product_key']}} </td>
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['issued_to']}} </td>
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['total_lic']}} </td>
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['remaining_lic']}} </td>
+               
+            </tr>
+
+            {% endfor %}
+         </tbody>
+      </table>
+   </div>
+</article>
+
+{% endblock %}
+{% block scripts %}
+{% endblock %}

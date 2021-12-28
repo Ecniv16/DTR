@@ -1,0 +1,366 @@
+      <div class="container-fluid nodisplay">
+        <div class="form-row" style="border-style: none;margin-bottom: 5px;">
+          <div class="col-sm-2" style="font-size:12px;border-style: solid; border-width: 1px;"><strong>EMPLOYEE SN:</strong></div>
+          <div class="col-sm-1" style="font-size:12px;border-style: solid; border-width: 1px;text-align: center;"><strong>{{item['basic_info']['SN']}}</strong></div>
+          
+          <div class="col" style="font-size:12px;border-style: none;">&nbsp;</div>
+          <div class="col-sm-2" style="font-size:12px;border-style: solid; border-width: 1px;text-align: center;"><strong>RECEIVING COPY</strong></div>
+          
+        </div>
+        <div class="form-row" style="border-style: none;margin-bottom: 5px;">
+          <div class="col" style="font-size:18px;border-style: none;text-align: center;"><strong>LEAVE APPLICATION FORM</strong></div>
+          
+        </div>
+        <!-- #1st -->
+        <div class="form-row" style="border-style: solid; border-bottom-style: none; border-width: 1px;">
+          <div class="col-sm-2" style="font-size:12px;border-right-style: solid; border-width: 1px;">Name:</div>
+          <div class="col-sm-4" style="text-align: center;font-size:12px;border-right-style: solid; border-width: 1px;">
+            <input type="text" value="{{item['basic_info']['name']}}" style="border-style: none; width: 90%;" readonly>
+          </div>
+          
+          <div class="col-sm-2" style="font-size:12px;border-right-style: solid; border-width: 1px;">Date Filed:</div>
+          <div class="col-sm-4" style="text-align: center;font-size:12px;">
+            <input type="text" value="{{item['date_filed']}}" style="border-style: none;width: 90%;" readonly>
+          </div>
+          
+        </div>
+        <!-- #2nd -->
+        <div class="form-row" style="border-style: solid; border-style: solid; border-width: 1px;">
+          <div class="col-sm-2" style="font-size:12px;border-right-style: solid; border-width: 1px;">Designation:</div>
+          <div class="col-sm-4" style="text-align: center;font-size:12px;border-right-style: solid; border-width: 1px;">
+            <input type="text" value="{{item['basic_info']['designation']}}" style="border-style: none; width: 90%;" readonly>
+          </div>
+          
+          <div class="col-sm-2" style="font-size:12px;border-right-style: solid; border-width: 1px;">Dept./Sec.:</div>
+          <div class="col-sm-4" style="text-align: center;font-size:12px;">
+            <input type="text" value="{{item['basic_info']['dept_sec']}}" style="border-style: none;width: 90%;" readonly>
+          </div>
+          
+        </div>
+        <!-- #3rd -->
+        <div class="form-row mt-2">
+          <div class="col-sm-6" style="font-size:12px;border-style: solid; border-width: 1px;vertical-align: text-top;">
+            <div class="form-row">
+              <div class="col-sm-2">
+                <strong>REASON</strong>
+              </div>
+              <div class="col">
+                <textarea style="height: 150px;border-style: none;width: 100%;"readonly>{{item['reason']}}</textarea>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-1" style="text-align: center;font-size:12px;">  &nbsp; </div>
+          <div class="col-sm-5" style="text-align: center;font-size:12px;border-style: solid; border-width: 1px;">
+            <div class="form-row">
+              <div class="col" style="text-align: center;">
+                <strong>LEAVE APPLICATION</strong>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="col" style="text-align:left;justify-content: left;font-size: 9px;">
+                <i>Note: Approval of leave or special paid leave by Supervisor/Manager is still subject to the availability of paid leave credits and/or compliance with conditions/requirements as determine by HR. Paid leave for in excess of available paid leave credits shall considered as unpaid leave.</i>
+              </div>
+            </div>
+            <div class="form-row" style="border-top-style: solid;border-bottom-style: solid;border-width: 1px;">
+              <div class="col" style="font-size:12px;border-right-style: solid;border-width: 1px;">
+                Type of Leave
+              </div>
+              <div class="col" style="font-size:12px;border-right-style: solid;border-width: 1px;">
+                Paid Hours
+              </div>
+              <div class="col" style="font-size:12px;">
+                Unpaid Hours
+              </div>
+            </div>
+            <div class="form-row" style="border-bottom-style: solid;border-width: 1px;">
+              <div class="col" style="font-size:12px;border-right-style: solid;border-width: 1px;text-align: left;">
+                Sick Leave
+              </div>
+              <div class="col" style="font-size:12px;border-right-style: solid;border-width: 1px;">
+                {% if item['leave_type'] == "SL" %}
+                  {{item['paid_count']}}
+                {% endif %}
+
+
+
+              </div>
+              <div class="col" style="font-size:12px;">
+                {% if item['leave_type'] == "SL" %}
+                  {{item['not_paid_count']}}
+                {% endif %}
+
+              </div>
+            </div>
+            <div class="form-row" style="border-bottom-style: solid;border-width: 1px;">
+              <div class="col" style="font-size:12px;border-right-style: solid;border-width: 1px;text-align: left;">
+                Vacation Leave
+              </div>
+              <div class="col" style="font-size:12px;border-right-style: solid;border-width: 1px;">
+                {% if item['leave_type'] == "VL" and item['from_vl'] == 0 %}
+                  {{item['paid_count']}}
+                {% endif %}
+                {% if item['from_vl'] > 0 %}
+                  {{item['from_vl']}} 
+                {% endif %}                
+              </div>
+              <div class="col" style="font-size:12px;">
+                {% if item['leave_type'] == "VL" %}
+                  {{item['not_paid_count']}}
+                {% endif %}
+              </div>
+            </div>
+            <div class="form-row" style="border-bottom-style: solid;border-width: 1px;">
+              <div class="col" style="font-size:12px;text-align: left;">
+                Special Paid Leave (Indicate type):
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="col" style="font-size:12px;border-right-style: solid;border-width: 1px;text-align: left;">
+                {% if item['leave_type'] != "SL" and item['leave_type'] != "VL" %}
+                  {{item['leave_name']}}
+                {% endif %}
+              </div>
+              <div class="col" style="font-size:12px;border-right-style: solid;border-width: 1px;">
+                {% if item['leave_type'] != "SL" and item['leave_type'] != "VL" %}
+                  {{item['paid_count'] - item['from_vl']}} 
+                {% endif %}
+              </div>
+              <div class="col" style="font-size:12px;">
+                {% if item['leave_type'] != "SL" and item['leave_type'] != "VL" and item['is_with_pay'] =="No" %}
+                 {{item['not_paid_count']}}
+                  
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          
+        </div>
+        <div class="form-row mt-2" style="border-style:solid;border-width: 1px;">
+          <div class="col">
+            <div class="form-row">
+              <div class="col" style="text-align:center;font-size: 12px;">
+                <strong>APPROVAL OF LEAVE</strong>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="col" style="text-align:left;font-size: 10px;">
+                <i><strong>For leaves of 2 days or less:</strong> Must be filed at least one (1) day in advance with approval of the Immediate Supervisor.</i>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="col" style="text-align:left;font-size: 10px;">
+                <i><strong>For leaves of more than 2 days:</strong> Must be filed at least seven (7) days in advance with approval of the Immediate Supervisor and Department Manager.</i>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="col" style="text-align:left;font-size: 10px;">
+                <i><strong>For emergency leaves:</strong> Notify your Immediate Supervisor one (1) hour before the start of shift. Leave form must be filed immediately upon return to work</i>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-row" style="border-style: solid;border-top-style:none;border-width: 1px;font-size: 12px;">
+          <div class="col" style="text-align:center;border-right-style: solid;border-width: 1px;">
+            Leave Period (MM/DD/YYYY)
+          </div>
+          <div class="col" style="text-align:center;border-right-style: solid;border-width: 1px;">
+            Immediate Supervisor
+          </div>
+          <div class="col" style="text-align:center;">
+            Department Manager
+          </div>
+        </div>
+        <div class="form-row" style="border-style: solid;border-top-style:none;border-bottom-style:none;border-width: 1px;font-size: 12px;">
+          <div class="col-sm-2">
+            &nbsp;
+          </div>
+          <div class="col" style="text-align:center;border-right-style: solid;border-width: 1px;">
+            &nbsp;
+          </div>
+          <div class="col-sm-2">
+            &nbsp;
+          </div>
+          <div class="col" style="text-align:center;border-right-style: solid;border-width: 1px;">
+            Signature
+          </div>
+          <div class="col-sm-2">
+            &nbsp;
+          </div>
+          <div class="col" style="text-align:center;">
+            Signature
+          </div>
+        </div>
+        <div class="form-row" style="border-style: solid;border-top-style:none;border-bottom-style:none;border-width: 1px;font-size: 11px;">
+          <div class="col-sm-1">
+            # of Hours:
+          </div>
+          <div class="col-sm-3" style="text-align:center;border-right-style: solid;border-bottom-style: solid;border-width: 1px;">
+            {{item['no_hours']}}
+          </div>
+          <div class="col-sm-2">
+            Approved
+          </div>
+          <div class="col" style="text-align:center;border-right-style: solid;border-bottom-style: solid;border-width: 1px;font-size: 9px;">
+            {% if item['basic_info']['supervisor_remarks_1'] == "Approved" %}
+                  {{item['basic_info']['name']}}
+            {% endif %}
+          </div>
+          <div class="col-sm-2">
+            Approved
+          </div>
+          <div class="col" style="text-align:center;border-bottom-style: solid;border-width: 1px;font-size: 9px;">
+            {% if item['basic_info']['dm_remarks_1'] == "Approved" %}
+                  {{item['basic_info']['name']}}
+            {% endif %}
+          </div>
+        </div>
+        <div class="form-row" style="border-style: solid;border-top-style:none;border-bottom-style:none;border-width: 1px;font-size: 12px;">
+          <div class="col-sm-1">
+            From:
+          </div>
+          <div class="col-sm-3" style="text-align:center;border-right-style: solid;border-bottom-style: solid;border-width: 1px;">
+            {{item['date_from']}}
+          </div>
+          <div class="col-sm-2">
+            Proper Filing
+          </div>
+          <div class="col" style="text-align:center;border-right-style: solid;border-bottom-style: solid;border-width: 1px;">
+            {% if item['basic_info']['supervisor_remarks_2'] == "Proper Filing" %}
+                X
+            {% endif %}
+          </div>
+          <div class="col-sm-2">
+            Disapproved
+          </div>
+          <div class="col" style="text-align:center;border-bottom-style: solid;border-width: 1px;font-size: 9px;">
+            {% if item['basic_info']['dm_remarks_1'] == "Disapproved" %}
+                  {{item['name']}}
+            {% endif %}
+          </div>
+        </div>
+        <div class="form-row" style="border-style: solid;border-top-style:none;border-bottom-style:none;border-width: 1px;font-size: 12px;">
+          <div class="col-sm-1">
+            To:
+          </div>
+          <div class="col-sm-3" style="text-align:center;border-right-style: solid;border-bottom-style: solid;border-width: 1px;">
+            {{item['date_to']}}
+          </div>
+          <div class="col-sm-2">
+            Improper Filing
+          </div>
+          <div class="col" style="text-align:center;border-right-style: solid;border-bottom-style: solid;border-width: 1px;">
+            {% if item['basic_info']['supervisor_remarks_2'] == "Improper Filing" %}
+                X
+            {% endif %}
+          </div>
+          <div class="col-sm-2">
+            &nbsp;
+          </div>
+          <div class="col" style="text-align:center;">
+            &nbsp;
+          </div>
+        </div>
+        <div class="form-row" style="border-style: solid;border-top-style:none;border-bottom-style:none;border-width: 1px;font-size: 10px;">
+          <div class="col-sm-1">
+            Resumption
+          </div>
+          <div class="col-sm-3" style="text-align:center;border-right-style: solid;border-bottom-style: solid;border-width: 1px;">
+            {{item['resume']}}
+          </div>
+          <div class="col-sm-2">
+            Disapproved
+          </div>
+          <div class="col" style="text-align:center;border-right-style: solid;border-bottom-style: solid;border-width: 1px;font-size: 9px;">
+            {% if item['basic_info']['supervisor_remarks_1'] == "Disapproved" %}
+                  {{item['basic_info']['name']}}
+            {% endif %}
+          </div>
+          <div class="col-sm-2">
+            &nbsp;
+          </div>
+          <div class="col" style="text-align:center;">
+            &nbsp;
+          </div>
+        </div>
+        <div class="form-row" style="border-style: solid;border-top-style:none;border-bottom-style:solid;border-width: 1px;font-size: 12px;">
+          <div class="col-sm-1">
+            Work:
+          </div>
+          <div class="col-sm-3" style="text-align:center;border-right-style: solid;border-width: 1px;">
+            &nbsp;
+          </div>
+          <div class="col-sm-2">
+            &nbsp;
+          </div>
+          <div class="col" style="text-align:center;border-right-style: solid;border-width: 1px;">
+            &nbsp;
+          </div>
+          <div class="col-sm-2">
+            &nbsp;
+          </div>
+          <div class="col" style="text-align:center;">
+            &nbsp;
+          </div>
+        </div>
+        <div class="form-row" style="border-style: solid;border-top-style:none;border-bottom-style:solid;border-width: 1px;font-size: 12px;">
+          <div class="col-sm-7" style="text-align:center;border-right-style: solid;border-width: 1px;">
+            <strong>EMPLOYEE DECLARATION</strong>
+          </div>
+          
+          <div class="col" style="text-align:center;">
+            <strong>TO BE FILLED OUT BY HR</strong>
+          </div>
+        </div>
+        <div class="form-row" style="border-style: solid;border-top-style:none;border-bottom-style:none;border-width: 1px;font-size: 10px;justify-content: safe center;">
+          <div class="col-sm-7" style="text-align:center;border-right-style: solid;border-width: 1px;">
+            <i>I declare that this application has been made in good faith. I hereby agree that any false statements made in the filing for leave can be considered as grounds for the Company to penalize or even dismiss me from employment under the Code of Employee Discipline</i>
+          </div>
+          
+          <div class="col" style="text-align:center;border-right-style: solid;border-width: 1px;">
+            <strong>&nbsp;</strong>
+          </div>
+          <div class="col" style="text-align:center;">
+            <strong>&nbsp;</strong>
+          </div>
+        </div>
+        <div class="form-row" style="border-style: solid;border-top-style:none;border-bottom-style:none;border-width: 1px;font-size: 10px;justify-content: safe center;">
+          <div class="col-sm-1" style="text-align:center;">
+            &nbsp;
+          </div>
+          <div class="col-sm-5" style="text-align:center;border-bottom-style: solid;border-width: 1px;">
+            {{item['basic_info']['name']}}
+          </div>
+          <div class="col-sm-1" style="text-align:center;border-right-style: solid;border-width: 1px;">
+            &nbsp;
+          </div>
+          <div class="col" style="text-align:center;border-bottom-style: solid;border-right-style: solid;border-width: 1px;">
+            <strong>&nbsp;</strong>
+          </div>
+          <div class="col" style="text-align:center;border-bottom-style: solid;border-width: 1px;">
+            <strong>&nbsp;</strong>
+          </div>
+        </div>
+        <div class="form-row" style="border-style: solid;border-top-style:none;border-bottom-style:solid;border-width: 1px;font-size: 10px;justify-content: safe center;">
+          <div class="col-sm-1" style="text-align:center;">
+            &nbsp;
+          </div>
+          <div class="col-sm-5" style="text-align:center;">
+            Signature
+          </div>
+          <div class="col-sm-1" style="text-align:center;border-right-style: solid;border-width: 1px;">
+            &nbsp;
+          </div>
+          <div class="col" style="text-align:center;border-right-style: solid;border-width: 1px;">
+            <strong>Human Resources</strong>
+          </div>
+          <div class="col" style="text-align:center;">
+            <strong>Leave Credited/Converted</strong>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="col" style="font-size: 10px;">
+            <i>Note: Reference date for the submission of leave form shall be based on the date received by HR/HR Representative.</i>
+          </div>
+          
+        </div>
+        </div>

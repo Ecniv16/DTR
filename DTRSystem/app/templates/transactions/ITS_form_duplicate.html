@@ -1,0 +1,287 @@
+{% block content %}
+<div class="container-fluid nodisplay" style="width: 100%; margin-top: 160px;">
+	<div class="form-row mb-1">
+
+		<div class="col-sm-4"><img class="img-responsive" src="\static\img\BDC.png"></div>
+
+		<div class="col-sm-5">
+			<div class="form-row">
+				<div class="col" style="font-size:10px;">&nbsp;</div>
+			</div>
+			<div class="form-row">
+				<div class="col" style="font-size:14px;">BDC Corporate Center, Mindanao Ave.</div>
+			</div>
+			<div class="form-row">
+				<div class="col" style="font-size:14px;">Extension, Greater Lagro, Quezon City</div>
+			</div>
+		</div>
+		<div class="col-sm-2" style="font-size: 14px;">
+			<div class="form-row">
+				<div class="col" style="font-size:18px;">&nbsp;</div>
+			</div>
+			<div class="form-row">
+				<div class="col" style="font-size:10px;">ITS No <span style="font-size:14px;color:red;">IT12-</span></div>
+			</div>
+		</div>
+		<div class="col-sm-1">
+
+			<div class="form-row">
+				<div class="col" style="font-size:34px;color:red;">{{item['trans_no']}} </div>
+			</div>			
+		</div>
+	</div>
+	<div class="form-row" style="border-style: solid;border-width: 1px;">
+		<div class="col-sm-3"></div>
+		<div class="col-sm-6" style="text-align:center ;"><strong>INCOMING TRANSMITTAL SLIP</strong></div>
+		<div class="col-sm-3" style="font-size:14px;text-align: right;"><strong>ITB-002-006-002</strong></div>
+	</div>
+
+	<div class="form-row" style="border-style: solid; border-top-style: none; border-bottom-style: none; border-width: 1px;">
+		<div class="col-sm-2" style="font-size:14px;">Transmitted By</div>
+
+		<div class="col-sm-4" style="text-align: center;font-size:14px;">
+			<input type="text" value="{{item['transmitted_by']}}" style="border-style: none;border-bottom-style: solid;border-width: 1px; width: 90%;" readonly>
+		</div>
+
+		
+		<div class="col-sm-2" style="font-size:14px;">ITS Date</div>
+
+		<div class="col-sm-2" style="text-align: center;font-size:14px;">
+			<input type="text" value="{{item['its_date']}}" style="border-style: none;border-bottom-style: solid;border-width: 1px;width: 90%;" readonly>
+		</div>
+		<div class="col-sm-2" style="font-size:14px;border-left-style: solid;border-width: 1px;">{{item['its_no']}}</div>
+	</div>	
+
+	<div class="form-row" style="border-style: solid; border-top-style: none; border-bottom-style: none; border-width: 1px;">
+
+		<div class="col-sm-2" style="font-size:14px;">
+			Dept. & Sec
+		</div>
+
+		<div class="col-sm-4" style="text-align: center;font-size:14px;">
+			<input type="text" value="{{item['dept_sect']}}" style="border-style: none;border-bottom-style: solid;border-width: 1px; width: 90%;" readonly>
+		</div>
+
+		
+		<div class="col-sm-2" style="font-size:14px;">
+			Ref. Site Trans. No.
+		</div>
+
+		<div class="col-sm-2" style="text-align: center;font-size:14px;">
+			<input type="text" value="{{item['ref_trans']}}" style="border-style: none;border-bottom-style: solid;border-width: 1px;width: 90%;" readonly>
+		</div>
+		<div class="col-sm-2" style="font-size:10px;border-left-style: solid;border-width: 1px; text-align:center;">DUPLICATE COPY</div>
+	</div>
+
+
+	<div class="form-row" style="border-style: solid; border-top-style: none; border-bottom-style: none; border-width: 1px;padding-bottom: 2px;">
+		<div class="col-sm-2" style="font-size:14px;">Transmitted To</div>
+
+		<div class="col-sm-4" style="text-align: center;font-size:14px;"><input type="text" value="ICTD" style="border-style: none;border-bottom-style: solid;border-width: 1px; width: 90%;" readonly></div>
+
+		
+		<div class="col-sm-2" style="font-size:14px;">Ref. SSR. No.</div>
+
+		<div class="col-sm-2" style="text-align: center;font-size:14px;"><input type="text" value="{{item['ref_ssr']}}" style="border-style: none;border-bottom-style: solid;border-width: 1px;width: 90%;" readonly></div>
+		<div class="col-sm-2" style="font-size:10px;border-left-style: solid;border-width: 1px; text-align:center;">&nbsp;</div>
+	</div>
+
+	<div class="form-row" style="border-style: solid; border-width: 1px;">
+
+		<div class="col-sm-3" style="font-size:14px;text-align: center;">MACHINE ID</div>
+
+		<div class="col-sm-3" style="text-align: center;font-size:14px;border-left-style: solid;border-width: 1px;">ITEM DESCRIPTION</div>
+
+		
+		<div class="col-sm-1" style="text-align: center;font-size:14px;border-left-style: solid;border-width: 1px;">QTY</div>
+
+		<div class="col-sm-2" style="text-align: center;font-size:14px;border-left-style: solid;border-width: 1px;">UNIT</div>
+		<div class="col-sm-3" style="text-align: center;font-size:14px;border-left-style: solid;border-width: 1px;">SERIAL NO.</div>
+	</div>
+			{% for i in range(0,10) %}
+			<div class="form-row" style="border-style: solid; border-width: 1px;">
+				{% if data['transactions_its_detail'][i]  %}
+				<div class="col-sm-3" style="font-size:14px;text-align: center;">{{data['transactions_its_detail'][i]['item_machine_id']}}</div>
+
+				<div class="col-sm-3" style="text-align: center;font-size:14px;border-left-style: solid;border-width: 1px;">{{data['transactions_its_detail'][i]['item_description']}} - ({{data['transactions_its_detail'][i]['item_status']}})</div>
+
+				
+				<div class="col-sm-1" style="text-align: center;font-size:14px;border-left-style: solid;border-width: 1px;">{{data['transactions_its_detail'][i]['item_qty']}}</div>
+
+				<div class="col-sm-2" style="text-align: center;font-size:14px;border-left-style: solid;border-width: 1px;">{{data['transactions_its_detail'][i]['item_unit']}}</div>
+				<div class="col-sm-3" style="text-align: center;font-size:14px;border-left-style: solid;border-width: 1px;">{{data['transactions_its_detail'][i]['item_serial']}}</div>
+
+				{% else %}
+				<div class="col-sm-3" style="font-size:14px;text-align: center;">&nbsp;</div>
+
+				<div class="col-sm-3" style="text-align: center;font-size:14px;border-left-style: solid;border-width: 1px;">&nbsp;</div>
+
+				
+				<div class="col-sm-1" style="text-align: center;font-size:14px;border-left-style: solid;border-width: 1px;">&nbsp;</div>
+
+				<div class="col-sm-2" style="text-align: center;font-size:14px;border-left-style: solid;border-width: 1px;">&nbsp;</div>
+				<div class="col-sm-3" style="text-align: center;font-size:14px;border-left-style: solid;border-width: 1px;">&nbsp;</div>
+
+				{% endif %}
+
+			</div>
+
+			{% endfor %}
+	<div class="form-row" style="border-style: solid; border-width: 1px;">
+		<div class="col" style="font-size:14px;text-align: center;"><strong><em>REMARKS</em></strong></div>
+	</div>
+	<div class="form-row" style="border-style: solid; border-width: 1px;">
+		<div class="col" style="font-size:14px;text-align: center;height:40px; ">{{item['remarks']}}</div>
+	</div>
+
+
+	<div class="form-row" style="border-style: solid; border-width: 1px;">
+		<div class="col" style="font-size:14px;text-align: center;">(Signature Over Printed Name & Date)</div>
+	</div>
+	<div class="form-row" style="border-style: solid; border-width: 1px;">
+		<div class="col" style="font-size:14px;height:40px; ">Forwarded By</div>
+		<div class="col" style="font-size:14px;text-align: center;height:40px;">
+			<div class="form-row" style="border-style: none; border-width: 1px;">
+				<div class="col" style="font-size:14px;text-align: center;height:20px;">
+				&nbsp;</div>
+			</div>
+			<div class="form-row" style="border-style: none; border-width: 1px;">
+				<div class="col" style="font-size:14px;text-align: center;height:20px;">
+				{{item['forwarded_by']}}</div>
+			</div>
+		
+		</div>
+		<div class="col" style="font-size:14px;height:40px;border-left-style:solid;border-width:1px;  ">Received By</div>
+		<div class="col" style="font-size:14px;text-align: center;height:40px; ">			<div class="form-row" style="border-style: none; border-width: 1px;">
+				<div class="col" style="font-size:14px;text-align: center;height:20px;">
+				&nbsp;
+				</div>
+			</div>
+			<div class="form-row" style="border-style: none; border-width: 1px;">
+				<div class="col" style="font-size:14px;text-align: center;height:20px;">
+				{{item['received_by']}}
+				</div>
+		</div>
+	</div>
+
+</div>
+</div>
+
+
+<div id="edit" role="dialog" tabindex="-1" class="modal fade">
+   <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h3>Edit ITS Master</h3>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+         </div>
+         <form method="POST" action="/app/transactions/its">
+         	 <input class="form-control" type="number" style="width: 100%;min-width: 200px;"  name="index" value="{{item['index']}}" id="index" required readonly hidden>
+         	 <input class="form-control" type="number" style="width: 100%;min-width: 200px;"  name="employee_index" value="{{item['employee_index']}}" id="employee_index" required readonly hidden>
+            <div class="content-section p-4">
+               <input type="hidden" name="csrfmiddlewaretoken" value="3aSrxKhSSJTcZeDTzLtYwNrWoFJPHzcWv8UucW72EBmE1RxqL6yK4aHkobaiaopj">
+               <fieldset class = "form-group">
+                  <div id="div_id_trans_no" class="form-group">
+                     <label for="id_trans_no" class=" requiredField">
+                     ITS No.<span class="asteriskField">*</span> </label>
+                     <div class="">
+
+                        <input class="form-control" type="number" style="width: 100%;min-width: 200px;"  name="trans_no" value="{{item['trans_no']}}" required readonly>
+
+
+                     </div>
+                  </div>                  
+                  <div id="div_id_transmitted_by" class="form-group">
+                     <label for="id_transmitted_by" class=" requiredField">
+                     Transmitted By<span class="asteriskField">*</span> </label>
+                     <div class="">
+                     	<input class="form-control" type="text" style="width: 100%;min-width: 200px;"  name="transmitted_by" id="transmitted_by" readonly>
+                     </div>
+                  </div>
+                  
+                  <div id="div_id_its_date" class="form-group">
+                     <label for="id_its_date" class=" requiredField">
+                     ITS Date<span class="asteriskField">*</span> </label>
+                     <div class="">
+						<input class="form-control" type="date" style="width: 100%;min-width: 200px;" id="its_date" name="its_date" value="{{item['its_date']}}" readonly>
+                     </div>
+                  </div>
+                  <div id="div_id_department" class="form-group">
+                     <label for="id_department" class=" requiredField">
+                     Department & Section<span class="asteriskField">*</span> </label>
+                     <div class="">
+						<input class="form-control" type="text" style="width: 100%;min-width: 200px;"  name="dept_sect" id= "dept_sect" value="{{item['dept_sect']}}" readonly>
+                     </div>
+                  </div>
+
+                  <div id="div_id_ref_trans" class="form-group">
+                     <label for="id_ref_trans" class=" requiredField">
+                     Ref. Site Trans. No.<span class="asteriskField">*</span> </label>
+                     <div class="">
+						<input class="form-control" type="text" style="width: 100%;min-width: 200px;"  name="ref_trans" value="{{item['ref_trans']}}" required>
+                     </div>
+                  </div> 
+                  <div id="div_id_transmitted_to" class="form-group">
+                     <label for="id_transmitted_to" class=" requiredField">
+                     Transmitted To<span class="asteriskField">*</span> </label>
+                     <div class="">
+						<input class="form-control" type="text" style="width: 100%;min-width: 200px;"id="transmitted_to"  name="transmitted_to" value ="ICTD" required readonly>
+                     </div>
+                  </div> 
+                  <div id="div_id_ref_ssr" class="form-group">
+                     <label for="id_ref_ssr" class=" requiredField">
+                     Ref. SSR. No.<span class="asteriskField">*</span> </label>
+                     <div class="">
+						<input class="form-control" type="text" style="width: 100%;min-width: 200px;"  name="ref_ssr" value="{{item['ref_ssr']}}" required>
+                     </div>
+                  </div>
+                  <div id="div_id_remarks" class="form-group">
+                     <label for="id_remarks" class=" requiredField">
+                     Remarks<span class="asteriskField"></span> </label>
+                     <div class="">
+						<input class="form-control" type="text" style="width: 100%;min-width: 200px;"  name="remarks" value="{{item['remarks']}}">
+                     </div>
+                  </div>                    
+                  <div id="div_id_forwarded_by" class="form-group">
+                     <label for="id_forwarded_by" class=" requiredField">
+                     Forwarded By</span> </label>
+                     <div class="">
+                        <select id ="forwarded_by" name="forwarded_by" class="select form-control">
+                           <option value="" selected>---------</option>
+                           {% for x in ref['reference_employee'] %}
+                           		<option value="{{x['surname']}}, {{x['first_name']}} {{x['middle_name']}} {{x['suffix']}}">{{x['surname']}}, {{x['first_name']}} {{x['middle_name']}} {{x['suffix']}}</option>
+                           {% endfor %}
+                        </select>
+                     </div>
+                  </div>
+                  <div id="div_id_received_by" class="form-group">
+                     <label for="id_received_by" class=" requiredField">
+                     Received By</label>
+                     <div class="">
+                        <select id="received_by" name="received_by" class="select form-control">
+                           <option value="" selected>---------</option>
+                           {% for x in ref['reference_employee'] %}
+
+                           <option value="{{x['surname']}}, {{x['first_name']}} {{x['middle_name']}} {{x['suffix']}}">{{x['surname']}}, {{x['first_name']}} {{x['middle_name']}} {{x['suffix']}}</option>
+
+                           {% endfor %}
+                        </select>
+                     </div>
+                  </div>
+                  <div id="div_id_ref_ssr" class="form-group">
+                     <label for="id_ref_ssr" class=" requiredField">
+                     Reason For Editing<span class="asteriskField">*</span> </label>
+                     <div class="">
+						<input class="form-control" type="text" style="width: 100%;min-width: 200px;"  name="reason_edit" required>
+                     </div>
+                  </div>                                                       
+               </fieldset>
+            </div>
+            <div class="modal-footer"><button class="btn btn-light" type="button" data-dismiss="modal">Close</button><input class="btn btn-primary" type="submit" name ="submit" value="Update"> </div>
+         </form>
+      </div>
+   </div>
+</div>
+
+
+{% endblock %}

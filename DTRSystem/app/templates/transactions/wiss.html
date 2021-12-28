@@ -1,0 +1,211 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class=align-right>
+   <article class="add" >
+
+      <button class="btn btn-secondary btn-sm mb-5" type="button" data-toggle="modal" data-target="#add">Add Item<i class="fa fa-plus-square"></i></button>
+   </article>
+</div>
+<article class="media content-section">
+   <div class="col table-responsive" style="margin:0px;padding: 0px;">
+
+      <table id="myTable" class="table table-bordered table-hover">
+         <thead class="thead-dark" style="text-transform: uppercase; ">
+            <tr style="font-size: 13px;">
+               <th>Action</th>
+               <th>WISS#</th>
+               <th>WISS Date</th>
+               <th>Issued To</th>
+               <th>Dept & Sec</th>
+               <th>Ref. OTS No. & GP No.</th>
+               <th>Ref. ISR/SPRF No.</th>
+               <th>Issued By</th>
+               <th>Forwarded By</th>
+               <th>Received By</th>
+               <th>Remarks</th>
+               
+            </tr>
+         </thead>
+         <tbody>
+            {% for item in data['transactions_wiss']%}
+            <tr style="font-size: 15px;">
+               <td style="margin:0px;padding:0px;padding-left:10px;width: 145px;" nowrap>
+                  
+                   <a class="btn btn-secondary btn-sm" href="/app/transactions/wiss/{{item['index']}}">View</a>
+                  <button class="btn btn-danger btn-sm" type="button" data-toggle="modal" data-target="#delete{{item['index']}}">Delete</button>
+               </td>
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['trans_no']}}</td>
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['wiss_date']}} </td>
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['issued_to']}} </td>
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['dept_sect']}} </td> 
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['ref_trans']}} </td> 
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['ref_isr']}} </td>
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['issued_by']}} </td> 
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['forwarded_by']}} </td> 
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['received_by']}} </td> 
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['remarks']}} </td>                 
+            </tr>
+            {% endfor %}
+         </tbody>
+      </table>
+   </div>
+</article>
+<div id="add" role="dialog" tabindex="-1" class="modal fade">
+   <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h3>Add Transaction</h3>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+         </div>
+         <form method="POST" action="/app/transactions/wiss">
+            <div class="content-section p-4">
+               <input type="hidden" name="csrfmiddlewaretoken" value="3aSrxKhSSJTcZeDTzLtYwNrWoFJPHzcWv8UucW72EBmE1RxqL6yK4aHkobaiaopj">
+               <fieldset class = "form-group">
+                  <div id="div_id_trans_no" class="form-group">
+                     <label for="id_trans_no" class=" requiredField">
+                     WISS No.<span class="asteriskField">*</span> </label>
+                     <div class="">
+                        {% if trans_no['transactions_wiss_no'] == 1 or trans_no['transactions_wiss_no'] == "1" %}
+                        <input class="form-control" type="number" style="width: 100%;min-width: 200px;"  name="trans_no" value="{{trans_no['transactions_wiss_no']}}" required>
+                        {% else %}
+                        <input class="form-control" type="number" style="width: 100%;min-width: 200px;"  name="trans_no" value="{{trans_no['transactions_wiss_no']}}" required readonly>
+                        {% endif %}
+                     </div>
+                  </div>                  
+                  <div id="div_id_issued_to" class="form-group">
+                     <label for="id_issued_to" class=" requiredField">
+                     Issued To<span class="asteriskField">*</span> </label>
+                     <div class="">
+                        <select name="employee_index"  class="select form-control" required id="employee_index" onchange = "SelectChange(this);">
+                           <option value="" selected>---------</option>
+                           {% for x in data['reference_employee'] %}
+
+                           <option value="{{x['index']}}">{{x['surname']}}, {{x['first_name']}} {{x['middle_name']}} {{x['suffix']}}</option>
+
+                           {% endfor %}
+                        </select>
+                     </div>
+                  </div>
+                  <input class="form-control" type="text" style="width: 100%;min-width: 200px;"  name="issued_to" id="issued_to" hidden>
+                  <div id="div_id_wiss_date" class="form-group">
+                     <label for="id_wiss_date" class=" requiredField">
+                     WISS Date<span class="asteriskField">*</span> </label>
+                     <div class="">
+                  <input class="form-control" type="date" style="width: 100%;min-width: 200px;"  name="wiss_date"  required>
+                     </div>
+                  </div>
+                  <div id="div_id_department" class="form-group">
+                     <label for="id_department" class=" requiredField">
+                     Department & Section<span class="asteriskField">*</span> </label>
+                     <div class="">
+                  <input class="form-control" type="text" style="width: 100%;min-width: 200px;"  name="dept_sect" id= "dept_sect" required>
+                     </div>
+                  </div>
+
+                  <div id="div_id_ref_trans" class="form-group">
+                     <label for="id_ref_trans" class=" requiredField">
+                     Ref. OTS No. & GP No.</label>
+                     <div class="">
+                  <input class="form-control" type="text" style="width: 100%;min-width: 200px;"  name="ref_trans" value= "{{trans_no['transactions_ots_no']}}">
+                     </div>
+                  </div> 
+                  <div id="div_id_issued_by" class="form-group">
+                     <label for="id_issued_by" class=" requiredField">
+                     Issued By<span class="asteriskField">*</span> </label>
+                     <div class="">
+                  <input class="form-control" type="text" style="width: 100%;min-width: 200px;"  name="issued_by" value ="ICTD" required>
+                     </div>
+                  </div> 
+                  <div id="div_id_ref_isr" class="form-group">
+                     <label for="id_ref_isr" class=" requiredField">
+                     Ref. ISR/SPRF No.<span class="asteriskField">*</span> </label>
+                     <div class="">
+                  <input class="form-control" type="text" style="width: 100%;min-width: 200px;"  name="ref_isr"  required>
+                     </div>
+                  </div>
+                  <div id="div_id_remarks" class="form-group">
+                     <label for="id_remarks" class=" requiredField">
+                     Remarks<span class="asteriskField"></span> </label>
+                     <div class="">
+                  <input class="form-control" type="text" style="width: 100%;min-width: 200px;"  name="remarks">
+                     </div>
+                  </div>                    
+                  <div id="div_id_forwarded_by" class="form-group">
+                     <label for="id_forwarded_by" class=" requiredField">
+                     Forwarded By</label>
+                     <div class="">
+                        <select name="forwarded_by" class="select form-control" id="forwarded_by" onchange = "ItemDescChange(this);">
+                           <option value="" selected>---------</option>
+                           {% for x in data['reference_employee'] %}
+
+                           <option value="{{x['surname']}}, {{x['first_name']}} {{x['middle_name']}} {{x['suffix']}}">{{x['surname']}}, {{x['first_name']}} {{x['middle_name']}} {{x['suffix']}}</option>
+
+                           {% endfor %}
+                        </select>
+                     </div>
+                  </div>
+                  <div id="div_id_received_by" class="form-group">
+                     <label for="id_received_by" class=" requiredField">
+                     Received By</label>
+                     <div class="">
+                        <select name="received_by" class="select form-control"  id="received_by" onchange = "ItemDescChange(this);">
+                           <option value="" selected>---------</option>
+                           {% for x in data['reference_employee'] %}
+
+                           <option value="{{x['surname']}}, {{x['first_name']}} {{x['middle_name']}} {{x['suffix']}}">{{x['surname']}}, {{x['first_name']}} {{x['middle_name']}} {{x['suffix']}}</option>
+
+                           {% endfor %}
+                        </select>
+                     </div>
+                  </div>                                                       
+               </fieldset>
+            </div>
+            <div class="modal-footer"><button class="btn btn-light" type="button" data-dismiss="modal">Close</button><input class="btn btn-primary" type="submit" name ="submit" value="Save"> </div>
+         </form>
+      </div>
+   </div>
+</div>
+<script type="text/javascript">
+
+      var emp_dept = new Array(4);
+      var emp_name = new Array(4);
+        {% for x in data['reference_employee'] %}
+            emp_dept["{{x['index']}}"] = "{{x['department']}}/{{x['section']}}({{x['company']}})";
+            emp_name["{{x['index']}}"] = "{{x['surname']}}, {{x['first_name']}} {{x['middle_name']}}";
+        {% endfor %}
+
+
+
+
+        function SelectChange(selectObj) {
+        try {
+           var idx = selectObj.selectedIndex;
+           // get the value of the selected option
+           var which = selectObj.options[idx].value;
+           // use the selected option value to retrieve the list of items from the countryLists array
+           index_name = emp_dept[which];
+           emp_data = emp_name[which];
+           // get the country select element via its known id
+           var dept_sect = document.getElementById("dept_sect");
+           var namea = document.getElementById("issued_to");
+           
+           dept_sect.value = index_name;
+           namea.value = emp_data;
+        }
+        catch (err){
+         alert(err.message);
+        }
+     }
+
+ $(document).ready(function(){
+        $('#myTable').DataTable({
+        "aLengthMenu": [[15, 30, 45, -1], [15, 30, 45, "All"]],
+        "iDisplayLength": 15,
+        "order": [[ 1, "asc" ]]
+    });
+     }); 
+
+</script>
+{% endblock %}
+{% block scripts %}
+{% endblock %}

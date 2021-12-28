@@ -1,0 +1,280 @@
+{% extends 'base/base.html' %}
+{% block title %}
+ATTENDANCE
+{% endblock title %}
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+  <div class="breadcrumbs-inner">
+    <div class="page-header">
+      <div class="page-title">
+        <ol class="breadcrumb">
+          <li><a href="{{url_for('index')}}">Home</a></li>
+          <li class="active">Attendance</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock breadcrumbs %}
+
+{% block content %}
+
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-header">
+        <div class="row">
+          <div class="col-lg-12">
+            <strong class="card-title">ATTENDANCE RECORD:</strong>
+          </div>
+        </div>
+
+      </div>
+      <div class="card-body">
+        <!-- Credit Card -->
+
+        <form method="POST" action="/app/profile/attendance">
+          <div class="row">
+            <div class="col-lg-3">
+              Month
+              <select class="form-control" id="cutoff_month" name="cutoff_month">
+
+                <option value="01">January</option>
+                <option value="02">February</option>
+                <option value="03">March</option>
+                <option value="04">April</option>
+                <option value="05">May</option>
+                <option value="06">June</option>
+                <option value="07">July</option>
+                <option value="08">August</option>
+                <option value="09">September</option>
+                <option value="10">October</option>
+                <option value="11">November</option>
+                <option value="12">December</option>
+
+              </select>
+            </div>
+            <div class="col-lg-3">
+              Cutoff
+              <select class="form-control" id="cutoff_day" name="cutoff_day">
+                <option value="1">1st Half</option>
+                <option value="16">2nd Half</option>
+
+              </select>
+            </div>
+            <div class="col-lg-3">
+              Year
+              <input class="form-control" type="number" name="cutoff_year" min="1900" max="2099"
+                value="{{session['att_year']}}">
+            </div>
+
+            <div class="col-lg-3">
+              &nbsp;
+              <input type="submit" class="form-control btn-warning" name="action" value="Generate">
+            </div>
+          </div>
+
+        </form>
+        <div class="card-body">
+          <div class="row">
+            <div class="col col-sm-12 table-responsive table table-bordered"
+              style="width: 100%; margin:0px;height: 440px;">
+              <table id="activity_page" style="width: 100%;">
+
+                <thead class="thead-dark" style="text-transform: uppercase;">
+
+                  <tr>
+                    <th style="font-size: 10px; ">Date</th>
+                    <th style="font-size: 10px; ">Offset<br> To</th>
+                    <th style="font-size: 10px; ">Day <br>Remarks</th>
+                    <th style="font-size: 10px; ">Late <br>(no. of <br>mins.)</th>
+                    <th style="font-size: 10px; ">In</th>
+                    <th style="font-size: 10px; ">Out</th>
+                    <th style="font-size: 10px; ">Undertime <br>(no. of <br>mins.)</th>
+                    <th style="font-size: 10px; ">REG OT</th>
+                    <th style="font-size: 10px; ">RD/DO/SH/<br>RH BASIC</th>
+                    <th style="font-size: 10px; ">RD/DO/SH/<br>RH OT</th>
+
+                    <th style="font-size: 10px; ">Sched Time</th>
+                    <th style="font-size: 10px; ">Branch/Loc</th>
+                    <th style="font-size: 10px;width: 40px; ">LEAVE</th>
+                    <th style="font-size: 10px;width: 40px; ">MIL</th>
+                    <th style="font-size: 10px;width: 40px; ">OFB</th>
+                    <th style="font-size: 10px;width: 40px; ">OT</th>
+                    <th style="font-size: 10px;width: 40px; ">WFH</th>
+                    <th style="font-size: 10px;width: 40px; ">OFF</th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                  {% for x in data['dtr']%}
+
+                  <tr>
+                    <td style="font-size: 12px; line-height: 0px;" nowrap>{{x['date_now']}}
+                      {% if x[sched_time] =="00:00-00:00" %}
+                      <span style="color:red;">{{x['day_name']}}</span>
+                      {% else %}
+                      <span>{{x['day_name']}}</span>
+                      {% endif %}
+                    </td>
+
+                    <td style="font-size: 12px; line-height: 0px;">{{x['offset_to']}}
+                    </td>
+
+
+                    <td style="font-size: 12px; line-height: 0px;">
+                      {% if  ":L" in x['day_remarks']  %}
+                      {% if  ":W" in x['day_remarks']  %}
+                      {{x['day_remarks'][:4]}}<span style="color:red;"><strong>{{x['day_remarks'][4:]}}</strong></span>
+                      {% else %}
+                      <span style="color:red;"><strong>{{x['day_remarks']}}</strong></span>
+                      {% endif %}
+                      {% else %}
+                      {{x['day_remarks']}}
+                      {% endif %}
+                    </td>
+
+
+
+                    <td style=" font-size: 12px;line-height: 0px;">
+                      {% if x['no_of_lates'] != "" and x['no_of_lates'] != 0 %}
+                      <span style="color:red;"><strong>{{x['no_of_lates']}}</strong></span>
+                      {% endif %}
+                    </td>
+
+
+                    <td style="font-size: 12px; line-height: 0px;">{{x['first_in']}}
+                    </td>
+                    <td style="font-size: 12px; line-height: 0px;">{{x['last_out']}}
+                    </td>
+                    <td style=" font-size: 12px;line-height: 0px;">
+                      {% if x['under_time'] != "" and x['under_time'] != 0 %}
+                      <span style="color:red;"><strong>{{x['under_time']}}</strong></span>
+                      {% endif %}
+                    </td>
+                    <td style="font-size: 12px; line-height: 0px;">
+                      {% if x['regular_ot'] > 0%}
+                      {{x['regular_ot']}}
+                      {% endif %}
+                    </td>
+                    <td style="font-size: 12px; line-height: 0px;">
+                      {% if x['sp_basic'] > 0%}
+                      {{x['sp_basic']}}
+                      {% endif %}
+                    </td>
+                    <td style="font-size: 12px; line-height: 0px;">
+                      {% if x['sp_ot'] > 0%}
+                      {{x['sp_ot']}}
+                      {% endif %}
+                    </td>
+
+                    <td style="font-size: 12px; line-height: 0px;" nowrap>{{x['sched_time']}}
+                      ({{x['working_hour']}}) - {{x['schedule_type']}}</td>
+                    <td style="font-size: 12px; line-height: 0px;" nowrap>{{x['branch']}}
+                      ({{x['location']}})</td>
+
+                    <td style="font-size: 12px; line-height: 0px;"><a
+                        href="/app/archived/leave/{{x['leave_index']}}">{{x['leave_start']}}</a>
+                    </td>
+
+                    <td style="font-size: 12px; line-height: 0px;"><a
+                        href="/app/archived/missing_logs/{{x['logs_index']}}">{{x['logs_start']}}</a></td>
+                    <td style="font-size: 12px; line-height: 0px;"><a
+                        href="/app/archived/ob/{{x['ob_index']}}">{{x['ob_start']}}</a></td>
+                    <td style="font-size: 12px; line-height: 0px;"><a
+                        href="/app/archived/ot/{{x['ot_index']}}">{{x['ot_start']}}</a></td>
+                    <td style="font-size: 12px; line-height: 0px;"><a
+                        href="/app/archived/wfh/{{x['wfh_index']}}">{{x['wfh_start']}}</a></td>
+                    <td style="font-size: 12px; line-height: 0px;"><a
+                        href="/app/archived/wfh/{{x['wfh_index']}}">{{x['offset_start']}}</a></td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+
+            </div>
+          </div>
+
+          {% if data['payroll'] %}
+          <div class="row">
+            <div class="col">
+              Summary:
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col table-responsive table table-bordered" style="width: 100%; margin:0px;">
+
+              <table id="activity_page" style="width: 100%;">
+
+                <thead class="thead-dark" style="text-transform: uppercase;">
+
+                  <tr>
+
+                    <th style="font-size: 10px;" nowrap>Basic</th>
+                    <th style="font-size: 10px;" nowrap>Reg OT</th>
+                    <th style="font-size: 10px;" nowrap>Absent</th>
+                    <th style="font-size: 10px;" nowrap>RD Basic(Hrs)</th>
+                    <th style="font-size: 10px;" nowrap>RD OT (>8Hrs)</th>
+                    <th style="font-size: 10px; min-width: 20px;">RH Basic(Hrs)</th>
+                    <th style="font-size: 10px; min-width: 20px;">RH OT (>8Hrs)</th>
+                    <th style="font-size: 10px; min-width: 20px;">RH/RD Basic</th>
+                    <th style="font-size: 10px; min-width: 20px;">RH/RD OT (>8Hrs)</th>
+                    <th style="font-size: 10px; min-width: 20px;">SH Basic(Hrs)</th>
+                    <th style="font-size: 10px; min-width: 20px;">SH OT (>8Hrs)</th>
+                    <th style="font-size: 10px; min-width: 20px;">SH/RD Basic</th>
+                    <th style="font-size: 10px; min-width: 20px;">SH/RD OT (>8Hrs)</th>
+
+                  </tr>
+                </thead>
+                <tbody>
+
+                  {% for x in data['payroll']%}
+
+                  <tr>
+
+                    <td style="font-size: 12px;">{{x['basic']}}</td>
+                    <td style="font-size: 12px;">{{x['reg_ot']}}</td>
+                    <td style="font-size: 12px;">{{'%0.2f'|format(x['absent']|float)}}</td>
+                    <td style="font-size: 12px;">{{x['rd_basic']}}</td>
+                    <td style="font-size: 12px;">{{x['rd_ot']}}</td>
+                    <td style="font-size: 12px;">{{x['rh_basic']}}</td>
+                    <td style="font-size: 12px;">{{x['rh_ot']}}</td>
+                    <td style="font-size: 12px;">{{x['rd_rh_basic']}}</td>
+                    <td style="font-size: 12px;">{{x['rd_rh_ot']}}</td>
+                    <td style="font-size: 12px;">{{x['sh_basic']}}</td>
+                    <td style="font-size: 12px;">{{x['sh_ot']}}</td>
+                    <td style="font-size: 12px;">{{x['sh_rd_basic']}}</td>
+                    <td style="font-size: 12px;">{{x['sh_rd_ot']}}</td>
+
+                  </tr>
+
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<script>
+  function pad(str, max) {
+    str = str.toString();
+    return str.length < max ? pad("0" + str, max) : str;
+  }
+  var credit = [];
+  $(document).ready(function () {
+
+
+    var numx = pad("{{session['att']}}", 2);
+    var numd = "{{session['att_day']}}";
+    $("#cutoff_month option[value=" + numx + "]").attr("selected", true);
+    $("#cutoff_day option[value=" + numd + "]").attr("selected", true);
+  });
+</script>
+{% endblock %}
+{% include 'base/js.html' %}

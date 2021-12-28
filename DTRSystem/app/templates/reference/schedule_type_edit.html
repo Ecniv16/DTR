@@ -1,0 +1,258 @@
+{% extends 'base/base.html' %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+    <div class="breadcrumbs-inner">
+        <div class="page-header">
+            <div class="page-title">
+                <ol class="breadcrumb">
+                    <li><a href="{{url_for('index')}}">Home</a></li>
+                    <li><a href="{{url_for('reference',content='schedule_type')}}">Schedule Type List</a></li>
+                    <li class="active">Edit Schedule Type</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock breadcrumbs %}
+
+{% block content %}
+
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <strong class="card-title">Schedule Type Details:</strong>
+            <div class="card-body">
+                <!-- Credit Card -->
+                <div id="pay-invoice">
+                    <div class="card-body">
+                        <form action="/app/reference/schedule_type/{{form['index']}}/edit" method="post"
+                            enctype="multipart/form-data">
+                            <div class="row">
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label for="code" class="control-label">Code</label>
+                                        <input type="text" name="code" class="form-control" id="code" data-val="true"
+                                            data-val-required="Please enter name" required value="{{form['code']}}">
+                                    </div>
+                                </div>
+
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label for="description" class="control-label">Description</label>
+                                        <input type="text" name="description" class="form-control" id="description"
+                                            data-val="true" data-val-required="Please enter name" required
+                                            value="{{form['description']}}">
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label for="date" class="control-label">Applied Date</label>
+                                        <input type="date" name="date" class="form-control" id="date" data-val="true"
+                                            data-val-required="Please enter name" required value="{{form['date']}}" min="1900-01-01" max="2099-12-31">
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div align="center">
+                                <h4><strong>Week # 1</strong></h4>
+                                <hr>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="code" class="control-label">Schedule</label><br>
+                                        <label for="code" class="control-label">IN</label><br>
+                                        <label for="code" class="control-label">OUT</label>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="description" class="control-label">Monday</label>
+                                        <input type="time" name="mw1_in" class="form-control" id="mw1_in"
+                                            data-val="true" data-val-required="Please enter name" required
+                                            value="{{form['mw1_in']}}">
+                                        <input type="time" name="mw1_out" class="form-control" id="mw1_out"
+                                            data-val="true" data-val-required="Please enter name" required
+                                            value="{{form['mw1_out']}}">
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="description" class="control-label">Tuesday</label>
+                                        <input type="time" name="tw1_in" class="form-control" id="tw1_in"
+                                            data-val="true" data-val-required="Please enter name" required
+                                            value="{{form['tw1_in']}}">
+                                        <input type="time" name="tw1_out" class="form-control" id="tw1_out"
+                                            data-val="true" data-val-required="Please enter name" required
+                                            value="{{form['tw1_out']}}">
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="description" class="control-label">Wednesday</label>
+                                        <input type="time" name="ww1_in" class="form-control" id="ww1_in"
+                                            data-val="true" data-val-required="Please enter name" required
+                                            value="{{form['ww1_in']}}">
+                                        <input type="time" name="ww1_out" class="form-control" id="ww1_out"
+                                            data-val="true" data-val-required="Please enter name" required
+                                            value="{{form['ww1_out']}}">
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="description" class="control-label">Thursday</label>
+                                        <input type="time" name="thw1_in" class="form-control" id="thw1_in"
+                                            data-val="true" data-val-required="Please enter name" required
+                                            value="{{form['thw1_in']}}">
+                                        <input type="time" name="thw1_out" class="form-control" id="thw1_out"
+                                            data-val="true" data-val-required="Please enter name" required
+                                            value="{{form['thw1_out']}}">
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="description" class="control-label">Friday</label>
+                                        <input type="time" name="fw1_in" class="form-control" id="fw1_in"
+                                            data-val="true" data-val-required="Please enter name" required
+                                            value="{{form['fw1_in']}}">
+                                        <input type="time" name="fw1_out" class="form-control" id="fw1_out"
+                                            data-val="true" data-val-required="Please enter name" required
+                                            value="{{form['fw1_out']}}">
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="description" class="control-label">Saturday</label>
+                                        <input type="time" name="saw1_in" class="form-control" id="saw1_in"
+                                            data-val="true" data-val-required="Please enter name" required
+                                            value="{{form['saw1_in']}}">
+                                        <input type="time" name="saw1_out" class="form-control" id="saw1_out"
+                                            data-val="true" data-val-required="Please enter name" required
+                                            value="{{form['saw1_out']}}">
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="description" class="control-label">Sunday</label>
+                                        <input type="time" name="suw1_in" class="form-control" id="suw1_in"
+                                            data-val="true" data-val-required="Please enter name" required
+                                            value="{{form['suw1_in']}}">
+                                        <input type="time" name="suw1_out" class="form-control" id="suw1_out"
+                                            data-val="true" data-val-required="Please enter name" required
+                                            value="{{form['suw1_out']}}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div align="center">
+                                <h4><strong>Week # 2</strong></h4>
+                                <hr>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="code" class="control-label">Schedule</label><br>
+                                        <label for="code" class="control-label">IN</label><br>
+                                        <label for="code" class="control-label">OUT</label>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="description" class="control-label">Monday</label>
+                                        <input type="time" name="mw2_in" class="form-control" id="mw2_in"
+                                            data-val="true" data-val-required="Please enter name" required
+                                            value="{{form['mw2_in']}}">
+                                        <input type="time" name="mw2_out" class="form-control" id="mw2_out"
+                                            data-val="true" data-val-required="Please enter name" required
+                                            value="{{form['mw2_out']}}">
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="description" class="control-label">Tuesday</label>
+                                        <input type="time" name="tw2_in" class="form-control" id="tw2_in"
+                                            data-val="true" data-val-required="Please enter name" required
+                                            value="{{form['tw2_in']}}">
+                                        <input type="time" name="tw2_out" class="form-control" id="tw2_out"
+                                            data-val="true" data-val-required="Please enter name" required
+                                            value="{{form['tw2_out']}}">
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="description" class="control-label">Wednesday</label>
+                                        <input type="time" name="ww2_in" class="form-control" id="ww2_in"
+                                            data-val="true" data-val-required="Please enter name" required
+                                            value="{{form['ww2_in']}}">
+                                        <input type="time" name="ww2_out" class="form-control" id="ww2_out"
+                                            data-val="true" data-val-required="Please enter name" required
+                                            value="{{form['ww2_out']}}">
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="description" class="control-label">Thursday</label>
+                                        <input type="time" name="thw2_in" class="form-control" id="thw2_in"
+                                            data-val="true" data-val-required="Please enter name" required
+                                            value="{{form['thw2_in']}}">
+                                        <input type="time" name="thw2_out" class="form-control" id="thw2_out"
+                                            data-val="true" data-val-required="Please enter name" required
+                                            value="{{form['thw2_out']}}">
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="description" class="control-label">Friday</label>
+                                        <input type="time" name="fw2_in" class="form-control" id="fw2_in"
+                                            data-val="true" data-val-required="Please enter name" required
+                                            value="{{form['fw2_in']}}">
+                                        <input type="time" name="fw2_out" class="form-control" id="fw2_out"
+                                            data-val="true" data-val-required="Please enter name" required
+                                            value="{{form['fw2_out']}}">
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="description" class="control-label">Saturday</label>
+                                        <input type="time" name="saw2_in" class="form-control" id="saw2_in"
+                                            data-val="true" data-val-required="Please enter name" required
+                                            value="{{form['saw2_in']}}">
+                                        <input type="time" name="saw2_out" class="form-control" id="saw2_out"
+                                            data-val="true" data-val-required="Please enter name" required
+                                            value="{{form['saw2_out']}}">
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="description" class="control-label">Sunday</label>
+                                        <input type="time" name="suw2_in" class="form-control" id="suw2_in"
+                                            data-val="true" data-val-required="Please enter name" required
+                                            value="{{form['suw2_in']}}">
+                                        <input type="time" name="suw2_out" class="form-control" id="suw2_out"
+                                            data-val="true" data-val-required="Please enter name" required
+                                            value="{{form['suw2_out']}}">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="reason_edit" class="control-label">Reason For Editing</label>
+                                <input type="text" name="reason_edit" class="form-control" id="reason_edit"
+                                    data-val="true" data-val-required="Please enter name" required
+                                    value="{{form['reason_edit']}}">
+                            </div>
+
+                            <div>
+                                <input class="btn btn-lg btn-success btn-block" type="submit" name="action"
+                                    value="SAVE">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

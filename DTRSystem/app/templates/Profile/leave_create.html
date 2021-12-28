@@ -1,0 +1,329 @@
+{% extends 'base/base.html' %}
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+    <div class="breadcrumbs-inner">
+        <div class="page-header">
+            <div class="page-title">
+                <ol class="breadcrumb">
+                    <li><a href="{{url_for('index')}}">Home</a></li>
+                    <li><a href="{{url_for('profile_sub',content='leave')}}">Leave Application List</a></li>
+                    <li class="active">File New Leave Application</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock breadcrumbs %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <strong class="card-title">Leave Form Details:</strong>
+
+            </div>
+            <div class="card-body">
+                <!-- Credit Card -->
+                <div id="pay-invoice">
+                    <div class="card-body">
+                       
+                        <form action="/app/profile/leave_create" method="post" enctype="multipart/form-data">
+                            <input type="text" class="form-control" id="param" required hidden>
+
+                            <div class="row" hidden>
+                                <div class="col-lg-3">
+                                    <input type="number" class="form-control" id="iswp" value="0" required>
+                                </div>
+                                <div class="col-lg-3">
+                                    <input type="number" class="form-control" id="iswop" value="0" required>
+                                </div>
+                                <div class="col-lg-3">
+                                    <input type="number" class="form-control" id="isut" value="0" required>
+                                </div>  
+                                <div class="col-lg-3">
+                                    <input type="number" class="form-control" id="istotal" value="0" required>
+                                </div>
+                            </div>                                                              
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="" align="center" style="border-bottom: solid;">
+                                        <input type="checkbox" name="" id="cb1">Whole Day With Pay
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label for="name" class="control-label">Date From</label>
+                                                <input type="date" name="from_date_wp" class="form-control"
+                                                    id="from_date_wp" data-val="true"
+                                                    data-val-required="Please enter name" min="1900-01-01" max="2099-12-31" readonly onkeyup="wp(this)" onkeydown="return false">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label for="name" class="control-label">Date To</label>
+                                                <input type="date" name="to_date_wp" class="form-control"
+                                                    id="to_date_wp" data-val="true"
+                                                    data-val-required="Please enter name" min="1900-01-01" max="2099-12-31" readonly  onchange="wp(this)" onkeydown="return false">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="" align="center" style="border-bottom: solid;">
+                                        <input type="checkbox" name="" id="cb2">Whole Day Without Pay
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label for="name" class="control-label">Date From</label>
+                                                <input type="date" name="from_date_wop" class="form-control"
+                                                    id="from_date_wop" data-val="true"
+                                                    data-val-required="Please enter name" min="1900-01-01" max="2099-12-31" readonly onkeyup="wop(this)">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label for="name" class="control-label">Date To</label>
+                                                <input type="date" name="to_date_wop" class="form-control"
+                                                    id="to_date_wop" data-val="true"
+                                                    data-val-required="Please enter name" min="1900-01-01" max="2099-12-31" readonly onkeyup="wop(this)">
+                                            </div>
+                                        </div>
+                                    </div> 
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="" align="center" style="border-bottom: solid;">
+                                        <input type="checkbox" name="" id="cb3">File Under Time
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <label for="name" class="control-label">Date From</label>
+                                                <input type="date" name="from_date_ut" class="form-control"
+                                                    id="from_date_ut" data-val="true"
+                                                    data-val-required="Please enter name" min="1900-01-01" max="2099-12-31" readonly  onkeyup="ut(this)">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <label for="name" class="control-label">Date To</label>
+                                                <input type="date" name="to_date_ut" class="form-control"
+                                                    id="to_date_ut" data-val="true"
+                                                    data-val-required="Please enter name" min="1900-01-01" max="2099-12-31" readonly  onkeyup="ut(this)">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <label for="name" class="control-labe">if Leave Type(Others)</label>
+                                                <input type="text" name="no_hours_ut" class="form-control"
+                                                    id="no_hours_ut" data-val="true"
+                                                    data-val-required="Please Leave Type" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <label for="name" class="control-label">With Pay</label>
+                                                <select class="form-control" id="is_with_pay_ut" name="is_with_pay_ut">
+                                                    <option value="Yes">Yes</option>
+                                                    <option value="No">No</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="name" class="control-label">Date Filed</label>
+                                        <input type="date" name="date_filed" class="form-control" id="date_filed"
+                                            data-val="true" data-val-required="Please enter name" min="1900-01-01" max="2099-12-31" required>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="name" class="control-label">Date Resume</label>
+                                        <input type="text" name="ref_index" class="form-control" id="ref_index"
+                                            data-val="true" data-val-required="Please enter name" required value="{{ref['reference_leave'][0]['ref_index']}}" hidden>
+                                        <input type="date" name="resume" class="form-control" id="resume"
+                                            data-val="true" data-val-required="Please enter name" min="1900-01-01" max="2099-12-31" required>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="name" class="control-label">Leave Type</label>
+                                        <select id="leave_type" class="form-control" name="leave_type"
+                                            style="width: 100%; height: 90%;" onchange="depChange(this);" required>
+                                            <option value="" disabled selected>Choose Here</option>
+                                            {% for x in ref['reference_leave'] %}
+                                            {% if x['no_hours'] != 0 or(x['reference_code']=="SL" or x['reference_code']=="VL")  %}
+                                            <option value="{{x['reference_code']}}">{{x['reference_name']}}</option>
+                                            {% endif %}
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="name" class="control-labe">if Leave Type(Others)</label>
+                                        <input type="text" name="others" class="form-control" id="name" data-val="true"
+                                            data-val-required="Please Leave Type">
+                                    </div>
+                                </div>
+                            </div>                            
+                            <div class="form-group">
+                                <label for="name" class="control-label">Reason</label>
+                                <input type="text" name="reason" class="form-control" id="name" data-val="true"
+                                    data-val-required="Please enter name" required>
+                            </div>
+                            <div class="form-group">
+                                <i>Note:<label id="leave_notes_req"></label></i>
+                                <input type="file" class="form-control" id="file" name="file" accept="application/pdf ,image/png, image/jpeg" required>   
+                            </div>
+                            <div>
+                                <input class="btn btn-lg btn-success btn-block" type="submit" name="action"
+                                    value="File Leave">
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    var credit = []; 
+    {% for cred in ref['reference_leave'] %}
+        credit["{{cred['reference_code']}}"] = "{{cred['remaining_hours']}}"; 
+    {% endfor %}
+
+
+
+    function wp(input) {
+        var wpfrom = new Date(document.getElementById('from_date_wp').value);
+        var wpto = new Date(document.getElementById('to_date_wp').value);
+        var Difference_In_Time = wpto.getTime() - wpfrom.getTime();
+
+        try{
+        if ( isNaN(Difference_In_Time) == false){
+            document.getElementById('iswp').value = (Difference_In_Time/ (1000 * 3600 * 24))+1;   
+            document.getElementById('istotal').value = parseInt(document.getElementById('iswp').value) + 
+                parseInt(document.getElementById('iswop').value) + parseInt(document.getElementById('isut').value);
+            depChange(document.getElementById('leave_type'));
+        }
+        else {
+            document.getElementById('iswp').value = 0; 
+            document.getElementById('istotal').value = parseInt(document.getElementById('iswp').value) + 
+                parseInt(document.getElementById('iswop').value) + parseInt(document.getElementById('isut').value);
+            depChange(document.getElementById('leave_type'));
+        }
+    }
+    catch(ex){
+        alert(ex.message);
+    }
+
+    }
+
+    function wop(input) {
+        var wpfrom = new Date(document.getElementById('from_date_wop').value);
+        var wpto = new Date(document.getElementById('to_date_wop').value);
+        
+        var Difference_In_Time = wpto.getTime() - wpfrom.getTime();
+        try{
+        if ( isNaN(Difference_In_Time) == false){
+            document.getElementById('iswop').value = (Difference_In_Time/ (1000 * 3600 * 24))+1;  
+            document.getElementById('istotal').value = parseInt(document.getElementById('iswp').value) + 
+                parseInt(document.getElementById('iswop').value) + parseInt(document.getElementById('isut').value);
+            depChange(document.getElementById('leave_type'));
+        }
+        else {
+            document.getElementById('iswop').value = 0;
+            document.getElementById('istotal').value = parseInt(document.getElementById('iswp').value) + 
+                parseInt(document.getElementById('iswop').value) + parseInt(document.getElementById('isut').value);
+            depChange(document.getElementById('leave_type'));
+        }
+    }
+
+    catch(ex){
+        alert(ex.message);
+    }
+}
+
+    function ut(input) {
+        var wpfrom = new Date(document.getElementById('from_date_ut').value);
+        var wpto = new Date(document.getElementById('to_date_ut').value);
+        var Difference_In_Time = wpto.getTime() - wpfrom.getTime();
+        try{
+        if ( isNaN(Difference_In_Time) == false){
+            document.getElementById('isut').value = (Difference_In_Time/ (1000 * 3600 * 24))+1;  
+            document.getElementById('istotal').value = parseInt(document.getElementById('iswp').value) + 
+                parseInt(document.getElementById('iswop').value) + parseInt(document.getElementById('isut').value); 
+            depChange(document.getElementById('leave_type'));
+        }
+        else {
+            document.getElementById('isut').value = 0;
+            document.getElementById('istotal').value = parseInt(document.getElementById('iswp').value) + 
+                parseInt(document.getElementById('iswop').value) + parseInt(document.getElementById('isut').value);  
+            depChange(document.getElementById('leave_type'));
+        }
+    }
+    catch(ex){
+        alert(ex.message);
+    }
+
+    }
+    function depChange(selectObj) {
+
+        try {
+            var idx = selectObj.selectedIndex;
+            var which = selectObj.options[idx].value;
+            var istotal = document.getElementById('istotal').value;
+            if (which == "PL") {
+                $('#leave_notes_req').val("Note:Please attach birth certificate or live birth and marriage contract.");
+
+            } else if (which == "VS") {
+                document.getElementById('leave_notes_req').innerHTML = " Please attach the vaccination card.";
+                $("#file").prop('required', true);
+
+            } else if (which == "BRL") {
+                document.getElementById('leave_notes_req').innerHTML =
+                    " Please attach documents coping for bereavement.";
+                $("#file").prop('required', true);
+
+            } else if (which == "SL" && parseInt(istotal)>2) {
+                document.getElementById('leave_notes_req').innerHTML =
+                    " Please attach a Medical Certificate stating that you are 'FIT TO WORK'";
+                $("#file").prop('required', true);
+
+            } else if (which == "BL" || which == "VL" || which == "SL") {
+                document.getElementById('leave_notes_req').innerHTML = " Attachment is Optional";
+                $("#file").prop('required', false);
+
+            } else if (which == "") {
+                document.getElementById('leave_notes_req').innerHTML = "";
+                $("#file").prop('required', false);      
+
+            } else {
+                document.getElementById('leave_notes_req').innerHTML = " Please attached related document";
+                $("#file").prop('required', true);
+            }
+
+        } catch (ex) {
+            alert(er.message);
+        }
+    }
+</script>
+
+<script type="text/javascript" src="{{ url_for('static', filename='js/html/leave_create.js') }}"></script>
+
+
+{% endblock %}

@@ -1,0 +1,252 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class=align-right>
+   <article class="add" >
+      <button class="btn btn-secondary btn-sm mb-5" type="button" data-toggle="modal" data-target="#add">Add Data<i class="fa fa-plus-square"></i></button>
+      <button class="btn btn-secondary btn-sm mb-5" type="button" data-toggle="modal" data-target="#upload">Upload Data<i class="fa fa-plus-square"></i></button>
+   </article>
+</div>
+<article class="media content-section">
+   <div class="col table-responsive" style="margin:0px;padding: 0px;">
+      <table  id ="myTable_branch" class="table table-bordered table-hover">
+         <thead class="thead-dark" style="text-transform: uppercase; ">
+            <tr style="font-size: 13px;">
+               <th>ACTION</th>
+               <th>Branch Name</th>
+               <th>Branch Code</th>     
+            </tr>
+         </thead>
+         <tbody>
+            {% for item in ref['reference_branch']%}
+            <tr style="font-size: 15px;">
+               <td style="margin:0px;padding:0px;padding-left:10px;width: 145px;" nowrap>
+                  <button class="btn btn-secondary btn-sm" type="button" data-toggle="modal" data-target="#update{{item['index']}}">Update</button>
+                  <button class="btn btn-danger btn-sm" type="button" data-toggle="modal" data-target="#delete{{item['index']}}">Delete</button>
+               </td>
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['reference_name']}}</td>
+               <td style="padding:0px;padding-left: 10px;padding-top: 5px;"nowrap> {{item['reference_code']}}</td>
+               
+               
+            </tr>
+
+            <div id="delete{{item['index']}}" role="dialog" tabindex="-1" class="modal fade">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Reason for Deleting Record of : {{item["reference_name"]}}</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                        </div>
+                        <form method="POST"  action="/app/reference/branch">
+                            <input class="form-control" type="text" name="index" value = "{{item['index']}}" hidden>
+                            <div class="modal-body">
+                                <div class="form-row">
+                                    <div class="col">
+                                        <input class="form-control" type="text" style="width: 100%;"  name="reason_delete" placeholder= "Reason For Deleting" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer"><button class="btn btn-light" type="button" data-dismiss="modal">Close</button><input class="btn btn-primary" type="submit" name ="action" value="Delete"> </div>
+                        </form>
+                        
+                    </div>
+                </div>
+            </div>
+            <div id="update{{item['index']}}" role="dialog" tabindex="-1" class="modal fade">
+               <div class="modal-dialog modal-lg" role="document">
+                  <div class="modal-content">
+                     <div class="modal-header">
+                        <h3>Update Record Of: {{item['reference_code']}}</h3>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                     </div>
+                     <div class="modal-body">
+                         <form method="POST" action="/app/reference/branch">
+                            <div class="content-section p-4">
+                               <input type="hidden" name="csrfmiddlewaretoken" value="3aSrxKhSSJTcZeDTzLtYwNrWoFJPHzcWv8UucW72EBmE1RxqL6yK4aHkobaiaopj">
+                               <input type="hidden" name="index" value="{{item['index']}}">
+                               <fieldset class = "form-group">
+                                
+                                  <div id="divindex_reference_name" class="form-group">
+                                     <label for="id_reference_name" class=" requiredField">
+                                     Branch Name<span class="asteriskField">*</span> </label>
+                                    <div class="">
+                                      <input type="text" name="reference_name" maxlength="100" class="textinput textInput form-control" required id="update_reference_name" value="{{item['reference_name']}}"> 
+                                    </div>
+                                  </div>
+
+                                  <div id="divindex_reference_code" class="form-group">
+                                     <label for="id_reference_code" class=" requiredField">
+                                     Branch Code<span class="asteriskField">*</span> </label>
+                                    <div class="">
+                                      <input type="text" name="reference_code" maxlength="100" class="textinput textInput form-control" required id="update_reference_code" value="{{item['reference_code']}}"> 
+                                    </div>
+                                  </div>
+
+                                  <div id="divindex_reference_address" class="form-group" hidden>
+                                     <label for="id_reference_address" class=" requiredField">
+                                     Branch Address<span class="asteriskField">*</span> </label>
+                                    <div class="">
+                                      <input type="text" name="reference_address" maxlength="100" class="textinput textInput form-control" id="update_reference_address" value="{{item['reference_address']}}"> 
+                                    </div>
+                                  </div>
+
+                                  <div id="divindex_reference_eadd" class="form-group" hidden>
+                                     <label for="id_reference_eadd" class=" requiredField">
+                                     Branch Email Address<span class="asteriskField">*</span> </label>
+                                    <div class="">
+                                      <input type="text" name="reference_eadd" maxlength="100" class="textinput textInput form-control" id="update_reference_eadd" value="{{item['reference_eadd']}}"> 
+                                    </div>
+                                  </div>
+
+                                  <div id="divindex_reference_contact" class="form-group" hidden>
+                                     <label for="id_reference_contact" class=" requiredField">
+                                     Branch Address<span class="asteriskField">*</span> </label>
+                                    <div class="">
+                                      <input type="text" name="reference_contact" maxlength="100" class="textinput textInput form-control" id="update_reference_contact" value="{{item['reference_contact']}}"> 
+                                    </div>
+                                  </div>
+
+                                  <div id="divindex_reference_link" class="form-group" hidden>
+                                     <label for="id_reference_link" class=" requiredField">
+                                     Branch Address<span class="asteriskField">*</span> </label>
+                                    <div class="">
+                                      <input type="text" name="reference_link" maxlength="100" class="textinput textInput form-control" id="update_reference_link" value="{{item['reference_link']}}"> 
+                                    </div>
+                                  </div>
+
+                                  <div id="divindex_reason" class="form-group">
+                                     <label for="id_reason" class=" requiredField">
+                                     Reason For Editing</label>
+                                    <div class="">
+                                      <input type="text" name="reason_edit" maxlength="100" class="textinput textInput form-control" required id="reason" value="{{item['reason']}}"> 
+                                    </div>
+                                  </div>
+
+                               </fieldset>
+                            </div>
+                            <div class="modal-footer"><button class="btn btn-light" type="button" data-dismiss="modal">Close</button><input class="btn btn-primary" type="submit" name ="action" value="Update"> </div>
+                         </form>
+                    </div>
+                  </div>
+               </div>
+            </div>
+        
+            {% endfor %}
+         </tbody>
+      </table>
+   </div>
+</article>
+<div id="add" role="dialog" tabindex="-1" class="modal fade">
+   <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h3>Add Item</h3>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+         </div>
+         <div class="modal-body">
+             <form method="POST" action="/app/reference/branch">
+                <div class="content-section p-4">
+                   <input type="hidden" name="csrfmiddlewaretoken" value="3aSrxKhSSJTcZeDTzLtYwNrWoFJPHzcWv8UucW72EBmE1RxqL6yK4aHkobaiaopj">
+                     <fieldset class = "form-group">
+                                    
+                        <div id="divindex_reference_name" class="form-group">
+                           <label for="id_reference_namex" class=" requiredField">
+                           Branch Name<span class="asteriskField">*</span> </label>
+                           <div class="">
+                           <input type="text" name="reference_name" maxlength="100" class="textinput textInput form-control" required id="reference_name"> 
+                           </div>
+                        </div>
+
+                        <div id="divindex_reference_code" class="form-group">
+                           <label for="id_reference_code" class=" requiredField">
+                           Branch Code<span class="asteriskField">*</span> </label>
+                          <div class="">
+                            <input type="text" name="reference_code" maxlength="100" class="textinput textInput form-control" required id="reference_code"> 
+                          </div>
+                        </div>
+
+                        <div id="divindex_reference_address" class="form-group" hidden>
+                           <label for="id_reference_address" class=" requiredField">
+                           Branch Address<span class="asteriskField">*</span> </label>
+                          <div class="">
+                            <input type="text" name="reference_address" maxlength="100" class="textinput textInput form-control"  id="reference_address"> 
+                          </div>
+                        </div>
+
+                        <div id="divindex_reference_contact" class="form-group" hidden>
+                           <label for="id_reference_contact" class=" requiredField">
+                           Branch Contact</label>
+                          <div class="">
+                            <input type="text" name="reference_contact" maxlength="100" class="textinput textInput form-control" id="reference_contact"> 
+                          </div>
+                        </div>
+
+                        <div id="divindex_reference_eadd" class="form-group" hidden>
+                           <label for="id_reference_eadd" class=" requiredField">
+                           Branch Eadd<span class="asteriskField">*</span> </label>
+                          <div class="">
+                            <input type="text" name="reference_eadd" maxlength="100" class="textinput textInput form-control"  id="reference_eadd"> 
+                          </div>
+                        </div>
+
+                        <div id="divindex_reference_link" class="form-group" hidden>
+                           <label for="id_reference_link" class=" requiredField">
+                           Branch Link</label>
+                          <div class="">
+                            <input type="text" name="reference_link" maxlength="100" class="textinput textInput form-control"  id="reference_link"> 
+                          </div>
+                        </div>
+
+ 
+                    </fieldset>
+                </div>
+                <div class="modal-footer"><button class="btn btn-light" type="button" data-dismiss="modal">Close</button><input class="btn btn-primary" type="submit" name ="action" value="Save"> </div>
+             </form>
+        </div>
+      </div>
+   </div>
+</div>
+<div id="upload" role="dialog" tabindex="-1" class="modal fade">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+            <form method="POST"  action="/app/sample" enctype="multipart/form-data">
+                
+                <div class="modal-body">
+                    <div class="form-row">
+                        <div class="col">
+                            <h3>Upload Employee Details</h3>
+                        </div>
+                    </div>                    
+                    <div class="form-row">
+                        <div class="col">
+                            <input type="file" id="file" name="file">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer"><button class="btn btn-light" type="button" data-dismiss="modal">Close</button><input class="btn btn-primary" type="submit" name ="action" value="Upload Data"> </div>
+            </form>
+            
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+
+
+// For Display
+    $(document).ready(function() {
+  document.getElementById("main").style.display = "inline-block";
+
+});
+
+
+ $(document).ready(function(){
+        $('#myTable_branch').DataTable({
+        "aLengthMenu": [[15, 30, 45, -1], [15, 30, 45, "All"]],
+        "iDisplayLength": 15,
+        "order": [[ 1, "asc" ]]
+    });
+     });    
+</script>
+{% endblock %}
+{% block scripts %}
+{% endblock %}

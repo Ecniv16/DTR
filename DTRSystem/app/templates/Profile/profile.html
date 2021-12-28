@@ -1,0 +1,174 @@
+{% extends 'base/base.html' %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+    <div class="breadcrumbs-inner">
+        <div class="page-header">
+            <div class="page-title">
+                <ol class="breadcrumb">
+                    <li class="active"><a href="{{url_for('index')}}">Home</a></li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock breadcrumbs %}
+
+{% block content %}
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+{% for message in messages %}
+{{ message }}
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+
+
+<div class="row">
+
+    <div class="col-lg-6">
+        <div class="card" style="height: 650px;">
+            <div class="card-body">
+                <div class="item-title">
+                    <h3>About Me</h3>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <div class="table-responsive info-table">
+                            <table class="table text-nowrap mb-4">
+                                <tbody>
+
+                                    <tr>
+                                        <td><strong>Name:</strong></td>
+                                        <td class="font-medium text-dark-medium">{{session['user']|title}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Email Address:</strong></td>
+                                        <td class="font-medium text-dark-medium">{{session['email']}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Employee ID:</strong></td>
+                                        <td class="font-medium text-dark-medium">{{session['employee_id']}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>SN:</strong></td>
+                                        <td class="font-medium text-dark-medium">{{session['SN']}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Company:</strong></td>
+                                        <td class="font-medium text-dark-medium">{{session['company']}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Department:</strong></td>
+                                        <td class="font-medium text-dark-medium">{{session['department']}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Section:</strong></td>
+                                        <td class="font-medium text-dark-medium">
+                                            {{session['section']|replace(session['department']+"-","")}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Position:</strong></td>
+                                        <td class="font-medium text-dark-medium">{{session['position']}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Date Hired:</strong></td>
+                                        <td class="font-medium text-dark-medium">{{session['date_hired']}}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td><strong>Office/Site Designated:</strong></td>
+                                        <td class="font-medium text-dark-medium">
+                                            {{session['location']|replace(session['area']+"-","")}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Schedule Type:</strong></td>
+                                        <td class="font-medium text-dark-medium">
+                                            {{session['schedule_type']}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-lg-6" style="height: 100%;">
+        <div class="row">
+            <div class="col">
+                {% include 'Profile/leave_credit.html' %}
+            </div>
+        </div>
+        <div class="row" style="height: 100%;">
+            <div class="col">
+                <div class="card">
+
+                    <div class="card-body">
+                        <!-- Credit Card -->
+                        <div class="item-title">
+                            <h3>List of Pending Application Summary</h3>
+                        </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <div class="table-responsive info-table">
+                                    <table class="table text-nowrap">
+                                        <tbody>
+                                            <tr>
+
+                                                <td><strong><a href="{{url_for('profile_sub',content='leave')}}">
+                                                            Leave Application</a>
+                                                    </strong></td>
+
+                                                <td><strong>{{content['ref']['pending_leave_count']}}</strong></td>
+
+                                            </tr>
+                                            <tr>
+                                                <td><strong><a href="{{url_for('profile_sub',content='ob')}}">
+                                                            Official Business Application</a></strong></td>
+                                                <td><strong>{{content['ref']['pending_ob_count']}}</strong></td>
+
+                                            </tr>
+
+                                            <tr>
+                                                <td><strong><a href="{{url_for('profile_sub',content='missing_logs')}}">
+                                                            Missing Logs Application</a></strong></td>
+                                                <td><strong>{{content['ref']['pending_missing_logs_count']}}</strong>
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+                                                <td><strong><a href="{{url_for('profile_sub',content='ot')}}">
+                                                            Overtime Application</a></strong></td>
+                                                <td><strong>{{content['ref']['pending_ot_count']}}</strong></td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong><a href="{{url_for('profile_sub',content='wfh')}}">
+                                                            Work From Home Application</a></strong></td>
+                                                <td><strong>{{content['ref']['pending_wfh_count']}}</strong></td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong><a href="{{url_for('profile_sub',content='day_offset')}}">
+                                                            Rest Day/Holiday Offsetting Application</a></strong></td>
+                                                <td><strong>{{content['ref']['pending_day_offset_count']}}</strong></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

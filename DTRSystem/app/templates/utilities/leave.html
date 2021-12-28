@@ -1,0 +1,312 @@
+{% extends 'base/base.html' %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+    <div class="breadcrumbs-inner">
+        <div class="page-header">
+            <div class="page-title">
+                <ol class="breadcrumb">
+                    <li><a href="{{url_for('index')}}">Home</a></li>
+                    <li class="active">List of Leave Application For Approval</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock breadcrumbs %}
+
+{% block content %}
+<div class="row">
+   <div class="col-lg-12">
+      <div class="card">
+         <div class="card-header">
+            <strong class="card-title">Leaves Application List:</strong>
+         </div>
+         <div class="card-body">
+            <!-- Credit Card -->
+            <div id="pay-invoice">
+               <div class="card-body">
+
+
+                  <div class="col table-responsive" style="margin:0px;padding: 0px;">
+
+                     <table id="myTable" class="table table-bordered table-hover">
+                        <thead class="thead" style="text-transform: uppercase;background-color:lightgray;color:black; ">
+                           <tr style="font-size: 11px;">
+                              <th>Name</th>
+                              <th>Date Filed</th>
+                              <th>Type</th>
+                              <th>From</th>
+                              <th>To</th>
+                              <th>Resume</th>
+                              <th>W/ Pay</th>
+                              <th>W/o Pay</th>
+                              <th>Reason</th>
+                              <th>Dept. & Sec</th>
+                              <th>File</th>
+                              <th></th>
+
+
+
+                           </tr>
+                        </thead>
+                        <tbody>
+                           {% for item in ref['leave'] %}
+                           {% if ((session['user_type'] == "Supervisor" or session['user_type'] =="Senior Supervisor") and session['index'] != item['ref_index']) or (session['user_type'] =="Department Head" or session['user_type'] =="SV/DM") %}
+                           <tr style="font-size: 12px;">
+
+                              <td> {{item['basic_info']['name']}}
+                              </td>
+                              <td>
+                                 {{item['date_filed']}}</td>
+                              <td>
+                                 {{item['leave_type']}} </td>
+                              <td> {{item['date_from']}}
+                              </td>
+                              <td> {{item['date_to']}}
+                              </td>
+                              <td> {{item['resume']}}
+                              </td>
+                              <td>
+                                 {{item['hours_paid']}} </td>
+                              <td>
+                                 {{item['hours_not_paid']}} </td>
+                              <td> {{item['reason']}}
+                              </td>
+
+
+                              <td> {{item['basic_info']['dept_sec']}}
+                              </td>
+                              <td align="center">
+                                 {% if item['days_of_leave'] > 2 and item['leave_type'] != "VL" %}
+                                 {% if attachment =="" %}
+                                 <button class="btn btn-secondary btn-sm" id="btn" onclick="getData()"
+                                     type="button" data-toggle="modal" data-target="#upload_leave">Attach
+                                     file</button>
+                                 {% else %}
+                                 <a href="{{item['basic_info']['attachment']}}" target="_blank" download
+                                     data-toggle="tooltip" title="Download Attachment">
+                                     <i class="fa fa-download" style="color: black"></i></a>
+                                 {% endif%}
+
+                                 {% elif item['attachment'] %}
+                                 <a href="{{item['basic_info']['attachment']}}" target="_blank" download
+                                     data-toggle="tooltip" title="Download Attachment">
+                                     <i class="fa fa-download" style="color: black"></i></a>
+
+                                 {% endif %}
+
+                             </td>
+                              <td align="center">
+                                 {% if (session['user_type'] == "Supervisor" or session['user_type'] =="Senior Supervisor") and session['index'] != item['ref_index'] %}
+                                 <a href="#action_1{{item['index']}}" title="Action" data-toggle="modal"
+                                    data-target="#action_1{{item['index']}}"><i class="fa fa-check"
+                                       style="color: red"></i></a>
+                                 {% endif %}
+                                 {% if (session['user_type'] == "Department Head" or session['user_type'] =="Administrator"  or session['user_type'] =="SV/DM") %}
+                                 <a href="#action_2{{item['index']}}" title="Delete" data-toggle="modal"
+                                    data-target="#action_2{{item['index']}}">
+                                    <i class="fa fa-check" style="color: red"></i></a>
+                                 {% endif %}
+                                 <a href="/app/employee_files/leave/{{item['index']}}" title="View Form"><i
+                                       class="fa fa-eye" style="color:blue"></i></a>
+
+
+                              </td>
+                           </tr>
+
+                           <div id="delete{{item['index']}}" role="dialog" tabindex="-1" class="modal fade">
+                              <div class="modal-dialog" role="document">
+                                 <div class="modal-content">
+                                    <div class="modal-header">
+                                       <h4 class="modal-title">Reason for Deleting Record of :
+                                          {{item["reference_name"]}}</h4><button type="button" class="close"
+                                          data-dismiss="modal" aria-label="Close"><span
+                                             aria-hidden="true">×</span></button>
+                                    </div>
+                                    <form method="POST" action="/app/utilities/leave">
+                                       <input class="form-control" type="text" name="index" value="{{item['index']}}"
+                                          hidden>
+                                       <input class="form-control" type="text" name="leave_type"
+                                          value="{{item['leave_type']}}" hidden>
+                                       <input class="form-control" type="text" name="from_vl"
+                                          value="{{item['from_vl']}}" hidden>
+                                       <input class="form-control" type="text" name="ref_index"
+                                          value="{{item['ref_index']}}" hidden>
+                                       <div class="modal-body">
+                                          <div class="form-row">
+                                             <div class="col">
+                                                <input class="form-control" type="text" style="width: 100%;"
+                                                   name="reason_delete" placeholder="Reason For Deleting" required>
+                                             </div>
+                                          </div>
+                                       </div>
+                                       <div class="modal-footer"><button class="btn btn-light" type="button"
+                                             data-dismiss="modal">Close</button><input class="btn btn-primary"
+                                             type="submit" name="action" value="Cancel"> </div>
+                                    </form>
+
+                                 </div>
+                              </div>
+                           </div>
+                           <div id="action_1{{item['index']}}" role="dialog" tabindex="-1" class="modal fade">
+                              <div class="modal-dialog modal-m" role="document">
+                                 <div class="modal-content">
+                                    <div class="modal-header">
+                                       <h3>Supervisor Remarks</h3>
+                                       <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                             aria-hidden="true">×</span></button>
+                                    </div>
+                                    <form method="POST" action="/app/utilities/leave">
+                                       <div class="content-section p-4">
+                                          <input type="hidden" name="csrfmiddlewaretoken"
+                                             value="3aSrxKhSSJTcZeDTzLtYwNrWoFJPHzcWv8UucW72EBmE1RxqL6yK4aHkobaiaopj">
+                                          <input type="text" name="type" value="1" hidden>
+                                          <fieldset class="form-group">
+
+                                             <input class="form-control" type="text"
+                                                style="width: 100%;min-width: 200px;" name="ref_index" id="index"
+                                                value="{{item['index']}}" hidden>
+                                             <input class="form-control" type="text" name="leave_type"
+                                                value="{{item['leave_type']}}" hidden>
+                                             <input class="form-control" type="text" name="from_vl"
+                                                value="{{item['from_vl']}}" hidden>
+                                             <input class="form-control" type="date" name="date"
+                                                value="{{item['date_from']}}" hidden>
+
+                                             <input class="form-control" type="text" name="name"
+                                                value="{{item['basic_info']['name']}}" hidden>
+
+
+                                             <div id="div_id_is_supervisor_remarks_1" class="form-group">
+                                                <label for="id_supervisor_remarks_1" class=" requiredField">
+                                                   ACTION<span class="asteriskField">*</span> </label>
+                                                <div class="">
+                                                   <select name="supervisor_remarks_1" required
+                                                      style="width: 100%;height: 34px;">
+                                                      <option selected value="" hidden>Choose Here</option>
+                                                      {% if item['days_of_leave'] > 2  %}
+
+                                                      <option value="For DM's Approval">Approved</option>
+                                                      {% else %}
+                                                      <option value="Approved">Approved</option>
+                                                      {% endif %}
+                                                      <option value="Disapproved">Disapproved</option>
+                                                   </select>
+                                                </div>
+                                             </div>
+
+                                             <div id="div_id_supervisor_remarks_2" class="form-group">
+                                                <label for="id_supervisor_remarks_2" class=" requiredField">
+                                                   Remarks<span class="asteriskField">*</span> </label>
+                                                <div class="">
+                                                   <select name="supervisor_remarks_2"
+                                                      style="width: 100%;height: 34px;">
+                                                      <option selected value="" hidden>Choose Here</option>
+                                                      <option value="Proper Filing">Proper Filing</option>
+                                                      <option value="Improper Filing">Improper Filing</option>
+                                                   </select>
+                                                </div>
+                                             </div>
+                                             {% if item['days_of_leave'] < 2 and item['leave_type'] =="SL" %}
+                                             <div id="div_id_is_supervisor_remarks_1" class="form-group">
+                                                <label for="id_supervisor_remarks_1" class=" requiredField">
+                                                   Received Attachment<span class="asteriskField">*</span> </label>
+                                                <div class="">
+                                                   <select name="attachment" required style="width: 100%;height: 34px;">
+                                                      <option selected value="" hidden>Choose Here</option>
+                                                      <option value="Received">Received</option>
+                                                      <option value="Not Received">Not Received</option>
+                                                   </select>
+                                                </div>
+                                             </div>
+                                             {% endif %}
+                                          </fieldset>
+                                       </div>
+                                       <div class="modal-footer"><button class="btn btn-light" type="button"
+                                             data-dismiss="modal">Close</button><input class="btn btn-primary"
+                                             type="submit" name="action" value="Save SV Remarks"> </div>
+                                    </form>
+                                 </div>
+                              </div>
+                           </div>
+                           <div id="action_2{{item['index']}}" role="dialog" tabindex="-1" class="modal fade">
+                              <div class="modal-dialog modal-m" role="document">
+                                 <div class="modal-content">
+                                    <div class="modal-header">
+                                       Department Head Remarks
+                                       <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                             aria-hidden="true">×</span></button>
+                                    </div>
+                                    <form method="POST" action="/app/utilities/leave">
+                                       <div class="content-section p-4">
+                                          <input type="hidden" name="csrfmiddlewaretoken"
+                                             value="3aSrxKhSSJTcZeDTzLtYwNrWoFJPHzcWv8UucW72EBmE1RxqL6yK4aHkobaiaopj">
+                                          <input type="text" name="type" value="1" hidden>
+                                          <fieldset class="form-group">
+
+                                             <input class="form-control" type="text"
+                                                style="width: 100%;min-width: 200px;" name="ref_index" id="index"
+                                                value="{{item['index']}}" hidden>
+                                             <input class="form-control" type="text" name="leave_type"
+                                                value="{{item['leave_type']}}" hidden>
+                                             <input class="form-control" type="text" name="from_vl"
+                                                value="{{item['from_vl']}}" hidden>
+                                             <input class="form-control" type="date" name="date"
+                                                value="{{item['date_from']}}" hidden>
+                                             <input class="form-control" type="text" name="name"
+                                                value="{{item['name']}}" hidden>
+
+                                             <div id="div_id_is_dm_remarks_1" class="form-group">
+                                                <label for="id_dm_remarks_1" class=" requiredField">
+                                                   ACTION<span class="asteriskField">*</span> </label>
+                                                <div class="">
+                                                   <select name="dm_remarks_1" required
+                                                      style="width: 100%;height: 34px;">
+                                                      <option selected value="" hidden>Choose Here</option>
+                                                      <option value="Approved">Approved</option>
+                                                      <option value="Disapproved">Disapproved</option>
+                                                   </select>
+                                                </div>
+                                             </div>
+
+                                          </fieldset>
+                                       </div>
+                                       <div class="modal-footer"><button class="btn btn-light" type="button"
+                                             data-dismiss="modal">Close</button><input class="btn btn-primary"
+                                             type="submit" name="action" value="Save DM Remarks"> </div>
+                                    </form>
+                                 </div>
+                              </div>
+                           </div>
+                           {% endif %}
+                           {% endfor %}
+                        </tbody>
+                     </table>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+
+
+<script>
+   $(document).ready(function () {
+
+      $.fn.dataTable.moment('MMM D, YYYY');
+      $.fn.dataTable.moment('D-MMM-YY');
+      $('#myTable').DataTable({
+
+         dom: 'B<"clear">lfrtip',
+         buttons: {
+            name: 'primary',
+            buttons: ['copy', 'csv', 'excel', 'pdf']
+
+         }
+      });
+   });
+</script>
+{% endblock %}
+{% include 'base/js.html' %}

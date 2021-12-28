@@ -1,0 +1,162 @@
+<aside id="left-panel" class="left-panel" style="background: black">
+    <nav class="navbar navbar-expand-sm navbar-default" style="background: black">
+        <div id="main-menu" class="main-menu collapse navbar-collapse" style="background: black">
+            <ul class="nav navbar-nav">
+                
+                <li>
+                    <a href="{{url_for('index')}}"> <i class="menu-icon fa fa-user"></i>Profile</a>
+
+                </li>
+                
+                <li class="menu-title" style="color: white">MENU</li><!-- /.menu-title -->
+
+                <li>
+                    <a href="{{url_for('profile_sub',content='attendance')}}"> <i class="menu-icon fa fa-calendar"></i>Attendance</a>
+
+                </li>
+
+
+                <li class="menu-item-has-children dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-file-text-o"></i>Pending Application</a>
+                    <ul class="sub-menu children dropdown-menu">
+                        <li><a href="{{url_for('profile_sub',content='leave')}}">Leaves</a></li>
+                        <li><a href="{{url_for('profile_sub',content='missing_logs')}}">Missing Logs</a></li>
+                        <li><a href="{{url_for('profile_sub',content='ob')}}">Official Business</a></li>
+                        <li><a href="{{url_for('profile_sub',content='ot')}}">Overtime</a></li>
+                        <li><a href="{{url_for('profile_sub',content='day_offset')}}">Restday/Holiday Offset</a></li>
+                        <li><a href="{{url_for('profile_sub',content='wfh')}}">Work From Home</a></li>
+                        
+                    </ul>
+                </li>
+
+
+
+                <li class="menu-item-has-children dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-archive"></i>Archived Filed Application</a>
+                    <ul class="sub-menu children dropdown-menu">
+                        <li><a href="{{url_for('archived_view',content='leave')}}">Leaves</a></li>
+                        <li><a href="{{url_for('archived_view',content='ob')}}">Official Business</a></li>
+                        <li><a href="{{url_for('archived_view',content='missing_logs')}}">Missing Logs</a></li>
+                        <li><a href="{{url_for('archived_view',content='ot')}}">Overtime</a></li>
+                        <li><a href="{{url_for('archived_view',content='day_offset')}}">Restday/Holiday Offset</a></li>
+                        <li><a href="{{url_for('archived_view',content='wfh')}}">Work From Home</a></li>
+                    </ul>
+                </li>
+
+                {% if session['user_type'] != "Regular User" %}
+                <li class="menu-item-has-children dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-file-text-o"></i>For Approval
+                        {% if session['pending']['leave'] + session['pending']['ot'] + session['pending']['ob'] +
+                        session['pending']['missing_logs'] + session['pending']['day_offset'] + session['pending']['wfh']!= 0 %}
+
+                            <span class="badge badge-danger">{{session['pending']['leave'] + session['pending']['ot'] + session['pending']['ob'] +
+                                session['pending']['missing_logs'] + session['pending']['day_offset'] + session['pending']['wfh']}}</span>
+
+
+                        {% endif %}    
+                    
+                    </a>
+                    <ul class="sub-menu children dropdown-menu">
+                        <li><a href="{{url_for('utilities_view',content='leave')}}">Leaves
+                            {% if session['pending']['leave'] != 0 %}
+                                <span class="badge badge-danger">{{session['pending']['leave']}}</span></a></li>
+                            {% endif %}    
+                        <li><a href="{{url_for('utilities_view',content='ob')}}">Official Business
+                            {% if session['pending']['ob'] != 0 %}
+                                <span class="badge badge-danger">{{session['pending']['ob']}}</span></a></li>
+                            {% endif %}    
+                        </a></li>
+                        <li><a href="{{url_for('utilities_view',content='missing_logs')}}">Missing Logs
+                            {% if session['pending']['missing_logs'] != 0 %}
+                                <span class="badge badge-danger">{{session['pending']['missing_logs']}}</span></a></li>
+                            {% endif %}    
+                        </a></li>
+                        <li><a href="{{url_for('utilities_view',content='ot')}}">Overtime
+                            {% if session['pending']['ot'] != 0 %}
+                                <span class="badge badge-danger">{{session['pending']['ot']}}</span></a></li>
+                            {% endif %}    
+                        </a></li>
+                        <li><a href="{{url_for('utilities_view',content='day_offset')}}">Restday/Holiday Offset 
+                            {% if session['pending']['day_offset'] != 0 %}
+                                <span class="badge badge-danger">{{session['pending']['day_offset']}}</span></a></li>
+                            {% endif %}    
+                        </a></li>
+                        <li><a href="{{url_for('utilities_view',content='wfh')}}">Work From Home
+                            {% if session['pending']['wfh'] != 0 %}
+                            <span class="badge badge-danger">{{session['pending']['wfh']}}</span></a></li>
+                        {% endif %}    
+                        </a></li>
+                        
+                    </ul>
+                </li>                
+                <li class="menu-item-has-children dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-list"></i>Reports</a>
+                    <ul class="sub-menu children dropdown-menu">
+                        <li><a href="{{url_for('report_module',content='dtr_monitoring')}}">DTR Report</a></li>
+                        <li><a href="#">Monthly Report</a></li>
+                    </ul>
+                </li>
+
+                {% endif %}
+                
+                {% if session['user_type'] == 'Administrator' %}
+                <li class="menu-title" style="color: white">ADMIN MENU</li><!-- /.menu-title -->
+                <li class="menu-item-has-children dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-archive"></i>Archived Filed Application</a>
+                    <ul class="sub-menu children dropdown-menu">
+                        <li><a href="{{url_for('archived_view',content='leave')}}">Leaves</a></li>
+                        <li><a href="{{url_for('archived_view',content='ob')}}">Official Business</a></li>
+                        <li><a href="{{url_for('archived_view',content='missing_logs')}}">Missing Logs</a></li>
+                        <li><a href="{{url_for('archived_view',content='ot')}}">Overtime</a></li>
+                        <li><a href="{{url_for('archived_view',content='day_offset')}}">Restday/Holiday Offset</a></li>
+                        <li><a href="{{url_for('archived_view',content='wfh')}}">Work From Home</a></li>
+                    </ul>
+                </li>                
+                <li class="menu-item-has-children dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-copy"></i>Employee Details</a>
+                    <ul class="sub-menu children dropdown-menu">
+                        <li><a href="{{url_for('monitoring',content='email_address')}}">Email Address</a></li>
+                        <li><a href="{{url_for('monitoring',content='superiors')}}">Superiors</a></li>
+                    </ul>
+                </li> 
+                <li class="menu-item-has-children dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-archive"></i>Employee Archived Record</a>
+                    <ul class="sub-menu children dropdown-menu">
+                        <li><a href="{{url_for('employee_record',content='sched_location_info')}}">Schedule and Location</a></li>
+                        <li><a href="{{url_for('employee_record',content='designation_info')}}">Designation</a></li>
+                    </ul>
+                </li>                               
+                <li class="menu-item-has-children dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-copy"></i>Reference</a>
+                    <ul class="sub-menu children dropdown-menu">
+                        <li><a href="{{url_for('reference',content='area')}}">Area</a></li>
+                        <li><a href="{{url_for('reference',content='company')}}">Company</a></li>
+                        <li><a href="{{url_for('reference',content='department')}}">Department</a></li>
+                        <li><a href="{{url_for('reference',content='employee')}}">Employee</a></li>
+                        <li><a href="{{url_for('reference',content='holiday')}}">Holiday</a></li>
+                        <li><a href="{{url_for('reference',content='leave_credit')}}">Leave Credit</a></li>
+                        <li><a href="{{url_for('reference',content='location')}}">Location</a></li>
+                        <li><a href="{{url_for('reference',content='schedule_type')}}">Schedule Type</a></li>
+                        <li><a href="{{url_for('reference',content='section')}}">Section</a></li>
+                        
+                    </ul>
+                </li>
+                <li class="menu-item-has-children dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-list"></i>Reports</a>
+                    <ul class="sub-menu children dropdown-menu">
+                        <li><a href="{{url_for('report_module',content='dtr_monitoring')}}">DTR Report</a></li>
+                        <li><a href="#">Monthly Report</a></li>
+                    </ul>
+                </li>                
+                <li class="menu-item-has-children dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-list"></i>Utilities</a>
+                    <ul class="sub-menu children dropdown-menu">
+                        <li><a href="{{url_for('utilities_view',content='upload_dtr')}}">Upload Biometrics Data</a></li>
+                    </ul>
+                </li>
+
+                {% endif %}
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </nav>
+</aside>
