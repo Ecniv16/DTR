@@ -1,6 +1,7 @@
 from app import *
 from app.variables import dict_getter as dg
 from app.functions import *
+from app.functions import Custom_Function as cf
 from app.sample import *
 from pprint import pprint
 import os
@@ -142,6 +143,8 @@ class Leave:
         if count_checker == 0:
             self.total['no_of_hours'] += working_hour
             self.total['days_of_leave'] += working_hour / 8
+            self.total['paid'] += defaults['hours_not_paid']
+            self.total['not_paid'] += defaults['is_with_pay']
             insert_leave_detail(self.index, date_now, working_hour,
                                 defaults['hours_paid'], defaults['hours_not_paid'], defaults['is_with_pay'], batch)
             self.marker = 1
@@ -172,6 +175,55 @@ class Leave:
         result = update_one_module(
             'reference_leave_credit', update_criteria, update_query)
         return(result)
+
+
+class Approval:
+    def __init__(self, data, category):
+        self.data = data
+        self.category = category
+        self.remarks = ""
+        self.action = ""
+
+    def check_approver(self):
+        approver = {
+            "Save SV Remarks": self.data['supervisor_remarks_1'],
+            "Save DM Remarks": self.data['dm_remarks_1']
+        }
+        self.remarks = approver[self.data['action']]
+        return(approver[self.data['action']])
+
+    def get_effective_date(self, date_now, last_day):
+        if date_now.day >= 1 and date_now.day <= 20:
+            range_date_dict = get_date_range(1,date_now,last_day)
+            
+        
+
+    def approval_effectivity(self):
+        date_now = dt.strftime(dt.now(),"%m/%d/%Y")
+        find_query = {'ref_index': int(self.data['ref_index'])}
+        cursor = find_module(f'utilities_{self.category}_application', find_query, {})
+        for dates in cursor:
+            file_date = date_converter(dates['date_now'])
+            last_day = get_last(date_now)
+            file_date_details = {
+                '1': {
+                    'file_start': f'{cf.curr_year(file_date)}-{cf.curr_month(file_date)}-01',
+                    'file_end': f'{cf.curr_year(file_date)}-{cf.curr_month(file_date)}-20'
+                },
+                '2': {
+                    'file_start': f'{cf.curr_year(file_date)}-{cf.curr_month(file_date)}-16',
+                    'file_end': f'{cf.curr_year(file_date)}-{cf.adv_month(file_date)}-05'
+                }
+            }
+            default_dict = file_date_details['1']
+            if file_date.day > 15:
+                default_dict = file_date_details['2']
+            #get_effective_date
+
+
+
+
+
 
 
 def upload_to_mega(data,category,index):
